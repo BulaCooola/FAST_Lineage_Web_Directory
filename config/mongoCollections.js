@@ -14,5 +14,5 @@ const getCollectionFn = (collection) => {
 };
 
 // NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW TO HAVE THE COLLECTION(S) REQUIRED BY THE ASSIGNMENT
-// export const events = getCollectionFn('events');
-// export const dogs = getCollectionFn('dogs');
+export const events = getCollectionFn('data');
+
