@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'path';
 const router = express.Router();
 
-router.route('/').get(async (req, res) => {
+router.route('/user').get(async (req, res) => {
     // ! Get's the home/landing page from handlebars
     // const filePath = path.join(__dirname, '..', 'static', 'homepage.html')
     res.sendFile(filePath)
