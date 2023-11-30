@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { users } from '..config/mongoCollections.js'
+import { lines } from '..config/mongoCollections.js'
 import * as validators from '../validators.js'
 
 /* 
@@ -17,21 +17,44 @@ import * as validators from '../validators.js'
         * images
     ?
 */
-export const createLine = async (
-    lineId,
-    lineName,
-    lineDescription,
-    lineHead,
-    totalMembers,
-    members,
-    images
-) => {
 
-}
+const exportedMethods = {
+    async createLine(
+      lineId,
+      lineName,
+      lineDescription,
+      lineHead,
+      totalMembers,
+      members,
+      images
+    ) {
+      return 0;
+    },
+    async getAllLines(){
+        const lineCollection = await lines();
+        return await lineCollection.find({}).toArray();
+    },
+    async getLineById(id) {
+        id = validation.checkId(id);            //subject to change
+        const lineCollection = await lines();
+        const line = await lineCollection.findOne({_id: new ObjectId(id)});
+        if (!line) throw 'Error: Line not found';
+        return line;
+    },
+    async getLineByName(name){
+        id = validation.checkName(name);        //subject to change
+        const lineCollection = await lines();
+        const line = await lineCollection.findOne({_name: new ObjectId(name)});
+        if (!line) throw 'Error: Line not found';
+        return line;
+    }
+
+};
 
 // TODO getLine
 // TODO getAllLines
 // TODO updateLine
 // TODO deleteLine
 
+export default exportedMethods;
 

@@ -17,3 +17,4 @@ const getCollectionFn = (collection) => {
 export const users = getCollectionFn('users');
 export const lines = getCollectionFn('lines');
 export const images = getCollectionFn('images');
+
