@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/BulaCooola/FAST_Lineage_Web_Directory#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
     "mongodb": "^6.3.0",
     "validator": "^13.11.0"
   }
