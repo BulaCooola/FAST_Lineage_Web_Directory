@@ -3,7 +3,7 @@
         {{#if user.big.big}}
             {{user.big.big.firstName user.big.big.lastName}}
         {{else}}
-            No gbig available
+            Null
         {{/if}}
     </div>
 
@@ -11,7 +11,7 @@
         {{#if user.big}}
             {{user.big.firstName user.big.lastName}}
         {{else}}
-            No big available
+            Null
         {{/if}}
     </div>
 
@@ -24,8 +24,6 @@
             {{#each big.littles}}
                 {{big.littles.firstName big.littles.lastName}}
             {{/each}}
-        {{else}}
-            No siblings available
         {{/if}}
     </div>
 
@@ -34,8 +32,6 @@
             {{#each little}}
                 {{little.firstName little.lastName}}
             {{/each}}
-        {{else}}
-            No littles available
         {{/if}}
     </div>
 </div>
