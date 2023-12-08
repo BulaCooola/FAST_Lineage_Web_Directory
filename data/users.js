@@ -26,6 +26,37 @@ const exportedMethods = {
     },
     async registerUser(userName, userBio, firstName, lastName, email, password, confirmPassword, major, gradYear, big, littles, links){
         //subject to change
+        const userCollection = await users();
+        const findUserName = await userCollection.findOne({userName: userName});
+        if (findUserName) {
+            throw `username already exists, pick another`
+        }
+
+        if(password !== confirmPassword){
+            throw 'passwords must be the same';
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 16);
+        let newUser = { 
+            userName:userName,
+            userBio: userBio,
+            firstName: firstName,
+            lastName: lastName,
+            email:email,
+            password: hashedPassword,
+            major: major,
+            gradYear:gradYear,
+            big:big,
+            littles:littles,
+            links:links
+        }
+
+        let insertInfo = await userCollection.insertOne(newUser);
+        if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+            throw 'Could not add user';
+        }
+        return {insertedUser:true};
+
     },
     async loginUser(emailAddress, password){
         validation.loginCheck(emailAddress, password)
