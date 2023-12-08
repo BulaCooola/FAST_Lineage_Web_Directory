@@ -24,10 +24,9 @@ const exportedMethods = {
         if (!user) throw 'Error: Line not found';
         return user;
     },
-    async registerUser(userName, firstName, lastName, email, password, confirmPassword){
+    async registerUser(firstName, lastName, email, password, confirmPassword){
         //subject to change
         try {
-            userName = validation.validString(userName);
             firstName = validation.validString(firstName);
             lastName = validation.validString(lastName);
             email = validation.validEmail(email);
@@ -36,7 +35,6 @@ const exportedMethods = {
         } catch(e) {
             throw `${e}`;
         }
-        userName = validation.validString(userName);
         firstName = validation.validString(firstName);
         lastName = validation.validString(lastName);
         email = validation.validEmail(email);
@@ -44,9 +42,9 @@ const exportedMethods = {
         confirmPassword = validation.validPassword(confirmPassword);
 
         const userCollection = await users();
-        const findUserName = await userCollection.findOne({userName: userName});
-        if (findUserName) {
-            throw `username already exists, pick another`
+        const findEmail = await userCollection.findOne({email: email});
+        if (findEmail) {
+            throw `email already exists, pick another`
         }
 
         if(password !== confirmPassword){
@@ -55,12 +53,11 @@ const exportedMethods = {
 
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = { 
-            userName:userName,
-            userBio: null,
             firstName: firstName,
             lastName: lastName,
             email:email,
             password: hashedPassword,
+            userBio: null,
             major: null,
             gradYear: null,
             big: null,
@@ -94,7 +91,6 @@ const exportedMethods = {
         return {
             firstName: getUser.firstName,
             lastName: getUser.lastName,
-            userName: getUser.userName,
             userBio: getUser.userBio,
             gradYear: getUser.gradYear,
             big: getUser.big,
