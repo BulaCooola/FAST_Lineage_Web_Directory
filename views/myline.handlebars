@@ -1,7 +1,7 @@
 <div id="tree">
     <div class="gbig">
         {{#if user.big.big}}
-            {{user.big.big.name}}
+            {{user.big.big.firstName user.big.big.lastName}}
         {{else}}
             No gbig available
         {{/if}}
@@ -9,20 +9,20 @@
 
     <div class="big">
         {{#if user.big}}
-            {{user.big.name}}
+            {{user.big.firstName user.big.lastName}}
         {{else}}
             No big available
         {{/if}}
     </div>
 
     <div class="user">
-        {{user.name}}
+        {{user.firstName user.lastName}}
     </div>
 
     <div class="siblings">
         {{#if big.littles.length}}
             {{#each big.littles}}
-                {{big.littles.name}}
+                {{big.littles.firstName big.littles.lastName}}
             {{/each}}
         {{else}}
             No siblings available
@@ -32,7 +32,7 @@
     <div class="littles">
         {{#if littles.length}}
             {{#each little}}
-                {{little.name}}
+                {{little.firstName little.lastName}}
             {{/each}}
         {{else}}
             No littles available

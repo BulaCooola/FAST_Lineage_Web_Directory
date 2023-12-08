@@ -5,7 +5,7 @@
   {{#if member}}
     <ol>
       {{#each member}}
-        <li><a href="/profile/{{this.userName}}">{{this.name}}</a></li>
+        <li><a href="/profile/{{this.userName}}">{{this.firstName this.lastName}}</a></li>
       {{/each}}
     </ol>
   {{else}}
