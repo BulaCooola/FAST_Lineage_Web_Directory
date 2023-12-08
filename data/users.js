@@ -44,9 +44,9 @@ const exportedMethods = {
         confirmPassword = validation.validPassword(confirmPassword);
 
         const userCollection = await users();
-        const findUserName = await userCollection.findOne({userName: userName});
-        if (findUserName) {
-            throw `username already exists, pick another`
+        const findUser = await userCollection.findOne({userName: userName});
+        if (findUser) {
+            throw `email already exists, pick another`
         }
 
         if(password !== confirmPassword){
@@ -55,12 +55,12 @@ const exportedMethods = {
 
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = { 
-            userName:userName,
-            userBio: null,
+            userName: userName,
             firstName: firstName,
             lastName: lastName,
             email:email,
             password: hashedPassword,
+            userBio: null,
             major: null,
             gradYear: null,
             big: null,
@@ -92,9 +92,9 @@ const exportedMethods = {
             throw {code: 400, error: `Either the emailAddress or password is invalid`}
         }
         return {
+            userName: getUser.userName,
             firstName: getUser.firstName,
             lastName: getUser.lastName,
-            userName: getUser.userName,
             userBio: getUser.userBio,
             gradYear: getUser.gradYear,
             big: getUser.big,
