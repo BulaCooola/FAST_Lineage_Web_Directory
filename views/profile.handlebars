@@ -7,7 +7,7 @@
     <button>Edit Profile</button>
     {{/if}}
     <h3>Major: {{user.major}}</h3>
-    <h3>Class of {{user.graduationYear}}</h3>
+    <h3>Class of {{user.gradYear}}</h3>
     <h3>{{user.line}}</h3>
     {{!-- some logic here that is basically like
     if usersession.little.contains(user.userName) then they're ur big
@@ -17,7 +17,7 @@
     <h4>Littles:</h4>
     <ul>
     {{#each user.little}}
-        <li>{{this.firstName}} {{this.firstName}}</li>
+        <li>{{this.firstName}} {{this.lastName}}</li>
     {{/each}}
     </ul>
     <p>Insert bio here</p>

@@ -45,6 +45,7 @@ export const validBio = (string, argName) => {
     if (!string) { throw 'Error: ${argName} must be supplied'; }
     if (typeof string !== 'string') { throw 'Error: ${argName} is not a valid description'; }
     if (string.length === 0) { throw 'Error: ${argName} has length 0. Empty description'; }
+    if (string.length > 250) { throw "Error: ${argName} has length over 250 characters. Too Long" }
     return string;
 }
 
@@ -64,7 +65,6 @@ export const validUsername = (str) => {
     if (name.length < 3 || name.length > 15) {
         throw `Error: ${name} must be between 3 to 15 characters`;
     }
-
     const userRegex = /^(?!.*[._]{2})[a-zA-Z0-9._]{1,30}(?<![._])$/;
     if (!(userRegex.test(name))) {
         throw `Error: Username must only have alphanumeric characters, ., and _. Username must not end with . or _.`

@@ -1,0 +1,44 @@
+<div id="tree">
+    <div class="gbig">
+        {{#if user.big.big}}
+            {{user.big.big.firstName user.big.big.lastName}}
+        {{else}}
+            Null
+        {{/if}}
+    </div>
+
+    <div class="big">
+        {{#if user.big}}
+            {{user.big.firstName user.big.lastName}}
+        {{else}}
+            Null
+        {{/if}}
+    </div>
+
+    <div class="user">
+        {{user.firstName user.lastName}}
+    </div>
+
+    <div class="siblings">
+        {{#if big.littles.length}}
+            {{#each big.littles}}
+                {{big.littles.firstName big.littles.lastName}}
+            {{/each}}
+        {{/if}}
+    </div>
+
+    <div class="littles">
+        {{#if littles.length}}
+            {{#each little}}
+                {{little.firstName little.lastName}}
+            {{/each}}
+        {{/if}}
+    </div>
+</div>
+<div id="chat-container">
+    <div id="messages"></div>
+    <form>
+        <input id="message-input" type="text" placeholder="Type a message...">
+        <button type="submit">Send</button>
+    </form>
+</div>
