@@ -1,6 +1,7 @@
 // LINES or USERS???
 import express from 'express';
 import path from 'path';
+import * as validators from 'validators.js';
 const router = express.Router();
 
 router
@@ -45,11 +46,11 @@ router.route('/register')
       }
     }
 
-    if (!(isEmail(emailAddress))) {
+    if (!(validators.validEmail(emailAddress, 'Email routes'))) {
       return res.status(400).render('register', { error: 'Invalid email address.' });
     }
 
-    if (!(isStrongPassword(password))) {
+    if (!(validators.validPassword(password))) {
       return res.status(400).render('register', { error: 'Invalid password.' });
     }
 

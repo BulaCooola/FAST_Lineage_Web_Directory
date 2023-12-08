@@ -83,6 +83,7 @@ function includesSpecial(str) {
         errorElement.innerText = messages.join(', ')
     }
 }
+
 export const validPassword = (str) => {
     const password = validString(str, 'Password');
 
