@@ -33,13 +33,13 @@ const exportedMethods = {
         if (!line) throw 'Error: Line not found';
         return line;
     },
-    async createLine(name, description, head){
+    async createLine(name, head){
         name = validation.validString(name);
-        description = validation.validDescription(description)
+        //description = validation.validDescription(description)
         head = user.getUserByEmail(head.email)
         let newLine = {
             lineName : name,
-            lineDescription : description,
+            lineDescription : null,
             lineHead : head,
             members : []
         }
@@ -47,8 +47,8 @@ const exportedMethods = {
         const line = await lineCollection.insertOne({newLine});
         if (line.insertedCount === 0) throw 'Error: Line could not be added';
         const newID = line.insertedId.toString();
-        const eventID = await getLineById(newID)
-        return eventID;
+        const lineID = await getLineById(newID)
+        return lineID;
     }
 
 };
