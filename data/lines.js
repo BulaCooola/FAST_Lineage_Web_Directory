@@ -58,8 +58,37 @@ const exportedMethods = {
         if (!line) throw 'Error: Line not found';
         return line;
     },
-    async updateLine(){
-        
+    async createLine(name, head){
+        name = validation.validString(name);
+        //description = validation.validDescription(description)
+        head = user.getUserByEmail(head.email)
+        let newLine = {
+            lineName : name,
+            lineDescription : null,
+            lineHead : head,
+            members : []
+        }
+        const lineCollection = await lines();
+        const line = await lineCollection.insertOne({newLine});
+        if (line.insertedCount === 0) throw 'Error: Line could not be added';
+        const newID = line.insertedId.toString();
+        const lineID = await getLineById(newID)
+        return lineID;
+    },
+    async updateLine(name,littles){
+        let updatedLine = {
+            littles:littles
+        }
+        const lineCollection = await lines();
+        const newLine = await lineCollection.findOneAndReplace(
+            name,
+            updatedLine,
+            {returnDocument:'after'}
+        );
+        if(!newLine){
+            throw 'could not update line successfully';
+        }
+        return newLine;
     },
     async deleteLine(name){
         const lineCollection = await lines();

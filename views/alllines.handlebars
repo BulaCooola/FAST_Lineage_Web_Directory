@@ -1,0 +1,24 @@
+<h1>All Lines</h1>
+<ul>
+    <li>Pretty Pretty Princesses</li>
+    <li>Mya's Infinite Line Friends</li>
+    <li>Dankest Line</li>
+    <li>Grand Line</li>
+</ul>
+<h2>Or, search for a member of FAST:</h2>
+<form method="POST" action="/searchMember">
+<div>
+    <label for="searchType">Search by:</label>
+    <select id="searchType" name="searchType">
+        <option disabled selected value> -- select an option -- </option>
+        <option value="name">Name</option>
+        <option value="class">Graduating Class</option>
+        <option value="major">Major</option>
+    </select>
+</div>
+<div>
+    <label for="searchMember">Value: </label>
+    <input type="text" name="searchMember" id="searchMember" />
+</div>
+    <input type="submit" value="Search" />
+</form>

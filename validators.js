@@ -2,6 +2,7 @@
 // list of validation helper functionss
 import validator from 'validator';
 import { ObjectId } from 'mongodb';
+import isUrl from 'is-url';
 
 export const validString = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
@@ -40,6 +41,24 @@ export const validEmail = (email, argName) => {
     return email;
 }
 
+export const validBio = (string, argName) => {
+    if (!string) { throw 'Error: ${argName} must be supplied'; }
+    if (typeof string !== 'string') { throw 'Error: ${argName} is not a valid description'; }
+    if (string.length === 0) { throw 'Error: ${argName} has length 0. Empty description'; }
+    return string;
+}
+
+export const validLink = (string, argName) => {
+    return isUrl(string);
+}
+
+export const validName = (string, argName) => {
+    if (/^[a-zA-Z\s]{1,20}$/.test(char)) {
+        return true;
+    }
+    return false;
+}
+
 export const validUsername = (str) => {
     let name = validString(str, 'Username');
     if (name.length < 3 || name.length > 15) {
@@ -52,7 +71,6 @@ export const validUsername = (str) => {
     }
     return name;
 }
-
 
 function includesUpper(str) {
     if (/[A-Z]+/g.test(str)) {

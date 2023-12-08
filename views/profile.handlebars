@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="../../public/css/profile.css" />
+<img src="https://images.ctfassets.net/mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg" alt="{{user.userName}}">
+<main>
+    <h1>Insert name here{{user.firstName}} {{user.lastName}}</h1>
+    <h2>Insert username here {{user.userName}}</h2>
+    {{#if isUser}}
+    <button>Edit Profile</button>
+    {{/if}}
+    <h3>Major: {{user.major}}</h3>
+    <h3>Class of {{user.graduationYear}}</h3>
+    <h3>{{user.line}}</h3>
+    {{!-- some logic here that is basically like
+    if usersession.little.contains(user.userName) then they're ur big
+    if user.little.contains(usersession.userName) they're ur little
+     --}}
+    <h4>Big: {{user.big}}</p>
+    <h4>Littles:</h4>
+    <ul>
+    {{#each user.little}}
+        <li>{{this.firstName}} {{this.firstName}}</li>
+    {{/each}}
+    </ul>
+    <p>Insert bio here</p>
+</main>
