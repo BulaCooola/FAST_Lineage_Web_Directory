@@ -26,6 +26,32 @@ const exportedMethods = {
     },
     async createUser(userName, userBio, firstName, lastName, email, password, major, gradYear, big, littles, links){
         //subject to change
+    },
+    async loginUser(emailAddress, password){
+        validation.loginCheck(emailAddress, password)
+
+        const userCollection = await users() 
+      
+        emailAddress = emailAddress.toLowerCase()
+        const getUser = await userCollection.findOne({emailAddress: emailAddress})
+        if (getUser === null) {
+            throw {code: 400, error: `Either the emailAddress or password is invalid`}
+        }
+      
+        let passMatch = await bcrypt.compare(password, getUser.password) 
+        if (!passMatch) {
+            throw {code: 400, error: `Either the emailAddress or password is invalid`}
+        }
+        return {
+            firstName: getUser.firstName,
+            lastName: getUser.lastName,
+            userName: getUser.userName,
+            userBio: getUser.userBio,
+            gradYear: getUser.gradYear,
+            big: getUser.big,
+            littles: getUser.littles,
+            emailAddress: getUser.emailAddress
+        }
     }
 }
 
