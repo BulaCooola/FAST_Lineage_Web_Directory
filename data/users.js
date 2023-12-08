@@ -26,6 +26,22 @@ const exportedMethods = {
     },
     async registerUser(userName, firstName, lastName, email, password, confirmPassword){
         //subject to change
+        try {
+            userName = validation.validString(userName);
+            userBio = validation.validString(userBio);
+            firstName = validation.validString(firstName);
+            lastName = validation.validString(lastName);
+            email = validation.validEmail(email);
+            password = validation.validPassword(password);
+            confirmPassword = validation.validPassword(confirmPassword);
+            major = validation.validString(major);
+            gradYear = validation.validNumber(gradYear);
+            big = validation.validString(big);
+            littles = validation.validString(littles);
+            links = validation.validObject(links);
+        } catch(e) {
+            throw `${e}`;
+        }
         userName = validation.validString(userName);
         firstName = validation.validString(firstName);
         lastName = validation.validString(lastName);
@@ -58,9 +74,10 @@ const exportedMethods = {
             links: null
         }
 
+        
         let insertInfo = await userCollection.insertOne(newUser);
         if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-            throw 'Could not add user';
+            throw 'Error: Failed to add user';
         }
         return {insertedUser:true};
 
