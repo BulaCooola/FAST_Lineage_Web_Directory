@@ -1,0 +1,48 @@
+<div id="tree">
+    <div class="gbig">
+        {{#if user.big.big}}
+            {{user.big.big.name}}
+        {{else}}
+            No gbig available
+        {{/if}}
+    </div>
+
+    <div class="big">
+        {{#if user.big}}
+            {{user.big.name}}
+        {{else}}
+            No big available
+        {{/if}}
+    </div>
+
+    <div class="user">
+        {{user.name}}
+    </div>
+
+    <div class="siblings">
+        {{#if big.littles.length}}
+            {{#each big.littles}}
+                {{big.littles.name}}
+            {{/each}}
+        {{else}}
+            No siblings available
+        {{/if}}
+    </div>
+
+    <div class="littles">
+        {{#if littles.length}}
+            {{#each little}}
+                {{little.name}}
+            {{/each}}
+        {{else}}
+            No littles available
+        {{/if}}
+    </div>
+</div>
+<div id="chat-container">
+    <div id="messages"></div>
+    <form>
+        <input id="message-input" type="text" placeholder="Type a message...">
+        <button type="submit">Send</button>
+    </form>
+</div>

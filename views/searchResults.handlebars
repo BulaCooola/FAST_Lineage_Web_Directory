@@ -1,0 +1,14 @@
+<main>
+  <h1>Members Found</h1>
+  <a href="/alllines">Search for Another Member</a>
+  <h2>Results for: {{search}}</h2>
+  {{#if member}}
+    <ol>
+      {{#each member}}
+        <li><a href="/profile/{{this.userName}}">{{this.name}}</a></li>
+      {{/each}}
+    </ol>
+  {{else}}
+    <p class="not-found">We're sorry, but no results were found for {{search}}.</p>
+  {{/if}}
+</main>
