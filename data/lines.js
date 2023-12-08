@@ -1,7 +1,7 @@
 import { lines } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import user from './users.js'
-import validation from '../validators.js';
+import * as validation from '../validators.js';
 
 const exportedMethods = {
     async createLine(
@@ -77,7 +77,7 @@ const exportedMethods = {
     },
     async updateLine(name,littles){
         let updatedLine = {
-            littles:littles
+            littles: littles
         }
         const lineCollection = await lines();
         const newLine = await lineCollection.findOneAndReplace(

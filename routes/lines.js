@@ -1,8 +1,8 @@
 // LINES or USERS???
 import express from 'express';
 import path from 'path';
-import validator from 'validators.js';
-import lineData from '../data/line.js';
+import * as validator from '../validators.js';
+import lineData from '../data/lines.js';
 const router = express.Router();
 
 router.route('/')
