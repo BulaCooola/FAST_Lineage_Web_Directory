@@ -49,6 +49,20 @@ const exportedMethods = {
         const newID = line.insertedId.toString();
         const lineID = await getLineById(newID)
         return lineID;
+    },
+    async updateLine(){
+
+    },
+    async deleteLine(name){
+        const lineCollection = await lines();
+        const deletionInfo = await lineCollection.findOneAndDelete({
+            name:name
+        });
+
+        if(!deletionInfo){
+            throw 'Could not delete line ${name}';
+        }
+        return '${deletionInfo.name} has been deleted.';
     }
 
 };

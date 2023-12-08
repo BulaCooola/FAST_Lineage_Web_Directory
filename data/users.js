@@ -28,17 +28,11 @@ const exportedMethods = {
         //subject to change
         try {
             userName = validation.validString(userName);
-            userBio = validation.validString(userBio);
             firstName = validation.validString(firstName);
             lastName = validation.validString(lastName);
             email = validation.validEmail(email);
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
-            major = validation.validString(major);
-            gradYear = validation.validNumber(gradYear);
-            big = validation.validString(big);
-            littles = validation.validString(littles);
-            links = validation.validObject(links);
         } catch(e) {
             throw `${e}`;
         }
