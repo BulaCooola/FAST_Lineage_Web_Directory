@@ -14,6 +14,7 @@ const getCollectionFn = (collection) => {
 };
 
 // NOTE: YOU WILL NEED TO CHANGE THE CODE BELOW TO HAVE THE COLLECTION(S) REQUIRED BY THE ASSIGNMENT
-export const lines = getCollectionFn('lines');
 export const users = getCollectionFn('users');
+export const lines = getCollectionFn('lines');
+export const images = getCollectionFn('images');
 

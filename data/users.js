@@ -26,37 +26,33 @@ const exportedMethods = {
     },
     async registerUser(userName, userBio, firstName, lastName, email, password, confirmPassword, major, gradYear, big, littles, links){
         //subject to change
-        const userCollection = await users();
-        const findUserName = await userCollection.findOne({userName: userName});
-        if (findUserName) {
-            throw `username already exists, pick another`
-        }
+    },
+    async loginUser(emailAddress, password){
+        validation.loginCheck(emailAddress, password)
 
-        if(password !== confirmPassword){
-            throw 'passwords must be the same';
+        const userCollection = await users() 
+      
+        emailAddress = emailAddress.toLowerCase()
+        const getUser = await userCollection.findOne({emailAddress: emailAddress})
+        if (getUser === null) {
+            throw {code: 400, error: `Either the emailAddress or password is invalid`}
         }
-
-        const hashedPassword = await bcrypt.hash(password, 16);
-        let newUser = { 
-            userName:userName,
-            userBio: userBio,
-            firstName: firstName,
-            lastName: lastName,
-            email:email,
-            password: hashedPassword,
-            major: major,
-            gradYear: gradYear,
-            big:big,
-            little:littles,
-            links:links
+      
+        let passMatch = await bcrypt.compare(password, getUser.password) 
+        if (!passMatch) {
+            throw {code: 400, error: `Either the emailAddress or password is invalid`}
         }
-
-        let insertInfo = await userCollection.insertOne(newUser);
-        if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-            throw 'Could not add user';
+        return {
+            firstName: getUser.firstName,
+            lastName: getUser.lastName,
+            userName: getUser.userName,
+            userBio: getUser.userBio,
+            gradYear: getUser.gradYear,
+            big: getUser.big,
+            littles: getUser.littles,
+            emailAddress: getUser.emailAddress
         }
-        return {insertedUser:true};
-        }
+    }
 }
 
 export default exportedMethods;
