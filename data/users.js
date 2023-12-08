@@ -26,18 +26,22 @@ const exportedMethods = {
     },
     async registerUser(userName, userBio, firstName, lastName, email, password, confirmPassword, major, gradYear, big, littles, links){
         //subject to change
-        userName = validation.validString(userName);
-        userBio = validation.validString(userBio);
-        firstName = validation.validString(firstName);
-        lastName = validation.validString(lastName);
-        email = validation.validEmail(email);
-        password = validation.validPassword(password);
-        confirmPassword = validation.validPassword(confirmPassword);
-        major = validation.validString(major);
-        gradYear = validation.validNumber(gradYear);
-        big = validation.validString(big);
-        littles = validation.validString(littles);
-        links = validation.validObject(links);
+        try {
+            userName = validation.validString(userName);
+            userBio = validation.validString(userBio);
+            firstName = validation.validString(firstName);
+            lastName = validation.validString(lastName);
+            email = validation.validEmail(email);
+            password = validation.validPassword(password);
+            confirmPassword = validation.validPassword(confirmPassword);
+            major = validation.validString(major);
+            gradYear = validation.validNumber(gradYear);
+            big = validation.validString(big);
+            littles = validation.validString(littles);
+            links = validation.validObject(links);
+        } catch(e) {
+            throw `${e}`;
+        }
 
         const userCollection = await users();
         const findUserName = await userCollection.findOne({userName: userName});
@@ -64,9 +68,10 @@ const exportedMethods = {
             links:links
         }
 
+        
         let insertInfo = await userCollection.insertOne(newUser);
         if (!insertInfo.acknowledged || !insertInfo.insertedId) {
-            throw 'Could not add user';
+            throw 'Error: Failed to add user';
         }
         return {insertedUser:true};
 
