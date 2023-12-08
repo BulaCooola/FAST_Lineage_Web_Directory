@@ -15,7 +15,7 @@ router.route('/register')
     .post(async (req, res) => {
         let registrationUser = req.body;
         try {
-        let userCheck = await user.registerUser(registrationUser.userName, registrationUser.firstName, registrationUser.lastName, registrationUser.email, registrationUser.password, registrationUser.confirmPassword);
+        let userCheck = await user.registerUser(registrationUser.userName,registrationUser.firstName, registrationUser.lastName, registrationUser.email, registrationUser.password, registrationUser.confirmPassword);
         if (userCheck.insertedUser) {
             return res.redirect('/login');
         }
@@ -27,4 +27,39 @@ router.route('/register')
         return res.status(400).render('error', { error: `Internal Server Error: ${e}` });
         }
 
+    });
+
+router.route('/login')
+    .get(async (req, res) => {
+        res.render('login');
+    })
+    .post(async (req, res) => {
+        const inputs = req.body;
+        try {
+        if (!inputs.emailAddressInput || !inputs.passwordInput) {
+            return res.status(400).render('login', { error: "Username or password is incorrect" });
+        }
+        } catch (e) {
+        return res.status(400).render('login', { error: e });
+        }
+
+        try {
+        let checkLog = await user.loginUser(inputs.emailAddressInput, inputs.passwordInput);
+        req.session.user = checkLog;
+        res.redirect('/profile');
+        } catch (e) {
+        return res.status(400).render('login', { error: e });
+        }
+
+
+    });
+    router.route('/profile')
+    .get(async (req, res) => {
+      // res.sendFile(path.resolve('front/profile.html'));
+      if (!req.session.user) {
+        res.redirect('/register');
+      }
+      else {
+        res.render('profile', { user: req.session.user });
+      }
     });

@@ -23,3 +23,15 @@ const RussellSanglang = await users.registerUser("rsanglang", "Russell", "Sangla
 const pppHead = await users.getUserByEmail("rsanglang@stevens.edu")
 
 const PrettyPrettyPrincesses = await lines.createLine("Pretty Pretty Princesses", pppHead)
+
+const DylanTran = await users.registerUser("dtran", "Dylan", "Tran", "dtran@stevens.edu", "password3", "password3");
+
+const EdmundYuen = await users.registerUser("eyuen", "Edmund", "Yuen", "eyuen@stevens.edu", "password4", "password4");
+
+const MyaPhu = await users.registerUser("mphu", "Mya", "Phu", "mphu@stevens.edu", "password2", "password2");
+
+const SeanPayba = await users.registerUser("spayba", "Sean", "Payba", "spayba@stevens.edu", "password5", "password5")
+
+const MILFHead = await users.getUserByEmail("mphu@stevens.edu")
+
+const MILF = await lines.createLine("MILF", MILFHead)
