@@ -59,7 +59,7 @@ const exportedMethods = {
         return line;
     },
     async updateLine(){
-
+        
     },
     async deleteLine(name){
         const lineCollection = await lines();

@@ -16,7 +16,7 @@ const constructorMethod = (app) => {
     app.get('/', function(req, res) {
         res.render('main');
     });
-    app.use('/user', userRoutes);
+    app.use('/users', userRoutes);
     app.use('/lines', lineRoutes);
     app.use('/images', imageRoutes)
   

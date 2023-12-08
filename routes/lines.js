@@ -1,11 +1,23 @@
 // LINES or USERS???
 import express from 'express';
 import path from 'path';
-import * as validators from 'validators.js';
+import validator from 'validators.js';
+import lineData from '../data/line.js';
 const router = express.Router();
 
-router
-.route('/user')
+router.route('/')
+  .get(async (req, res) => {
+    try {
+      const allLines = await lineData.getAllLines();
+      // TODO: After handlebars are made, find the tag associated with 
+      // *FROM LAB8* res.render('characterSearchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
+      // res.status(200).render()
+    } catch (e) {
+      // res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
+    }
+  });
+
+router.route('/line')
   .get(async (req, res) => {
     // ! Get's the home/landing page from handlebars
     // const filePath = path.join(__dirname, '..', 'static', 'homepage.html')
@@ -46,11 +58,11 @@ router.route('/register')
       }
     }
 
-    if (!(validators.validEmail(emailAddress, 'Email routes'))) {
+    if (!(validator.validEmail(emailAddress, 'Email routes'))) {
       return res.status(400).render('register', { error: 'Invalid email address.' });
     }
 
-    if (!(validators.validPassword(password))) {
+    if (!(validator.validPassword(password))) {
       return res.status(400).render('register', { error: 'Invalid password.' });
     }
 
@@ -78,7 +90,7 @@ router.route('/register')
 
 export default router;
 
-// GET REQUESTS: 
+// GET REQUESTS:
 // Search bar features: line name, profile name, graduation year, major
 // Each sends a list of names
 // ID specific pages: lines, users
