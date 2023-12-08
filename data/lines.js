@@ -18,7 +18,7 @@ const exportedMethods = {
     async getLineByName(name){
         name = validation.validString(name);        //subject to change
         const lineCollection = await lines();
-        const line = await lineCollection.findOne({_name: new ObjectId(name)});
+        const line = await lineCollection.findOne({name: name});
         if (!line) throw 'Error: Line not found';
         return line;
     },

@@ -24,7 +24,7 @@ const exportedMethods = {
         if (!user) throw 'Error: Line not found';
         return user;
     },
-    async createUser(userName, userBio, firstName, lastName, email, password, major, gradYear, big, littles, links){
+    async registerUser(userName, userBio, firstName, lastName, email, password, confirmPassword, major, gradYear, big, littles, links){
         //subject to change
     },
     async loginUser(emailAddress, password){
