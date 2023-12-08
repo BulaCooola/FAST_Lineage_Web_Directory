@@ -57,6 +57,20 @@ const exportedMethods = {
         const line = await lineCollection.findOne({ name: name });
         if (!line) throw 'Error: Line not found';
         return line;
+    },
+    async updateLine(){
+
+    },
+    async deleteLine(name){
+        const lineCollection = await lines();
+        const deletionInfo = await lineCollection.findOneAndDelete({
+            name:name
+        });
+
+        if(!deletionInfo){
+            throw 'Could not delete line ${name}';
+        }
+        return '${deletionInfo.name} has been deleted.';
     }
 
 };

@@ -24,24 +24,24 @@ const exportedMethods = {
         if (!user) throw 'Error: Line not found';
         return user;
     },
-    async registerUser(userName, userBio, firstName, lastName, email, password, confirmPassword, major, gradYear, big, littles, links){
+    async registerUser(userName, firstName, lastName, email, password, confirmPassword){
         //subject to change
         try {
             userName = validation.validString(userName);
-            userBio = validation.validString(userBio);
             firstName = validation.validString(firstName);
             lastName = validation.validString(lastName);
             email = validation.validEmail(email);
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
-            major = validation.validString(major);
-            gradYear = validation.validNumber(gradYear);
-            big = validation.validString(big);
-            littles = validation.validString(littles);
-            links = validation.validObject(links);
         } catch(e) {
             throw `${e}`;
         }
+        userName = validation.validString(userName);
+        firstName = validation.validString(firstName);
+        lastName = validation.validString(lastName);
+        email = validation.validEmail(email);
+        password = validation.validPassword(password);
+        confirmPassword = validation.validPassword(confirmPassword);
 
         const userCollection = await users();
         const findUserName = await userCollection.findOne({userName: userName});
@@ -56,16 +56,16 @@ const exportedMethods = {
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = { 
             userName:userName,
-            userBio: userBio,
+            userBio: null,
             firstName: firstName,
             lastName: lastName,
             email:email,
             password: hashedPassword,
-            major: major,
-            gradYear:gradYear,
-            big:big,
-            littles:littles,
-            links:links
+            major: null,
+            gradYear: null,
+            big: null,
+            littles: null,
+            links: null
         }
 
         
