@@ -3,6 +3,7 @@
 
 import validator from 'validator';
 import { ObjectId } from 'mongodb';
+import isUrl from 'is-url';
 
 export const validString = (string, argName) => {
     if (!string) { throw 'Error: ${argName} must be supplied'; }
@@ -41,9 +42,20 @@ export const validEmail = (email, argName) => {
     return email;
 }
 
-export const validDescription = (string, argName) => {
+export const validBio = (string, argName) => {
     if (!string) { throw 'Error: ${argName} must be supplied'; }
     if (typeof string !== 'string') { throw 'Error: ${argName} is not a valid description'; }
     if (string.length === 0) { throw 'Error: ${argName} has length 0. Empty description'; }
-    return newString;
+    return string;
+}
+
+export const validLink = (string, argName) => {
+    return isUrl(string);
+}
+
+export const validName = (string, argName) => {
+    if (/^[a-zA-Z\s]{1,20}$/.test(char)) {
+        return true;
+    }
+    return false;
 }
