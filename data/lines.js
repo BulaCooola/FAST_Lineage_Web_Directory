@@ -4,6 +4,17 @@ import user from './users.js'
 import validation from '../validators.js';
 
 const exportedMethods = {
+    async createLine(
+      lineId,
+      lineName,
+      lineDescription,
+      lineHead,
+      totalMembers,
+      members,
+      images
+    ) {
+      return 0;
+    },
     async getAllLines(){
         const lineCollection = await lines();
         return await lineCollection.find({}).toArray();
@@ -42,4 +53,10 @@ const exportedMethods = {
 
 };
 
+// TODO getLine
+// TODO getAllLines
+// TODO updateLine
+// TODO deleteLine
+
 export default exportedMethods;
+
