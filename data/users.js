@@ -20,7 +20,7 @@ const exportedMethods = {
     async getUserByEmail(email){
         email = validation.validEmail(email);        //subject to change
         const userCollection = await users();
-        const user = await userCollection.findOne({_email: email});
+        const user = await userCollection.findOne({email: email});
         if (!user) throw 'Error: Line not found';
         return user;
     },
