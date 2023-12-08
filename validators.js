@@ -40,3 +40,10 @@ export const validEmail = (email, argName) => {
     if (isValidEmail(email) === false) { throw `Error: Email address ${argName} is invalid`; }
     return email;
 }
+
+export const validDescription = (string, argName) => {
+    if (!string) { throw 'Error: ${argName} must be supplied'; }
+    if (typeof string !== 'string') { throw 'Error: ${argName} is not a valid description'; }
+    if (string.length === 0) { throw 'Error: ${argName} has length 0. Empty description'; }
+    return newString;
+}
