@@ -4,5 +4,6 @@ import imageData from './images.js'
 
 module.exports = {
     users: usersData,
-    lines: linesData
+    lines: linesData,
+    images: imageData
 }
