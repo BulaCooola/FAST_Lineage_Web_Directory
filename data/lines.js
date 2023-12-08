@@ -1,22 +1,7 @@
-import { ObjectId } from "mongodb";
-import { lines } from '..config/mongoCollections.js'
-import * as validators from '../validators.js'
-
-/* 
-    TODO: Creating user function
-    ! THIS WILL BE USED WHEN WE REGISTER FOR AN ACCOUNT ON THE REGISTER TAB
-    * Parameters needed for registration
-        * lineName, lineDescription, lineHead, members, images
-    * What we need to put on the database
-        ! lineId
-        * lineName
-        * lineDescription
-        * lineHead
-        ! totalMembers
-        * members
-        * images
-    ?
-*/
+import {lines} from '../config/mongoCollections.js';
+import {ObjectId} from 'mongodb';
+import user from './users.js'
+import validation from '../validators.js';
 
 const exportedMethods = {
     async createLine(
@@ -35,18 +20,35 @@ const exportedMethods = {
         return await lineCollection.find({}).toArray();
     },
     async getLineById(id) {
-        id = validation.checkId(id);            //subject to change
+        id = validation.validId(id);            //subject to change
         const lineCollection = await lines();
         const line = await lineCollection.findOne({_id: new ObjectId(id)});
         if (!line) throw 'Error: Line not found';
         return line;
     },
     async getLineByName(name){
-        id = validation.checkName(name);        //subject to change
+        name = validation.validString(name);        //subject to change
         const lineCollection = await lines();
-        const line = await lineCollection.findOne({_name: new ObjectId(name)});
+        const line = await lineCollection.findOne({name: name});
         if (!line) throw 'Error: Line not found';
         return line;
+    },
+    async createLine(name, description, head){
+        name = validation.validString(name);
+        description = validation.validDescription(description)
+        head = user.getUserByEmail(head.email)
+        let newLine = {
+            lineName : name,
+            lineDescription : description,
+            lineHead : head,
+            members : []
+        }
+        const lineCollection = await lines();
+        const line = await lineCollection.insertOne({newLine});
+        if (line.insertedCount === 0) throw 'Error: Line could not be added';
+        const newID = line.insertedId.toString();
+        const eventID = await getLineById(newID)
+        return eventID;
     }
 
 };
