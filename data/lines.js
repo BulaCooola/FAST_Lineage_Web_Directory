@@ -50,8 +50,20 @@ const exportedMethods = {
         const lineID = await getLineById(newID)
         return lineID;
     },
-    async updateLine(){
-
+    async updateLine(name,littles){
+        let updatedLine = {
+            littles:littles
+        }
+        const lineCollection = await lines();
+        const newLine = await lineCollection.findOneAndReplace(
+            name,
+            updatedLine,
+            {returnDocument:'after'}
+        );
+        if(!newLine){
+            throw 'could not update line successfully';
+        }
+        return newLine;
     },
     async deleteLine(name){
         const lineCollection = await lines();
