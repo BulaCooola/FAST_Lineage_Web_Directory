@@ -15,7 +15,7 @@ router.route('/register')
     .post(async (req, res) => {
         let registrationUser = req.body;
         try {
-        let userCheck = await user.registerUser(registrationUser.firstName, registrationUser.lastName, registrationUser.email, registrationUser.password, registrationUser.confirmPassword);
+        let userCheck = await user.registerUser(registrationUser.userName,registrationUser.firstName, registrationUser.lastName, registrationUser.email, registrationUser.password, registrationUser.confirmPassword);
         if (userCheck.insertedUser) {
             return res.redirect('/login');
         }
@@ -52,4 +52,14 @@ router.route('/login')
         }
 
 
+    });
+    router.route('/profile')
+    .get(async (req, res) => {
+      // res.sendFile(path.resolve('front/profile.html'));
+      if (!req.session.user) {
+        res.redirect('/register');
+      }
+      else {
+        res.render('profile', { user: req.session.user });
+      }
     });

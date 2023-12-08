@@ -24,9 +24,10 @@ const exportedMethods = {
         if (!user) throw 'Error: Line not found';
         return user;
     },
-    async registerUser(firstName, lastName, email, password, confirmPassword){
+    async registerUser(userName, firstName, lastName, email, password, confirmPassword){
         //subject to change
         try {
+            userName = validation.validString(userName);
             firstName = validation.validString(firstName);
             lastName = validation.validString(lastName);
             email = validation.validEmail(email);
@@ -35,6 +36,7 @@ const exportedMethods = {
         } catch(e) {
             throw `${e}`;
         }
+        userName = validation.validString(userName);
         firstName = validation.validString(firstName);
         lastName = validation.validString(lastName);
         email = validation.validEmail(email);
@@ -42,8 +44,8 @@ const exportedMethods = {
         confirmPassword = validation.validPassword(confirmPassword);
 
         const userCollection = await users();
-        const findEmail = await userCollection.findOne({email: email});
-        if (findEmail) {
+        const findUser = await userCollection.findOne({userName: userName});
+        if (findUser) {
             throw `email already exists, pick another`
         }
 
@@ -53,6 +55,7 @@ const exportedMethods = {
 
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = { 
+            userName: userName,
             firstName: firstName,
             lastName: lastName,
             email:email,
@@ -89,6 +92,7 @@ const exportedMethods = {
             throw {code: 400, error: `Either the emailAddress or password is invalid`}
         }
         return {
+            userName: getUser.userName,
             firstName: getUser.firstName,
             lastName: getUser.lastName,
             userBio: getUser.userBio,
