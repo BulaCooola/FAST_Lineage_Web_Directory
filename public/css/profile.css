@@ -1,8 +1,32 @@
 body {
-    display: flex;
+    display: grid;
     flex-direction: row;
 }
 
 img {
     max-width: 300px;
+}
+
+main.edit-profile {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    & form {
+        display: grid;
+        gap: 10px;
+    }
+
+    & input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 5px;
+        inline-size: 300px;
+    }
+
+    & label {
+        display: block;
+        margin-bottom: 5px;
+    }
 }

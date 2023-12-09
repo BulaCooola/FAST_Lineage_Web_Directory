@@ -1,0 +1,53 @@
+<link rel="stylesheet" href="../../public/css/profile.css" />
+<img src="https://images.ctfassets.net/mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg" alt="{{user.userName}}">
+<main class="edit-profile">
+    <form action="/editprofile" method="POST">
+        <!-- Image Upload -->
+        <label for="profileImage">Profile Image URL:</label>
+        <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}">
+        
+        <!-- Name -->
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" value="{{user.firstName}}"> 
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" value="{{user.lastName}}">
+
+        <!-- Username -->
+        <label for="userName">Username:</label>
+        <input type="text" id="userName" name="userName" value="{{user.userName}}">
+
+        <!-- Major and Grad Year -->
+        <label for="major">Major:</label>
+        <input type="text" id="major" name="major" value="{{user.major}}">
+
+        <label for="gradYear">Graduation Year:</label>
+        <input type="text" id="gradYear" name="gradYear" value="{{user.gradYear}}">
+
+        <!-- Line -->
+        <label for="line">Line:</label>
+        <input type="text" id="line" name="line" value="{{user.line}}">
+
+        <!-- Big and Littles -->
+        <label for="big">Big:</label>
+        <input type="text" id="big" name="big" value="{{user.big}}">
+
+        <label for="littles">Littles:</label>
+        <ul>
+            {{#each user.little}}
+                <li>{{this.firstName}} {{this.lastName}}</li>
+            {{/each}}
+        </ul>
+
+        <!-- Bio -->
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4">{{user.bio}}</textarea>
+
+        <!-- Edit Profile Button -->
+        <label for="userName">*Confirm (current) Username:</label>
+        <input type="text" id="userName" name="userName" required>
+        <label for="password">*Password: </label>
+        <input type="text" id="password" name="password" required>
+        <button type="submit">Save Changes</button>
+    </form>
+</main>

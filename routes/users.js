@@ -99,7 +99,7 @@ router.route('/profile')
 // profile edit
 router.route('/profile/edit')
     .get(async (req, res) => {
-        res.render('profile')
+        res.render('edit-profile')
     });
 
 router.route('/searchuser')
