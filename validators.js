@@ -42,10 +42,10 @@ export const validEmail = (email, argName) => {
 }
 
 export const validBio = (string, argName) => {
-    if (!string) { throw 'Error: ${argName} must be supplied'; }
-    if (typeof string !== 'string') { throw 'Error: ${argName} is not a valid description'; }
-    if (string.length === 0) { throw 'Error: ${argName} has length 0. Empty description'; }
-    if (string.length > 250) { throw "Error: ${argName} has length over 250 characters. Too Long" }
+    if (!string) { throw `Error: ${argName} must be supplied`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid description`; }
+    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty description`; }
+    if (string.length > 250) { throw `Error: ${argName} has length over 250 characters. Too Long` }
     return string;
 }
 
@@ -53,11 +53,12 @@ export const validLink = (string, argName) => {
     return isUrl(string);
 }
 
-export const validName = (string, argName) => {
-    if (/^[a-zA-Z\s]{1,20}$/.test(char)) {
-        return true;
+export const validName = (name, argName) => {
+    let _name = validString(name, argName);
+    if (!(/^[a-zA-Z\s]{1,35}$/.test(_name))) {
+        throw `Error: ${argName} must be between 1 and 35 characters.`;
     }
-    return false;
+    return _name
 }
 
 export const validUsername = (str) => {

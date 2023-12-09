@@ -33,29 +33,33 @@ app.use(
 );
 
 app.use('/', (req, res, next) => {
+  console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
   //console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
   //console.log(req.session)
   next();
 });
 
-app.use('/register', (req, res, next) => {
-  if (req.session.user && req.session) {
-    return res.redirect('/profile');
+app.use('/users/register', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/users/profile');
   }
   next();
 });
 
-app.use('/profile', (req, res, next) => {
+app.use('/users/profile', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/users/login');
+  }
   next();
 });
 
-app.use('/login', (req, res, next) => {
-    if (req.session.user && req.session) {
-        return res.redirect('/profile');
-    }
-    else{
-        next();
-    }
+app.use('/users/login', (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/users/profile');
+  }
+  else {
+    next();
+  }
 });
 
 configRoutes(app);

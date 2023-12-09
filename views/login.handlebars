@@ -1,8 +1,8 @@
 <h1>Log In</h1>
-<form action="/login" method="POST" id="login-form">
+<form action="/users/login" method="POST" id="login-form">
     <div>
-        <label for="emailAddressInput">Email Address:</label>
-        <input type="email" id="emailAddressInput" name="emailAddress" required>
+        <label for="emailInput">Email Address:</label>
+        <input type="email" id="emailInput" name="email" required>
     </div>
 
     <div>
@@ -19,4 +19,4 @@
     <button type="submit">Login</button>
 </form>
 
-<p><a href="/register">Click here to register!</a></p>
+<p><a href="/users/register">Click here to register!</a></p>

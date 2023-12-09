@@ -8,43 +8,31 @@ const router = express.Router();
 // middleware to not be there?
 router.route('/')
     .get(async (req, res) => {
-
-    });
-
-// home page (navigation to login, register, search profiles, and view own profile)
-router.route('/home')
-    .get(async (req, res) => {
-        // res.status(200).status
-    });
-
-// view different user??? (must be authorized)
-router.route('/user/:userid')
-    .get(async (req, res) => {
-        // ! Get's the home/landing page from handlebars
-        // const filePath = path.join(__dirname, '..', 'static', 'homepage.html')
-        res.sendFile(filePath)
+        // return res.json({ error: 'YOU SHOULD NOT BE HERE!' });
     });
 
 // login route (from 555 project)
 router.route('/login')
     .get(async (req, res) => {
-        res.render('login');
+        res.render('login', {pageTitle: 'Login'});
     })
     .post(async (req, res) => {
         const inputs = req.body;
         try {
-            if (!inputs.emailAddress || !inputs.password) {
+            if (!inputs.email || !inputs.password) {
                 return res.status(400).render('login', { error: "Username or password is incorrect" });
             }
         } catch (e) {
             return res.status(400).render('login', { error: e });
         }
         try {
-            let checkExists = await usersData.loginUser(inputs.emailAddressInput, inputs.passwordInput);
+            let checkExists = await usersData.loginUser(inputs.email, inputs.password);
+            console.log(checkExists)
             req.session.user = checkExists;
-            res.redirect('/profile');
+            res.redirect('/users/profile');
         } catch (e) {
-            return res.status(400).render('login', { error: e });
+            console.error(e)
+            return res.status(400).render('errors', { error: e });
         }
     });
 
@@ -52,60 +40,89 @@ router.route('/login')
 router.route('/register')
     .get(async (req, res) => {
         //code here for GET
-        res.render('register');
+        res.render('register', {pageTitle: 'Register'});
     })
     .post(async (req, res) => {
         //code here for POST
-        const { firstName, lastName, emailAddress, password, confirmPassword } = req.body;
+        let { userName, firstName, lastName, email, password, confirmPassword, line } = req.body;
 
-        if (!firstName || !lastName || !emailAddress || !password || !confirmPassword) {
-            return res.status(400).render('register', { error: 'All fields are required.' });
+        if (!userName || !firstName || !lastName || !email || !password || !confirmPassword || !line) {
+            return res.status(400).render('errors', { error: 'All fields are required.' });
         }
 
-        if (firstName.length < 2 || firstName.length > 25) {
-            return res.status(400).render('register', { error: 'Invalid first name.' });
+        console.log('hello');
+        try {
+            userName = validator.validUsername(userName);
+            firstName = validator.validName(firstName, 'First Name');
+            lastName = validator.validName(lastName, 'Last Name');
+            email = validator.validEmail(email, 'Email routes');
+            password = validator.validPassword(password);
+        } catch(e) {
+            console.error(e);
+            res.status(400).render('errors'), {error: `${e}`};
         }
 
-        for (let char of firstName) {
-            if (!((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z'))) {
-                return res.status(400).render('register', { error: 'Invalid first name.' });
-            }
-        }
-
-        if (lastName.length < 2 || lastName.length > 25) {
-            return res.status(400).render('register', { error: 'Invalid last name.' });
-        }
-
-        for (let char of lastName) {
-            if (!((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z'))) {
-                return res.status(400).render('register', { error: 'Invalid last name.' });
-            }
-        }
-
-        if (!(validator.validEmail(emailAddress, 'Email routes'))) {
-            return res.status(400).render('register', { error: 'Invalid email address.' });
-        }
-
-        if (!(validator.validPassword(password))) {
-            return res.status(400).render('register', { error: 'Invalid password.' });
-        }
-
+        console.log('hello');
         if (password !== confirmPassword) {
-            return res.status(400).render('register', { error: 'Passwords do not match.' });
+            return res.status(400).render('errors', { error: 'Passwords do not match.' });
         }
+
+        console.log('hello');
 
         try {
-            const result = await methods.registerUser(firstName, lastName, emailAddress, password);
-
-            if (result.insertedUser) {
-                res.redirect('/login');
+            const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword);
+            console.log(result);
+            if (result.insertedUser) {  
+                res.redirect('/users/login');
             } else {
-                res.status(500).render('register', { error: 'Internal Server Error' });
+                res.status(500).render('errors', { error: 'Internal Server Error' });
             }
         } catch (error) {
-            res.status(500).render('register', { error: 'Internal Server Error' });
+            res.status(500).render('errors', { error: 'Internal Server Error' });
         }
 
+    });
+
+
+// // home page (navigation to login, register, search profiles, and view own profile)
+// router.route('/users/home')
+//     .get(async (req, res) => {
+//         res.render('profile');
+//     });
+
+// profile
+router.route('/profile')
+    .get(async (req, res) => {
+        res.render('profile', { user: req.session.user });
+    });
+
+// profile edit
+router.route('/profile/edit')
+    .get(async (req, res) => {
+        res.render('profile')
+    });
+
+router.route('/searchuser')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchTerm = req.body.searchCharacterByName;
+            searchTerm = validator.validString(searchTerm, 'Name URL parameter');
+            let names = await characterData.searchCharacterByName(searchTerm);
+            names = names.slice(1, 15);
+            let notEmpty = searchTerm.length !== 0;
+            res.redirect('/users/searchuser/:userName');
+            // res.render('searchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
+        }
+    });
+
+router.route('/searchuser/:userName')
+    .get(async (req, res) => {
+        res.render('searchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
     });
 
 export default router;

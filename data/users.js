@@ -76,20 +76,23 @@ const exportedMethods = {
         return {insertedUser:true};
 
     },
-    async loginUser(emailAddress, password){
-        validation.loginCheck(emailAddress, password)
+    async loginUser(email, password){
+        // * Not sure what this is below
+        // validation.loginCheck(email, password)
 
         const userCollection = await users() 
       
-        emailAddress = emailAddress.toLowerCase()
-        const getUser = await userCollection.findOne({emailAddress: emailAddress})
+        email = email.toLowerCase()
+        const getUser = await userCollection.findOne({email: email})
         if (getUser === null) {
-            throw {code: 400, error: `Either the emailAddress or password is invalid`}
+            // throw {code: 400, error: `Either the email or password is invalid`}
+            throw `Either the email or password is invalid`;
         }
       
         let passMatch = await bcrypt.compare(password, getUser.password) 
         if (!passMatch) {
-            throw {code: 400, error: `Either the emailAddress or password is invalid`}
+            // throw {code: 400, error: `Either the email or password is invalid`}
+            throw `Either the email or password is invalid`;
         }
         return {
             userName: getUser.userName,
@@ -99,7 +102,7 @@ const exportedMethods = {
             gradYear: getUser.gradYear,
             big: getUser.big,
             littles: getUser.littles,
-            emailAddress: getUser.emailAddress
+            email: getUser.email
         }
     }
 }
