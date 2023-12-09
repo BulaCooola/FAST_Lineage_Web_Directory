@@ -14,7 +14,7 @@ import path from 'path';
 
 const constructorMethod = (app) => {
     app.get('/', function(req, res) {
-        res.render('home');
+        res.render('home', {pageTitle: 'Home'});
     });
     app.use('/users', userRoutes);
     app.use('/lines', lineRoutes);

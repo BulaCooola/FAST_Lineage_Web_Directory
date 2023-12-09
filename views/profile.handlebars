@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="../../public/css/profile.css" />
 <img src="https://images.ctfassets.net/mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg" alt="{{user.userName}}">
 <main>
-    <h1>Insert name here{{user.firstName}} {{user.lastName}}</h1>
-    <h2>Insert username here {{user.userName}}</h2>
+    <h1>Welcome {{user.firstName}} {{user.lastName}}</h1>
+    <h2>{{user.userName}}</h2>
     {{#if isUser}}
     <button>Edit Profile</button>
     {{/if}}

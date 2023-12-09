@@ -93,13 +93,13 @@ router.route('/register')
 // profile
 router.route('/profile')
     .get(async (req, res) => {
-        res.render('profile', { user: req.session.user });
+        res.render('profile', {pageTitle: 'Your Profile', user: req.session.user });
     });
 
 // profile edit
 router.route('/profile/edit')
     .get(async (req, res) => {
-        res.render('edit-profile')
+        res.render('edit-profile', {pageTitle: 'Edit Profile'})
     });
 
 router.route('/searchuser')
@@ -108,13 +108,10 @@ router.route('/searchuser')
     })
     .post(async (req, res) => {
         try {
-            let searchTerm = req.body.searchCharacterByName;
-            searchTerm = validator.validString(searchTerm, 'Name URL parameter');
+            let searchTerm = req.body.searchMember;
+            searchTerm = validator.validString(searchTerm, 'Member Name URL parameter');
             let names = await characterData.searchCharacterByName(searchTerm);
-            names = names.slice(1, 15);
-            let notEmpty = searchTerm.length !== 0;
-            res.redirect('/users/searchuser/:userName');
-            // res.render('searchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
+            res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
         } catch (e) {
             return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
         }
@@ -122,7 +119,7 @@ router.route('/searchuser')
 
 router.route('/searchuser/:userName')
     .get(async (req, res) => {
-        res.render('searchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
+        // res.render('searchResults', { title: "People Found", searchCharacterByName: searchTerm, characters: names })
     });
 
 export default router;
