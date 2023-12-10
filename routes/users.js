@@ -18,7 +18,6 @@ router.route('/login')
     })
     .post(async (req, res) => {
         const inputs = req.body;
-        console.log(req.body);
         try {
             if (!inputs.email || !inputs.password) {
                 return res.status(400).render('login', { error: "Username or password is incorrect" });
@@ -174,7 +173,20 @@ router.route('/profile/edit')
             res.status(400).render('errors', { error: 'No user found' });
         }
 
-        console.log(user);
+        const updateBody = {
+            firstName: firstName, 
+            lastName: lastName,
+            userName: userName,
+            major: major,
+            gradYear: gradYear,
+            userBio: bio 
+        }
+        console.log('update body', updateBody);
+        try {
+            const updateInfo = await usersData.updateProfile(updateBody, email, password)
+        } catch(e) {
+            res.status(500).render('errors', {error: 'Internal server error'})
+        }
     });
 
 router.route('/searchuser')

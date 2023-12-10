@@ -19,15 +19,18 @@ try{
 catch(err){
     console.log(err)
 }
+const PrettyPrettyPrincesses = await line.createLine("Pretty Pretty Princesses")
+console.log('PPP line created')
+
+const MILF = await line.createLine("MILF")
+console.log('MILF line created')
 
 const RussellSanglang = await user.registerUser("rsanglang", "Russell", "Sanglang", "rsanglang@stevens.edu", "Test@123", "Test@123");
 console.log('rsanglang registered')
 
 const pppHead = await user.getUserByEmail("rsanglang@stevens.edu")
+const updatePPPHead = await line.addLineHead(pppHead, 'Pretty Pretty Princesses')
 console.log('rsanglang now head of PPP')
-
-const PrettyPrettyPrincesses = await line.createLine("Pretty Pretty Princesses", pppHead)
-console.log('PPP line created')
 
 const DylanTran = await user.registerUser("dtran", "Dylan", "Tran", "dtran@stevens.edu", "Test@123", "Test@123");
 console.log('dtran registered')
@@ -45,10 +48,8 @@ const BrandenBulatao = await user.registerUser('bbulatao', 'Branden', 'Bulatao',
 console.log('bbulatao registered')
 
 const MILFHead = await user.getUserByEmail("mphu@stevens.edu")
+const updateMILFHead = await line.addLineHead(MILFHead, 'MILF')
 console.log('mphu now head of MILF')
-
-const MILF = await line.createLine("MILF", MILFHead)
-console.log('MILF line created')
 
 console.log('Done Seeding')
 await closeConnection();
