@@ -14,10 +14,11 @@ router.route('/')
 // login route (from 555 project)
 router.route('/login')
     .get(async (req, res) => {
-        res.render('login', {pageTitle: 'Login'});
+        res.render('login', { pageTitle: 'Login' });
     })
     .post(async (req, res) => {
         const inputs = req.body;
+        console.log(req.body);
         try {
             if (!inputs.email || !inputs.password) {
                 return res.status(400).render('login', { error: "Username or password is incorrect" });
@@ -40,7 +41,7 @@ router.route('/login')
 router.route('/register')
     .get(async (req, res) => {
         //code here for GET
-        res.render('register', {pageTitle: 'Register'});
+        res.render('register', { pageTitle: 'Register' });
     })
     .post(async (req, res) => {
         //code here for POST
@@ -57,9 +58,9 @@ router.route('/register')
             lastName = validator.validName(lastName, 'Last Name');
             email = validator.validEmail(email, 'Email routes');
             password = validator.validPassword(password);
-        } catch(e) {
+        } catch (e) {
             console.error(e);
-            res.status(400).render('errors'), {error: `${e}`};
+            res.status(400).render('errors'), { error: `${e}` };
         }
 
         console.log('hello');
@@ -71,8 +72,7 @@ router.route('/register')
 
         try {
             const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword);
-            console.log(result);
-            if (result.insertedUser) {  
+            if (result.insertedUser) {
                 res.redirect('/users/login');
             } else {
                 res.status(500).render('errors', { error: 'Internal Server Error' });
@@ -93,13 +93,80 @@ router.route('/register')
 // profile
 router.route('/profile')
     .get(async (req, res) => {
-        res.render('profile', {pageTitle: 'Your Profile', user: req.session.user });
+        res.render('profile', { pageTitle: 'Your Profile', user: req.session.user });
     });
 
 // profile edit
 router.route('/profile/edit')
     .get(async (req, res) => {
-        res.render('edit-profile', {pageTitle: 'Edit Profile'})
+        console.log('body', req.body);
+        console.log('session', req.session);
+        console.log('params', req.params)
+        res.render('edit-profile', { pageTitle: 'Edit Profile' })
+    })
+    .post(async (req, res) => {
+        // TODO: update profile (patch)
+        /* 
+            On page itself, there is going to be a form with a bunch of inputs of whatever the user 
+            wants to edit. The user should not have to put all inputs down, as they should only fill
+            out whatever they want to change. 
+            ? (we could add ajax stuff to verify if the change is legal???)
+            The req.body will still have (almost) every part of the user data. However, for the inputs
+            that they did not fill out, it will be represented as null.
+                ! This means that we need to find those that have characters in the inputs, trim them, then 
+                ! check if valid
+            The query function that will deal with this will have all possible elements that can be changed
+            as the inputs (inputs could be null or not). 
+                * if null, do not account for
+                * if !null, 
+                *   trim() and check if valid
+                * validate each using validators.js
+                * update
+        */
+        
+        const queriedUser = null;
+        try {
+            const session_userName = req.session.user.userName;
+            const session_email = req.session.user.email;
+            const query_userName = await usersData.getUserByUserName(session_userName);
+            const query_email = await usersData.getUserByEmail(session_email);
+            console.log(query_userName.userName, query_email.userName);
+            if (query_userName === query_email) {
+                console.log('Same!')
+                queriedUser = query_userName;
+            } else {
+                res.status(400).render('errors', { error: 'Associated username and email not the same'})
+            }
+        } catch (e) {
+            res.status(500).render('errors', { error: 'Internal Server Error' });
+        }
+        const { firstName, lastName, userName, major, gradYear, line, big, bio, userNameCurrent, password } = req.body;
+        console.log(req.body)
+
+        let user = queriedUser;
+
+        if (user) {
+            if (firstName !== undefined && validator.validName(firstName, 'First Name')) {
+                user.firstName = firstName.trim();
+            }
+            if (lastName !== undefined && validator.validName(lastName, 'Last Name')) {
+                user.lastName = lastName.trim();
+            }
+            if (userName !== undefined && validator.validUsername(userName)) {
+                user.userName = userName.trim();
+            }
+            // if (email !== undefined && validator.validEmail(email, 'Email')) {
+            //     user.email = email.trim();
+            // }
+            if (major !== undefined && validator.validString(major, 'Major')) {
+                user.major = major.trim();
+            }
+            if (gradYear !== undefined && validator.validNumber(parseInt(gradYear), 'gradYear')) {
+                user.gradYear = gradYear;
+            }
+        } else {
+            res.status(400).render('errors', { error: 'No user found' });
+        }
     });
 
 router.route('/searchuser')

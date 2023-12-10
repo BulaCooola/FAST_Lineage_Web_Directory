@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="../../public/css/profile.css" />
 <main class="edit-profile">
-    <form action="/editprofile" method="POST">
-        <!-- Image Upload -->
+    <form action="/users/profile/edit" method="POST">
+        {{!-- <!-- Image Upload -->
         <label for="profileImage">Profile Image URL:</label>
-        <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}">
+        <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
         
         <!-- Name -->
         <label for="firstName">First Name:</label>
@@ -43,8 +43,8 @@
         <textarea id="bio" name="bio" rows="4">{{user.bio}}</textarea>
 
         <!-- Edit Profile Button -->
-        <label for="userName">*Confirm (current) Username:</label>
-        <input type="text" id="userName" name="userName" required>
+        <label for="userNameCurrent">*Confirm (current) Username:</label>
+        <input type="text" id="userNameCurrent" name="userNameCurrent" required>
         <label for="password">*Password: </label>
         <input type="text" id="password" name="password" required>
         <button type="submit">Save Changes</button>
