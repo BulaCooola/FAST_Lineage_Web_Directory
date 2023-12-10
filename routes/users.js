@@ -123,50 +123,60 @@ router.route('/profile/edit')
                 * validate each using validators.js
                 * update
         */
-        
-        const queriedUser = null;
+        let { firstName, lastName, userName, major, gradYear, line, big, bio, email, password } = req.body;
+        let queriedUser = null;
         try {
-            const session_userName = req.session.user.userName;
-            const session_email = req.session.user.email;
-            const query_userName = await usersData.getUserByUserName(session_userName);
-            const query_email = await usersData.getUserByEmail(session_email);
-            console.log(query_userName.userName, query_email.userName);
-            if (query_userName === query_email) {
+            // const session_userName = req.session.user.userName;
+            // const session_email = req.session.user.email;
+            // const query_userName = await usersData.getUserByUserName(session_userName);
+            // const query_email = await usersData.getUserByEmail(session_email);
+            // console.log(query_userName, query_email);
+            const verifyUser = await usersData.loginUser(email, password)
+            if (verifyUser) {
                 console.log('Same!')
-                queriedUser = query_userName;
+                queriedUser = verifyUser;
             } else {
-                res.status(400).render('errors', { error: 'Associated username and email not the same'})
+                res.status(400).render('errors', { error: 'Associated username and email not the same' })
             }
         } catch (e) {
+            console.error(e);
             res.status(500).render('errors', { error: 'Internal Server Error' });
         }
-        const { firstName, lastName, userName, major, gradYear, line, big, bio, userNameCurrent, password } = req.body;
-        console.log(req.body)
 
+        console.log(req.body)
         let user = queriedUser;
 
+        // ! MAKE FUNCTION THAT CHANGES VALUE OF SAID KEY
         if (user) {
-            if (firstName !== undefined && validator.validName(firstName, 'First Name')) {
+            if (firstName !== '') {
+                firstName = validator.validName(firstName, 'First Name');
                 user.firstName = firstName.trim();
             }
-            if (lastName !== undefined && validator.validName(lastName, 'Last Name')) {
+            if (lastName !== '') {
+                lastName = validator.validName(lastName, 'Last Name');
                 user.lastName = lastName.trim();
             }
-            if (userName !== undefined && validator.validUsername(userName)) {
+            if (userName !== '' ) {
+                userName = validator.validUsername(userName);
                 user.userName = userName.trim();
             }
-            // if (email !== undefined && validator.validEmail(email, 'Email')) {
-            //     user.email = email.trim();
-            // }
-            if (major !== undefined && validator.validString(major, 'Major')) {
+            if (major !== '') { 
+                major = validator.validString(major, 'Major');
                 user.major = major.trim();
             }
-            if (gradYear !== undefined && validator.validNumber(parseInt(gradYear), 'gradYear')) {
+            if (gradYear !== '') {
+                gradYear = validator.validNumber(parseInt(gradYear), 'gradYear');
                 user.gradYear = gradYear;
+            }
+            if (line !== '') {
+                line = validator.validString(line, 'Line');
+                user.line = line
             }
         } else {
             res.status(400).render('errors', { error: 'No user found' });
         }
+
+        console.log(user);
     });
 
 router.route('/searchuser')

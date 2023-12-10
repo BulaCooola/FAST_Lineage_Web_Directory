@@ -16,7 +16,6 @@ app.use('/public', staticDir);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json());
 // app.use(express.static('public'));
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
@@ -61,6 +60,14 @@ app.use('/users/login', (req, res, next) => {
     next();
   }
 });
+
+app.use('/lines/myline', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/users/register')
+  } else {
+    next();
+  }
+})
 
 configRoutes(app);
 

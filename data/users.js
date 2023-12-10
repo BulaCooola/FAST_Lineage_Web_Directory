@@ -21,14 +21,14 @@ const exportedMethods = {
         email = validation.validEmail(email);        //subject to change
         const userCollection = await users();
         const user = await userCollection.findOne({email: email});
-        if (!user) throw 'Error: Line not found';
+        if (!user) throw 'Error: User not found';
         return user;
     },
     async getUserByUserName(userName){
         userName = validation.validString(userName);        //subject to change
         const userCollection = await users();
         const user = await userCollection.findOne({userName: userName});
-        if (!user) throw 'Error: Line not found';
+        if (!user) throw 'Error: User not found';
         return user;
     },
     async registerUser(userName, firstName, lastName, email, password, confirmPassword){

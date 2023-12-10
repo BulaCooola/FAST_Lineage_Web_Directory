@@ -10,17 +10,21 @@ router.route('/')
     try {
       const allLines = await lineData.getAllLines();
       console.log(allLines)
-      res.render('alllines', {pageTitle: "All Lines"})
+      res.render('alllines', { pageTitle: "All Lines" })
     } catch (e) {
       // res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
     }
   });
 
-router.route('/line')
+router.route('/myline')
   .get(async (req, res) => {
     // ! Get's the home/landing page from handlebars
     // const filePath = path.join(__dirname, '..', 'static', 'homepage.html')
-    res.sendFile(filePath)
+    if (!req.session.user) {
+      res.redirect('/users/register')
+    } else {
+      res.render('myline', { pageTitle: 'My Line', user: req.session.user })
+    }
   });
 
 

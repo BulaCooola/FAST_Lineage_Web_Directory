@@ -6,30 +6,36 @@
         <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
         
         <!-- Name -->
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" value="{{user.firstName}}"> 
+        <label for="firstNameInput">First Name:</label>
+        <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}"> 
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" value="{{user.lastName}}">
+        <label for="lastNameInput">Last Name:</label>
+        <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}">
 
         <!-- Username -->
-        <label for="userName">Username:</label>
-        <input type="text" id="userName" name="userName" value="{{user.userName}}">
+        <label for="userNameInput">Username:</label>
+        <input type="text" id="userNameInput" name="userName" value="{{user.userName}}">
 
         <!-- Major and Grad Year -->
-        <label for="major">Major:</label>
-        <input type="text" id="major" name="major" value="{{user.major}}">
+        <label for="majorInput">Major:</label>
+        <input type="text" id="majorInput" name="major" value="{{user.major}}">
 
-        <label for="gradYear">Graduation Year:</label>
-        <input type="text" id="gradYear" name="gradYear" value="{{user.gradYear}}">
+        <label for="gradYearInput">Graduation Year:</label>
+        <input type="text" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
 
         <!-- Line -->
-        <label for="line">Line:</label>
-        <input type="text" id="line" name="line" value="{{user.line}}">
+        <label for="lineInput">Line:</label>
+        <select id="lineInput" name="line">
+            <option disabled selected value> -- select an option -- </option>
+            <option value="PPP">Pretty Pretty Princesses</option>
+            <option value="MILF">Mya's Infinite Line Friends</option>
+            <option value="Dankest">Dankest Line</option>
+            <option value="Grand">Grand Line</option>
+        </select>
 
         <!-- Big and Littles -->
-        <label for="big">Big:</label>
-        <input type="text" id="big" name="big" value="{{user.big}}">
+        <label for="bigInput">Big:</label>
+        <input type="text" id="bigInput" name="big" value="{{user.big}}">
 
         <label for="littles">Littles:</label>
         <ul>
@@ -39,12 +45,12 @@
         </ul>
 
         <!-- Bio -->
-        <label for="bio">Bio:</label>
-        <textarea id="bio" name="bio" rows="4">{{user.bio}}</textarea>
+        <label for="bioInput">Bio:</label>
+        <textarea id="bioInput" name="bio" rows="4">{{user.bio}}</textarea>
 
         <!-- Edit Profile Button -->
-        <label for="userNameCurrent">*Confirm (current) Username:</label>
-        <input type="text" id="userNameCurrent" name="userNameCurrent" required>
+        <label for="email">*Confirm (current) Email:</label>
+        <input type="text" id="email" name="email" required>
         <label for="password">*Password: </label>
         <input type="text" id="password" name="password" required>
         <button type="submit">Save Changes</button>
