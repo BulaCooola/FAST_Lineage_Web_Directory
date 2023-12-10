@@ -1,8 +1,9 @@
 // I don't know if we need this. Not hundred percent. - Branden Bulatao
-import {users} from '../config/mongoCollections.js';
+import {lines, users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import user from './users.js'
 import * as validation from '../validators.js';
+import linesData from './lines.js';
 import bcrypt from 'bcrypt';
 
 const exportedMethods = {
@@ -34,31 +35,36 @@ const exportedMethods = {
     async registerUser(userName, firstName, lastName, email, password, confirmPassword){
         //subject to change
         try {
-            userName = validation.validString(userName);
-            firstName = validation.validString(firstName);
-            lastName = validation.validString(lastName);
-            email = validation.validEmail(email);
+            userName = validation.validString(userName, 'User Name');
+            firstName = validation.validString(firstName, 'First Name');
+            lastName = validation.validString(lastName, 'Last Name');
+            email = validation.validEmail(email, 'Email');
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
+            // line = validation.validString(line, 'Line');
         } catch(e) {
             throw `${e}`;
         }
-        userName = validation.validString(userName);
-        firstName = validation.validString(firstName);
-        lastName = validation.validString(lastName);
-        email = validation.validEmail(email);
-        password = validation.validPassword(password);
-        confirmPassword = validation.validPassword(confirmPassword);
 
         const userCollection = await users();
         const findUser = await userCollection.findOne({userName: userName});
         if (findUser) {
-            throw `email already exists, pick another`
+            throw `Error: userName already exists, pick another.`;
+        }
+
+        const findEmail = await userCollection.findOne({email: email});
+        if (findEmail) {
+            throw `Error: email already exists, pick another.`;
         }
 
         if(password !== confirmPassword){
-            throw 'passwords must be the same';
+            throw 'Error: Passwords must be the same';
         }
+
+        // const findLine = await linesData.getLineByName(line);
+        // if (!findLine) {
+        //     throw `Error: Line doesn't exists, please pick an existing line`
+        // }
 
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = { 
@@ -67,6 +73,7 @@ const exportedMethods = {
             lastName: lastName,
             email:email,
             password: hashedPassword,
+            line: null,
             userBio: null,
             major: null,
             gradYear: null,
@@ -107,6 +114,7 @@ const exportedMethods = {
             lastName: getUser.lastName,
             userBio: getUser.userBio,
             gradYear: getUser.gradYear,
+            line: getUser.line,
             big: getUser.big,
             littles: getUser.littles,
             email: getUser.email

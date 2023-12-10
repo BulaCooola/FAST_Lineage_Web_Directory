@@ -58,6 +58,8 @@ router.route('/register')
             lastName = validator.validName(lastName, 'Last Name');
             email = validator.validEmail(email, 'Email routes');
             password = validator.validPassword(password);
+            confirmPassword = validator.validPassword(confirmPassword);
+            line = validator.validString('line');
         } catch (e) {
             console.error(e);
             res.status(400).render('errors'), { error: `${e}` };
@@ -126,11 +128,6 @@ router.route('/profile/edit')
         let { firstName, lastName, userName, major, gradYear, line, big, bio, email, password } = req.body;
         let queriedUser = null;
         try {
-            // const session_userName = req.session.user.userName;
-            // const session_email = req.session.user.email;
-            // const query_userName = await usersData.getUserByUserName(session_userName);
-            // const query_email = await usersData.getUserByEmail(session_email);
-            // console.log(query_userName, query_email);
             const verifyUser = await usersData.loginUser(email, password)
             if (verifyUser) {
                 console.log('Same!')
@@ -148,28 +145,29 @@ router.route('/profile/edit')
 
         // ! MAKE FUNCTION THAT CHANGES VALUE OF SAID KEY
         if (user) {
-            if (firstName !== '') {
-                firstName = validator.validName(firstName, 'First Name');
+            if (firstName !== '' || firstName == undefined) {
+                firstName = validator.validName(firstName, 'First Name Edit');
                 user.firstName = firstName.trim();
             }
-            if (lastName !== '') {
-                lastName = validator.validName(lastName, 'Last Name');
+            if (lastName !== '' || lastName == undefined) {
+                lastName = validator.validName(lastName, 'Last Name Edit');
                 user.lastName = lastName.trim();
             }
-            if (userName !== '' ) {
+            if (userName !== '' || userName == undefined) {
                 userName = validator.validUsername(userName);
                 user.userName = userName.trim();
             }
-            if (major !== '') { 
-                major = validator.validString(major, 'Major');
+            if (major !== '' || major == undefined) {
+                major = validator.validString(major, 'Major Edit');
                 user.major = major.trim();
             }
-            if (gradYear !== '') {
-                gradYear = validator.validNumber(parseInt(gradYear), 'gradYear');
+            if (gradYear !== '' || gradYear == undefined) {
+                gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
                 user.gradYear = gradYear;
             }
-            if (line !== '') {
-                line = validator.validString(line, 'Line');
+            console.log(line)
+            if (line !== '' || line == undefined) {
+                line = validator.validString(line, 'Line Edit');
                 user.line = line
             }
         } else {
@@ -199,6 +197,10 @@ router.route('/searchuser/:userName')
         // res.render('searchResults', { title: "People Found", searchCharacterByName: searchTerm, characters: names })
     });
 
+router.route('/logout').get(async (req, res) => {
+    req.session.destroy();
+    return res.redirect('/');
+});
 export default router;
 
 // GET REQUESTS:

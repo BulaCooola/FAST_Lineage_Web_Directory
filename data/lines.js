@@ -1,10 +1,10 @@
-import { lines } from '../config/mongoCollections.js';
+import { lines, users } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import user from './users.js'
 import * as validation from '../validators.js';
 
 const exportedMethods = {
-    async createLine(
+    async createaLine(
         lineName,
         lineDescription,
         lineHead,
@@ -22,7 +22,7 @@ const exportedMethods = {
         const linesCollection = await lines();
         const checkExistingLine = await linesCollection.findOne({ lineName: lineName });
         if (checkExistingLine) {
-            throw `username already exists, pick another`
+            throw `Line Name already exists, pick another`
         }
 
         let newLine = {
@@ -36,51 +36,66 @@ const exportedMethods = {
         }
         let insertLine = await linesCollection.insertOne(newLine);
         if (!insertLine.acknowledged || !insertLine.insertedId) {
-            throw 'Error: Failed to add user';
+            throw 'Error: Failed to add line';
         }
-        return {insertedUser:true};
+        return {insertLine:true};
     },
     async getAllLines() {
-        const lineCollection = await lines();
-        return await lineCollection.find({}).toArray();
+        const linesCollection = await lines();
+        return await linesCollection.find({}).toArray();
     },
     async getLineById(id) {
         id = validation.validId(id);            //subject to change
-        const lineCollection = await lines();
-        const line = await lineCollection.findOne({ _id: new ObjectId(id) });
+        const linesCollection = await lines();
+        const line = await linesCollection.findOne({ _id: new ObjectId(id) });
         if (!line) throw 'Error: Line not found';
         return line;
     },
     async getLineByName(name) {
         name = validation.validString(name);        //subject to change
-        const lineCollection = await lines();
-        const line = await lineCollection.findOne({ name: name });
+        const linesCollection = await lines();
+        const line = await linesCollection.findOne({ lineName: name });
         if (!line) throw 'Error: Line not found';
         return line;
     },
     async createLine(name, head){
         name = validation.validString(name);
         //description = validation.validDescription(description)
-        head = user.getUserByEmail(head.email)
+        // head.email = (head.email)
+        const linesCollection = await lines();
+        const usersCollection = await users();
+        const validateUser = await usersCollection.findOne({userName: head.userName});
+        if (!validateUser) {
+            throw `Error: User inputted as line head does not exist. Please input an existing`
+        }
+        const lineHeadInfo = {
+            userName: validateUser.userName,
+            firstName: validateUser.firstName,
+            lastName: validateUser.lastName,
+            email: validateUser.email,
+            line: validateUser.line,
+            big: validateUser.big,
+            littles: validateUser.littles,
+            links: validateUser.links
+        }
         let newLine = {
             lineName : name,
             lineDescription : null,
-            lineHead : head,
-            members : []
+            lineHead : lineHeadInfo,
+            members : [lineHeadInfo]
         }
-        const lineCollection = await lines();
-        const line = await lineCollection.insertOne({newLine});
-        if (line.insertedCount === 0) throw 'Error: Line could not be added';
-        const newID = line.insertedId.toString();
-        const lineID = await getLineById(newID)
-        return lineID;
+        let insertLine = await linesCollection.insertOne(newLine);
+        if (!insertLine.acknowledged || !insertLine.insertedId) {
+            throw 'Error: Failed to add user';
+        }
+        return {insertLine:true};
     },
     async updateLine(name,littles){
         let updatedLine = {
             littles: littles
         }
-        const lineCollection = await lines();
-        const newLine = await lineCollection.findOneAndReplace(
+        const linesCollection = await lines();
+        const newLine = await linesCollection.findOneAndReplace(
             name,
             updatedLine,
             {returnDocument:'after'}
@@ -91,8 +106,8 @@ const exportedMethods = {
         return newLine;
     },
     async deleteLine(name){
-        const lineCollection = await lines();
-        const deletionInfo = await lineCollection.findOneAndDelete({
+        const linesCollection = await lines();
+        const deletionInfo = await linesCollection.findOneAndDelete({
             name:name
         });
 
@@ -100,8 +115,30 @@ const exportedMethods = {
             throw 'Could not delete line ${name}';
         }
         return '${deletionInfo.name} has been deleted.';
+    },
+    async getChildren(userName) {
+        const person = await user.getUserByUserName(userName);
+        if (person) {
+            console.log(person.children.map(childUserName => getUserByUserName(childUserName)))
+            return person.children.map(childUserName => getUserByUserName(childUserName))
+        } else {
+            return []
+        }
+    }, 
+    async addMember(lineName, member) {
+        // lineName refers to the name of line
+        // member refers to the object of the user
+        const linesCollection = await lines();
+        const usersCollection = await users();
+        const line = await linesCollection.findOne({ lineName: lineName });
+        const user = await usersCollection.findOne({ userName: member.userName});
+        if (!line) {
+            throw `Error: Line does not exist.`
+        }
+        if (!user) {
+            throw `Error: User does not exist.`
+        }
     }
-
 };
 
 // TODO getLine
