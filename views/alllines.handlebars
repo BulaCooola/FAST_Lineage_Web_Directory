@@ -1,9 +1,8 @@
 <h1>All Lines</h1>
 <ul>
-    <li>Pretty Pretty Princesses</li>
-    <li>Mya's Infinite Line Friends</li>
-    <li>Dankest Line</li>
-    <li>Grand Line</li>
+    {{#each data}}
+        <li>{{this.lineName}} Line</li>
+    {{/each}}
 </ul>
 <h2>Or, search for a member of FAST:</h2>
 <form method="POST" action="/searchMember">

@@ -9,8 +9,7 @@ router.route('/')
   .get(async (req, res) => {
     try {
       const allLines = await lineData.getAllLines();
-      console.log(allLines)
-      res.render('alllines', { pageTitle: "All Lines" })
+      res.render('alllines', { pageTitle: "All Lines", data: allLines})
     } catch (e) {
       // res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
     }
