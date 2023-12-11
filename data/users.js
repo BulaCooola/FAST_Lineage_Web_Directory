@@ -32,7 +32,7 @@ const exportedMethods = {
         if (!user) throw 'Error: User not found';
         return user;
     },
-    async registerUser(userName, firstName, lastName, email, password, confirmPassword) {
+    async registerUser(userName, firstName, lastName, email, password, confirmPassword, line) {
         //subject to change
         try {
             userName = validation.validString(userName, 'User Name');
@@ -41,7 +41,7 @@ const exportedMethods = {
             email = validation.validEmail(email, 'Email');
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
-            // line = validation.validString(line, 'Line');
+            line = validation.validString(line, 'Line');
         } catch (e) {
             throw `${e}`;
         }
@@ -73,7 +73,7 @@ const exportedMethods = {
             lastName: lastName,
             email: email,
             password: hashedPassword,
-            line: null,
+            line: line,
             userBio: null,
             major: null,
             gradYear: null,
@@ -81,7 +81,6 @@ const exportedMethods = {
             littles: null,
             links: null
         }
-
 
         let insertInfo = await userCollection.insertOne(newUser);
         if (!insertInfo.acknowledged || !insertInfo.insertedId) {
@@ -153,6 +152,12 @@ const exportedMethods = {
         } else {
             throw `Nothing to update`
         }
+    },
+    async assignLittle() {
+        
+    },
+    async assignBig() {
+
     }
 }
 

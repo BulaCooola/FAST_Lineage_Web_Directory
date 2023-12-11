@@ -1,0 +1,174 @@
+header {
+    & nav {
+        & h1 {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            font-size: 50pt;
+        }
+
+        & ul {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+
+            background-color: rgba(153, 153, 153, 0.605);
+            border: 2px solid;
+            margin: 0;
+            margin-left: 200px;
+            margin-right: 200px;
+            padding: 0;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            display: flex;
+            list-style-type: none;
+
+            & li a {
+                color: rgb(0, 0, 0);
+                font-size: 20px;
+                text-decoration: none;
+                text-transform: uppercase;
+                padding: 5px 10px;
+                margin: 0px 10px;
+                position: relative;
+                transition: all .5s;
+            }
+
+            & a:hover {
+                background-color: rgb(0, 0, 0);
+                color: white;
+            }
+
+            & a::before {
+                content: "";
+                position: absolute;
+                bottom: 12px;
+                left: 12px;
+                height: 12px;
+                width: 12px;
+                border: 3px solid rgb(0, 0, 0);
+                border-width: 0 0 3px 3px;
+                opacity: 0;
+                transition: all 0.3s;
+            }
+
+            & a::after {
+                content: "";
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                height: 12px;
+                width: 12px;
+                border: 3x solid rgb(0, 0, 0);
+                border-width: 0 0 3px 3px;
+                opacity: 0;
+                transition: all 0.3s;
+            }
+
+            & a:hover::before {
+                opacity: 1;
+                bottom: -8px;
+                left: -8px;
+            }
+
+            & a:hover::after {
+                opacity: 1;
+                top: -8px;
+                right: -8px;
+            }
+        }
+    }
+}
+
+img {
+    display: block;
+    margin: 10px auto;
+    width: 30%;
+}
+
+main.home {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+
+    & img {
+        display: block;
+        margin: 0 auto;
+        width: 30%;
+    }
+
+    & h1 {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        font-size: 32pt;
+    }
+
+    & p {
+        text-align: center
+            /* display: grid;
+        justify-content: center;
+        align-content: center; */
+    }
+
+    & a {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+
+        & button {
+            color: rgb(0, 0, 0);
+            font-size: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            margin: 0px 10px;
+            position: relative;
+            transition: all .5s;
+        }
+    
+        & button:hover {
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+    
+        & button::before {
+            content: "";
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            height: 12px;
+            width: 12px;
+            border: 3px solid rgb(0, 0, 0);
+            border-width: 0 0 3px 3px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+    
+        & button::after {
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            height: 12px;
+            width: 12px;
+            border: 3x solid rgb(0, 0, 0);
+            border-width: 0 0 3px 3px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+    
+        & button:hover::before {
+            opacity: 1;
+            bottom: -8px;
+            left: -8px;
+        }
+    
+        & button:hover::after {
+            opacity: 1;
+            top: -8px;
+            right: -8px;
+        }
+    }
+
+}

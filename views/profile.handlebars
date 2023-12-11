@@ -1,14 +1,14 @@
 <link rel="stylesheet" href="../../public/css/profile.css" />
 <img src="https://images.ctfassets.net/mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg" alt="{{user.userName}}">
-<main>
+<main class="profile">
     <h1>Welcome {{user.firstName}} {{user.lastName}}</h1>
-    <h2>{{user.userName}}</h2>
-    {{#if isUser}}
+    <h2>Username: {{user.userName}}</h2>
+    {{!-- {{#if isUser}}
     <button>Edit Profile</button>
-    {{/if}}
+    {{/if}} --}}
     <h3>Major: {{user.major}}</h3>
     <h3>Class of {{user.gradYear}}</h3>
-    <h3>{{user.line}}</h3>
+    <h3>Line: {{user.line}}</h3>
     {{!-- some logic here that is basically like
     if usersession.little.contains(user.userName) then they're ur big
     if user.little.contains(usersession.userName) they're ur little

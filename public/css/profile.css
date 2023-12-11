@@ -30,3 +30,10 @@ main.edit-profile {
         margin-bottom: 5px;
     }
 }
+
+main.profile {
+    margin: 20px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}

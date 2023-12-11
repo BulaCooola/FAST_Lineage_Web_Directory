@@ -2,7 +2,8 @@
 import express from 'express';
 import path from 'path';
 import * as validator from '../validators.js';
-import usersData from '../data/users.js'
+import usersData from '../data/users.js';
+import linesData from '../data/lines.js';
 const router = express.Router();
 
 // middleware to not be there?
@@ -50,7 +51,7 @@ router.route('/register')
             return res.status(400).render('errors', { error: 'All fields are required.' });
         }
 
-        console.log('hello');
+        console.log('--- Checked All Fields ---');
         try {
             userName = validator.validUsername(userName);
             firstName = validator.validName(firstName, 'First Name');
@@ -58,22 +59,23 @@ router.route('/register')
             email = validator.validEmail(email, 'Email routes');
             password = validator.validPassword(password);
             confirmPassword = validator.validPassword(confirmPassword);
-            line = validator.validString('line');
+            line = validator.validString(line, 'line');
         } catch (e) {
             console.error(e);
             res.status(400).render('errors'), { error: `${e}` };
         }
 
-        console.log('hello');
+        console.log('--- Validating each field ---');
         if (password !== confirmPassword) {
             return res.status(400).render('errors', { error: 'Passwords do not match.' });
         }
 
-        console.log('hello');
+        console.log('--- Confirming password ---');
 
         try {
-            const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword);
+            const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword, line);
             if (result.insertedUser) {
+                const addtoline = await linesData.addMember(line, result)
                 res.redirect('/users/login');
             } else {
                 res.status(500).render('errors', { error: 'Internal Server Error' });
@@ -124,7 +126,7 @@ router.route('/profile/edit')
                 * validate each using validators.js
                 * update
         */
-        let { firstName, lastName, userName, major, gradYear, line, big, bio, email, password } = req.body;
+        let { firstName, lastName, userName, major, gradYear, line, bio, email, password } = req.body;
         let queriedUser = null;
         try {
             const verifyUser = await usersData.loginUser(email, password)
