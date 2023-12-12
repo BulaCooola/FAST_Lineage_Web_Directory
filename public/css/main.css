@@ -1,3 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 header {
     & nav {
         & h1 {
@@ -90,6 +98,7 @@ main.home {
     display: grid;
     justify-content: center;
     align-content: center;
+    padding-bottom: 30px;
 
     & img {
         display: block;
@@ -126,12 +135,12 @@ main.home {
             position: relative;
             transition: all .5s;
         }
-    
+
         & button:hover {
             background-color: rgb(0, 0, 0);
             color: white;
         }
-    
+
         & button::before {
             content: "";
             position: absolute;
@@ -144,7 +153,7 @@ main.home {
             opacity: 0;
             transition: all 0.3s;
         }
-    
+
         & button::after {
             content: "";
             position: absolute;
@@ -157,18 +166,104 @@ main.home {
             opacity: 0;
             transition: all 0.3s;
         }
-    
+
         & button:hover::before {
             opacity: 1;
             bottom: -8px;
             left: -8px;
         }
-    
+
         & button:hover::after {
             opacity: 1;
             top: -8px;
             right: -8px;
         }
     }
+}
 
+footer.home {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    place-items: center;
+    background: linear-gradient(315deg, #ffffff, #d7e1ec);
+
+    /* Styles from https://github.com/parthwebdev/UI-Components/blob/main/Socials/01/styles.css */
+    & .socials-wrapper {
+        display: inline-flex;
+        padding: 10px;
+        list-style: none;
+    }
+
+    & .socials-wrapper .icon {
+        position: relative;
+        background: #ffffff;
+        border-radius: 50%;
+        padding: 15px;
+        margin: 25px;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper .tooltip {
+        position: absolute;
+        top: 0;
+        font-size: 14px;
+        background: #ffffff;
+        color: #ffffff;
+        padding: 5px 8px;
+        border-radius: 5px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper::before {
+        position: absolute;
+        content: "";
+        height: 8px;
+        width: 8px;
+        background: #ffffff;
+        bottom: -3px;
+        left: 50%;
+        transform: translate(-50%) rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper:hover .tooltip {
+        top: -45px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    & .socials-wrapper .icon:hover span,
+    .socials-wrapper .icon:hover .tooltip {
+        text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .facebook {
+        --color: #1877f2;
+    }
+
+    .instagram {
+        --color: #e4405f;
+    }
+
+    .icon:hover,
+    .icon:hover .tooltip,
+    .icon:hover .tooltip::before {
+        background: var(--color);
+        color: white;
+    }
 }
