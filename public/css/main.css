@@ -98,7 +98,7 @@ main.home {
     display: grid;
     justify-content: center;
     align-content: center;
-    padding-bottom: 30px;
+    /* padding-bottom: 30px; */
 
     & img {
         display: block;
@@ -114,7 +114,9 @@ main.home {
     }
 
     & p {
-        text-align: center
+        margin-top: 10px;
+        text-align: left;
+        width: 1000px;
             /* display: grid;
         justify-content: center;
         align-content: center; */
@@ -131,7 +133,7 @@ main.home {
             text-decoration: none;
             text-transform: uppercase;
             padding: 5px 10px;
-            margin: 0px 10px;
+            margin: 20px 10px 10px 20px;
             position: relative;
             transition: all .5s;
         }

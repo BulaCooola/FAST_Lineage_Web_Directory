@@ -41,7 +41,8 @@ router.route('/login')
 router.route('/register')
     .get(async (req, res) => {
         //code here for GET
-        res.render('register', { pageTitle: 'Register' });
+        const allLines = await linesData.getAllLines();
+        res.render('register', { pageTitle: 'Register', lines: allLines });
     })
     .post(async (req, res) => {
         //code here for POST
