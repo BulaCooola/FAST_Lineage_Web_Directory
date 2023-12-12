@@ -1,22 +1,29 @@
-<h1>Log In</h1>
-<form action="/users/login" method="POST" id="login-form">
-    <div>
-        <label for="emailInput">Email Address:</label>
-        <input type="email" id="emailInput" name="email" required>
-    </div>
+<main class="login">
+    <div class="form-wrapper"></div>
+    <h2 class="h2-login">Log In</h2>
+    <form action="/users/login" method="POST" id="login-form">
+        <div class="input-container">
+            <div class="input-group">
+                <label for="emailInput">Email Address:</label>
+                <input type="email" id="emailInput" name="email" required>
+            </div>
 
-    <div>
-        <label for="passwordInput">Password:</label>
-        <input type="password" id="passwordInput" name="password" required>
-    </div>
+            <div class="input-group">
+                <label for="passwordInput">Password:</label>
+                <input type="password" id="passwordInput" name="password" required>
+            </div>
+        </div>
 
-    <ul>
-        {{#each errors}}
+        <ul>
+            {{#each errors}}
             <li>{{this}}</li>
-        {{/each}}
-    </ul>
+            {{/each}}
+        </ul>
 
-    <button type="submit">Login</button>
-</form>
+        <button type="submit">Login</button>
+    </form>
+    </div>
+
+</main>
 
 <p><a href="/users/register">Click here to register!</a></p>

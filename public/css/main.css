@@ -94,6 +94,67 @@ img {
     width: 30%;
 }
 
+/* Login form source: https://github.com/parthwebdev/UI-Components/tree/main/Log%20in/02 */
+main.register,
+main.login {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    margin: 20px auto;
+    padding: 2.5rem 1rem;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    background-color: white;
+
+    & .h2-register,
+    .h2-login {
+        margin-bottom: 10px;
+    }
+
+    .form-wrapper>h2 {
+        margin-bottom: 0.1rem;
+    }
+
+    .form-wrapper>p {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-light);
+        margin-bottom: 2rem;
+    }
+
+    & .input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    & .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    & .form-group label {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: #16164d;
+    }
+
+    & .form-group input {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        padding: 0.5rem;
+        border: 2px solid var(--primary-lighter);
+        border-radius: 0.3rem;
+    }
+
+    & .form-group input:focus {
+        border: 2px solid #16164d;
+    }
+}
+
 main.home {
     display: grid;
     justify-content: center;
@@ -114,12 +175,9 @@ main.home {
     }
 
     & p {
-        margin-top: 10px;
-        text-align: left;
-        width: 1000px;
-            /* display: grid;
-        justify-content: center;
-        align-content: center; */
+        text-align: center;
+        width: 60%;
+        margin: 20px auto;
     }
 
     & a {
