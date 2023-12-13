@@ -153,10 +153,37 @@ const exportedMethods = {
             throw `Nothing to update`
         }
     },
-    async assignLittle() {
-        
+    async assignLittle(userName, little_userName) {
+        /* 
+            WHEN ON THE FORM FOR ASSIGNING A BIG OR LITTLE, THEY MUST 
+            When calling this function, you will take userName from cookie and the user that they call on
+            ! try using ajax
+                * When finding little or big, you will be directed to a page that searches for users
+                *   Search for all members on line and everyone on the same year as you and below:
+                *       If search parameter results in no user:  throw `Error: No results`
+                *       If they are not in your line:  throw `Error: Member choosen is not in the same line`
+                *       
+                *       
+        */
+
+        const userCollection = await users()
+
+        const getUser = await userCollection.findOne({ userName: userName });
+        const getLittle = await userCollection.findOne({ userName: little_userName });
+        if (getUser === null) {
+            // throw {code: 400, error: `Either the email or password is invalid`}
+            throw `Error: User not found.`;
+        }
+        if (getLittle === null) {
+            throw `Error: User searched not found.`;
+        }
+
+        if (parseInt(getLittle.gradYear) < parseInt(getUser.gradYear)) {
+            throw `Error: User cannot be your little, as they are a grade higher than you.`
+        }
+
     },
-    async assignBig() {
+    async assignBig(userName, big_userName) {
 
     }
 }
