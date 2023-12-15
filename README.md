@@ -4,7 +4,7 @@
 ### Collaborators: Jedd Alcalde, Branden Bulatao, Lili Fortes, Sean Payba, Isabel Sutedjo
 
 * Jedd Alcalde : [JeddAlcalde](https://github.com/JeddAlcalde)
-* Branden Bulatao : [BulaCoola](https://github.com/BulaCooola)
+* Branden Bulatao : [BulaCooola](https://github.com/BulaCooola) [bulacoola](https://github.com/bulacoola)
 * Lili Fortes : [nfortes](https://github.com/nfortes)
 * Sean Payba : [spayba](https://github.com/spayba)
 * Isabel Sutedjo : [mis-isabel](https://github.com/mis-isabel)
