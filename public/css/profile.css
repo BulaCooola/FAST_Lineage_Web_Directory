@@ -8,13 +8,18 @@ img {
 }
 
 main.edit-profile {
-    margin: 20px;
-    display: flex;
+    display: grid;
     justify-content: center;
     align-content: center;
 
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
     & form {
-        display: grid;
         gap: 10px;
     }
 
@@ -29,11 +34,71 @@ main.edit-profile {
         display: block;
         margin-bottom: 5px;
     }
+
+    & textarea {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+        width: 100%;
+        inline-size: 300px;
+
+    }
 }
 
 main.profile {
-    margin: 20px;
     display: grid;
     justify-content: center;
     align-content: center;
+
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    /* Style for headings */
+    & h1,
+    h2,
+    h3,
+    h4 {
+        color: #333;
+    }
+
+    /* Style for the profile details */
+    & h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    & p {
+        margin-bottom: 10px;
+    }
+
+    /* Style for the edit and logout links */
+    & a {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+    /* Style for the list of littles */
+    & ul {
+        list-style-type: none;
+        margin-left: 20px;
+    }
+
+    & ul li {
+        margin-bottom: 5px;
+    }
+
+    /* Style for the profile links */
+    & a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    & a:hover {
+        text-decoration: underline;
+    }
 }

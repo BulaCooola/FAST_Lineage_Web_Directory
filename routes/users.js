@@ -4,6 +4,7 @@ import path from 'path';
 import * as validator from '../validators.js';
 import usersData from '../data/users.js';
 import linesData from '../data/lines.js';
+import { stringify } from 'querystring';
 const router = express.Router();
 
 // middleware to not be there?
@@ -97,7 +98,11 @@ router.route('/register')
 // profile
 router.route('/profile')
     .get(async (req, res) => {
-        res.render('profile', { pageTitle: 'Your Profile', user: req.session.user });
+        res.render('profile', {
+            pageTitle: 'Your Profile',
+            user: req.session.user,
+            gradYear: req.session.user.gradYear.toString()
+        });
     });
 
 // profile edit
@@ -177,18 +182,20 @@ router.route('/profile/edit')
         }
 
         const updateBody = {
-            firstName: firstName, 
+            firstName: firstName,
             lastName: lastName,
             userName: userName,
             major: major,
             gradYear: gradYear,
-            userBio: bio 
+            userBio: bio
         }
         console.log('update body', updateBody);
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password)
-        } catch(e) {
-            res.status(500).render('errors', {error: 'Internal server error'})
+
+            res.redirect('/users/profile')
+        } catch (e) {
+            res.status(500).render('errors', { error: 'Internal server error' })
         }
     });
 

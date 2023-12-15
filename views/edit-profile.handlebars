@@ -1,13 +1,15 @@
 <link rel="stylesheet" href="../../public/css/profile.css" />
 <main class="edit-profile">
+    <p><a href="/users/profile">Go Back!</a></p>
+
     <form action="/users/profile/edit" method="POST">
         {{!-- <!-- Image Upload -->
         <label for="profileImage">Profile Image URL:</label>
         <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
-        
+
         <!-- Name -->
         <label for="firstNameInput">First Name:</label>
-        <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}"> 
+        <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}">
 
         <label for="lastNameInput">Last Name:</label>
         <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}">
@@ -24,14 +26,14 @@
         <input type="text" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
 
         <!-- Line -->
-        <label for="lineInput">Line:</label>
+        {{!-- <label for="lineInput">Line:</label>
         <select id="lineInput" name="line">
             <option value=""> -- select an option -- </option>
             <option value="PPP">Pretty Pretty Princesses</option>
             <option value="MILF">Mya's Infinite Line Friends</option>
             <option value="Dankest">Dankest Line</option>
             <option value="Grand">Grand Line</option>
-        </select>
+        </select> --}}
 
         {{!-- <!-- Big and Littles -->
         <label for="bigInput">Big:</label>
@@ -40,7 +42,7 @@
         <label for="littles">Littles:</label>
         <ul>
             {{#each user.little}}
-                <li>{{this.firstName}} {{this.lastName}}</li>
+            <li>{{this.firstName}} {{this.lastName}}</li>
             {{/each}}
         </ul> --}}
 
@@ -55,4 +57,6 @@
         <input type="password" id="password" name="password" required>
         <button type="submit">Save Changes</button>
     </form>
+    <p><a href="/users/profile">Go Back!</a></p>
+
 </main>

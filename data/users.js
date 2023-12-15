@@ -112,6 +112,7 @@ const exportedMethods = {
             firstName: getUser.firstName,
             lastName: getUser.lastName,
             userBio: getUser.userBio,
+            major: getUser.major,   
             gradYear: getUser.gradYear,
             line: getUser.line,
             big: getUser.big,
@@ -170,6 +171,8 @@ const exportedMethods = {
 
         const getUser = await userCollection.findOne({ userName: userName });
         const getLittle = await userCollection.findOne({ userName: little_userName });
+
+        // Check if users are found.
         if (getUser === null) {
             // throw {code: 400, error: `Either the email or password is invalid`}
             throw `Error: User not found.`;
@@ -178,8 +181,37 @@ const exportedMethods = {
             throw `Error: User searched not found.`;
         }
 
+        // Check if selected user is already your little
+        if (getUser.little.includes(getLittle)) {
+            throw `Error: Selected Member is already your little.`
+        }
+
+        // Check year
         if (parseInt(getLittle.gradYear) < parseInt(getUser.gradYear)) {
-            throw `Error: User cannot be your little, as they are a grade higher than you.`
+            throw `Error: Member cannot be your little, as they are a grade higher than you.`
+        }
+
+        // Check line
+        if (getLittle.line !== getUser.line) {
+            throw `Error: Member selected is not in your line`
+        }
+
+        const updateUserInfo = await userCollection.updateOne(
+            { _id: getUser._id },
+            { $push: { little: getLittle.userName } },
+        );
+        const updateLittleInfo = await userCollection.updateOne(
+            { _id: getLittle._id },
+            { $set: { big: getLittle.userName } }
+        );
+        if (!updateUserInfo) {
+            throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
+        }
+        if (!updateLittleInfo) {
+            throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
+        }
+        else {
+            return await updateUserInfo;
         }
 
     },

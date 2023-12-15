@@ -22,7 +22,7 @@ router.route('/myline')
     if (!req.session.user) {
       res.redirect('/users/register')
     } else {
-      // const tree = await lineData
+      // const tree = await lineData 
       res.render('myline', { pageTitle: 'My Line', user: req.session.user})
     }
   });
