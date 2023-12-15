@@ -30,7 +30,13 @@ router.route('/login')
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
             console.log(checkExists)
-            req.session.user = checkExists;
+            req.session.user = {
+                firstName: checkExists.firstName,
+                lastName: checkExists.lastName,
+                userName: checkExists.userName,
+                email: checkExists.email,
+                line: checkExists.line,
+            };
             res.redirect('/users/profile');
         } catch (e) {
             console.error(e)
@@ -98,10 +104,12 @@ router.route('/register')
 // profile
 router.route('/profile')
     .get(async (req, res) => {
+        console.log(req.session.user)
+        const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('profile', {
             pageTitle: 'Your Profile',
-            user: req.session.user,
-            gradYear: req.session.user.gradYear.toString()
+            user: userInfo
+            // gradYear: req.session.user.gradYear.toString()
         });
     });
 
@@ -111,7 +119,8 @@ router.route('/profile/edit')
         console.log('body', req.body);
         console.log('session', req.session);
         console.log('params', req.params)
-        res.render('edit-profile', { pageTitle: 'Edit Profile' })
+        const userInfo = await usersData.getUserByEmail(req.session.user.email)
+        res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
     .post(async (req, res) => {
         // TODO: update profile (patch)
@@ -132,13 +141,22 @@ router.route('/profile/edit')
                 * validate each using validators.js
                 * update
         */
-        let { firstName, lastName, userName, major, gradYear, line, bio, email, password } = req.body;
-        let queriedUser = null;
+        let { firstName, lastName, userName, major, gradYear, bio, email, password } = req.body;
+        let user = null;
+
+        // validate email and password
         try {
-            const verifyUser = await usersData.loginUser(email, password)
-            if (verifyUser) {
+            email = validator.validEmail(email, "Confirm Email");
+            password = validator.validPassword(password);
+        } catch (e) {
+            res.status(400).render('errors', { error: 'Either email or password is invalid' });
+        }
+
+        try {
+            const verifyUser = await usersData.verifyUser(email, password)
+            if (verifyUser === req.session.user.userName) {
                 console.log('Same!')
-                queriedUser = verifyUser;
+                user = await usersData.getUserByEmail(email);
             } else {
                 res.status(400).render('errors', { error: 'Associated username and email not the same' })
             }
@@ -148,37 +166,42 @@ router.route('/profile/edit')
         }
 
         console.log(req.body)
-        let user = queriedUser;
+        user = await usersData.getUserByEmail(email);
+
 
         // ! MAKE FUNCTION THAT CHANGES VALUE OF SAID KEY
         if (user) {
-            if (firstName !== '' || firstName == undefined) {
-                firstName = validator.validName(firstName, 'First Name Edit');
-                user.firstName = firstName.trim();
-            }
-            if (lastName !== '' || lastName == undefined) {
-                lastName = validator.validName(lastName, 'Last Name Edit');
-                user.lastName = lastName.trim();
-            }
-            if (userName !== '' || userName == undefined) {
-                userName = validator.validUsername(userName);
-                user.userName = userName.trim();
-            }
-            if (major !== '' || major == undefined) {
-                major = validator.validString(major, 'Major Edit');
-                user.major = major.trim();
-            }
-            if (gradYear !== '' || gradYear == undefined) {
-                gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
-                user.gradYear = gradYear;
-            }
-            console.log(line)
-            if (line !== '' || line == undefined) {
-                line = validator.validString(line, 'Line Edit');
-                user.line = line
+            try {
+                if (firstName !== '' || firstName == undefined) {
+                    firstName = validator.validName(firstName, 'First Name Edit');
+                    user.firstName = firstName.trim();
+                }
+                if (lastName !== '' || lastName == undefined) {
+                    lastName = validator.validName(lastName, 'Last Name Edit');
+                    user.lastName = lastName.trim();
+                }
+                if (userName !== '' || userName == undefined) {
+                    userName = validator.validUsername(userName);
+                    user.userName = userName.trim();
+                }
+                if (major !== '' || major == undefined) {
+                    major = validator.validString(major, 'Major Edit');
+                    user.major = major.trim();
+                }
+                if (gradYear !== '' || gradYear == undefined) {
+                    gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
+                    user.gradYear = gradYear;
+                }
+                // // ! FIX
+                // if (line !== '' || line == undefined) {
+                //     line = validator.validString(line, 'Line Edit');
+                //     user.line = line
+                // }
+            } catch (e) {
+                res.status(400).render('errors', { error: e });
             }
         } else {
-            res.status(400).render('errors', { error: 'No user found' });
+            res.status(404).render('errors', { error: 'No user found' });
         }
 
         const updateBody = {
@@ -189,10 +212,8 @@ router.route('/profile/edit')
             gradYear: gradYear,
             userBio: bio
         }
-        console.log('update body', updateBody);
         try {
-            const updateInfo = await usersData.updateProfile(updateBody, email, password)
-
+            const updateInfo = await usersData.updateProfile(updateBody, email, password);
             res.redirect('/users/profile')
         } catch (e) {
             res.status(500).render('errors', { error: 'Internal server error' })
@@ -218,6 +239,8 @@ router.route('/searchuser/:userName')
     .get(async (req, res) => {
         // res.render('searchResults', { title: "People Found", searchCharacterByName: searchTerm, characters: names })
     });
+
+router.route('/assignBigLittle')
 
 router.route('/logout').get(async (req, res) => {
     req.session.destroy();

@@ -31,6 +31,14 @@ console.log('Dankest line created');
 const grand = await line.createLine('Grand');
 console.log('Grand line created');
 
+const suave = await line.createLine('Suave');
+console.log('Suave line created');
+
+const LaurenEspinelli = await user.registerUser('lespinelli', 'Lauren', 'Espinelli', 'lespinelli@stevens.edu', 'Test@123', 'Test@123', 'Suave')
+const LEspinelli = await user.getUserByEmail('lespinelli@stevens.edu')
+const addLEspinelli = await line.addMember(LEspinelli.line, LEspinelli);
+console.log('lespinelli registered and added');
+
 const RussellSanglang = await user.registerUser("rsanglang", "Russell", "Sanglang", "rsanglang@stevens.edu", "Test@123", "Test@123", 'Pretty Pretty Princesses');
 const RSanglang = await user.getUserByEmail("rsanglang@stevens.edu");
 console.log('rsanglang registered and added');

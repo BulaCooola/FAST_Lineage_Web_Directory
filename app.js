@@ -52,6 +52,13 @@ app.use('/users/profile', (req, res, next) => {
   next();
 });
 
+app.use('/users/profile/edit', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/users/login');
+  }
+  next();
+});
+
 app.use('/users/login', (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/users/profile');

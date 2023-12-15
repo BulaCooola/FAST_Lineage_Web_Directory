@@ -153,6 +153,11 @@ main.login {
     & .form-group input:focus {
         border: 2px solid #16164d;
     }
+
+    & .separator-line {
+        border: 1px solid #ddd;
+        margin: 20px 0;
+    }
 }
 
 main.home {
