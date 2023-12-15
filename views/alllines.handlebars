@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <main class="all-lines">
     <h1>All Lines</h1>
     <ul>
@@ -23,3 +24,33 @@
         <input type="submit" value="Search" />
     </form>
 </main>
+
+<script>
+    $(document).ready(function () {
+        // Listen for form submission
+        $('form').submit(function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the form data
+            const formData = {
+                searchType: $('#searchType').val(),
+                searchMember: $('#searchMember').val()
+            };
+
+            // Make an AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '/searchMember', // Replace with your server endpoint
+                data: formData,
+                success: function (response) {
+                    // Handle the response here
+                    console.log(response);
+                    // Update your HTML to display search results
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>

@@ -120,24 +120,6 @@ const exportedMethods = {
             email: getUser.email
         }
     },
-    async verifyUser(email, password) {
-        // same as login, but without the huge return statement
-        const userCollection = await users()
-
-        email = email.toLowerCase()
-        const getUser = await userCollection.findOne({ email: email })
-        if (getUser === null) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
-            throw `Either the email or password is invalid`;
-        }
-
-        let passMatch = await bcrypt.compare(password, getUser.password)
-        if (!passMatch) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
-            throw `Either the email or password is invalid`;
-        }
-        return getUser.userName;
-    },
     async updateProfile(user, email, password) {
         // user refers to an object describing the user
         const userCollection = await users()

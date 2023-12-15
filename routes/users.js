@@ -116,35 +116,15 @@ router.route('/profile')
 // profile edit
 router.route('/profile/edit')
     .get(async (req, res) => {
-        console.log('body', req.body);
-        console.log('session', req.session);
-        console.log('params', req.params)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
     .post(async (req, res) => {
-        // TODO: update profile (patch)
-        /* 
-            On page itself, there is going to be a form with a bunch of inputs of whatever the user 
-            wants to edit. The user should not have to put all inputs down, as they should only fill
-            out whatever they want to change. 
-            ? (we could add ajax stuff to verify if the change is legal???)
-            The req.body will still have (almost) every part of the user data. However, for the inputs
-            that they did not fill out, it will be represented as null.
-                ! This means that we need to find those that have characters in the inputs, trim them, then 
-                ! check if valid
-            The query function that will deal with this will have all possible elements that can be changed
-            as the inputs (inputs could be null or not). 
-                * if null, do not account for
-                * if !null, 
-                *   trim() and check if valid
-                * validate each using validators.js
-                * update
-        */
         let { firstName, lastName, userName, major, gradYear, bio, email, password } = req.body;
         let user = null;
 
         // validate email and password
+        console.log('stage 1')
         try {
             email = validator.validEmail(email, "Confirm Email");
             password = validator.validPassword(password);
@@ -152,58 +132,34 @@ router.route('/profile/edit')
             res.status(400).render('errors', { error: 'Either email or password is invalid' });
         }
 
+        console.log('stage 3')
         try {
-            const verifyUser = await usersData.verifyUser(email, password)
-            if (verifyUser === req.session.user.userName) {
-                console.log('Same!')
-                user = await usersData.getUserByEmail(email);
-            } else {
-                res.status(400).render('errors', { error: 'Associated username and email not the same' })
+            user = await usersData.getUserByEmail(email);
+        } catch (e) {
+            res.status(404).render('errors', { error: 'User not found' })
+        }
+
+        try {
+            if (firstName.trim() !== '') {
+                firstName = validator.validName(firstName, 'First Name Edit');
+            }
+            if (lastName.trim() !== '') {
+                lastName = validator.validName(lastName, 'Last Name Edit');
+            }
+            if (userName.trim() !== '') {
+                userName = validator.validUsername(userName);
+            }
+            if (major.trim() !== '') {
+                major = validator.validString(major, 'Major Edit');
+            }
+            if (gradYear.trim() !== '') {
+                gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
             }
         } catch (e) {
-            console.error(e);
-            res.status(500).render('errors', { error: 'Internal Server Error' });
+            res.status(400).render('errors', { error: e });
         }
 
-        console.log(req.body)
-        user = await usersData.getUserByEmail(email);
-
-
-        // ! MAKE FUNCTION THAT CHANGES VALUE OF SAID KEY
-        if (user) {
-            try {
-                if (firstName !== '' || firstName == undefined) {
-                    firstName = validator.validName(firstName, 'First Name Edit');
-                    user.firstName = firstName.trim();
-                }
-                if (lastName !== '' || lastName == undefined) {
-                    lastName = validator.validName(lastName, 'Last Name Edit');
-                    user.lastName = lastName.trim();
-                }
-                if (userName !== '' || userName == undefined) {
-                    userName = validator.validUsername(userName);
-                    user.userName = userName.trim();
-                }
-                if (major !== '' || major == undefined) {
-                    major = validator.validString(major, 'Major Edit');
-                    user.major = major.trim();
-                }
-                if (gradYear !== '' || gradYear == undefined) {
-                    gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
-                    user.gradYear = gradYear;
-                }
-                // // ! FIX
-                // if (line !== '' || line == undefined) {
-                //     line = validator.validString(line, 'Line Edit');
-                //     user.line = line
-                // }
-            } catch (e) {
-                res.status(400).render('errors', { error: e });
-            }
-        } else {
-            res.status(404).render('errors', { error: 'No user found' });
-        }
-
+        console.log('stage 4')
         const updateBody = {
             firstName: firstName,
             lastName: lastName,
@@ -241,6 +197,9 @@ router.route('/searchuser/:userName')
     });
 
 router.route('/assignBigLittle')
+    .get(async (req, res) => {
+
+    });
 
 router.route('/logout').get(async (req, res) => {
     req.session.destroy();
