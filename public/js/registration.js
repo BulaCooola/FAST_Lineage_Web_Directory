@@ -1,43 +1,119 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//     var registrationForm = document.getElementById('registration-form');
-//     var errorList = document.getElementById('error-list');
+function validateForm(formId) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById(formId);
+        const submitButton = document.getElementById('submitButton')
+        disableButton();
 
-//     registrationForm.addEventListener('submit', function (event) {
-//         event.preventDefault();
+        form.addEventListener('submit', (event) => {
+            // document.getElementById('submitButton').disabled = true;
+            if (submitButton.disabled) {
+                event.preventDefault();
+                return;
+            }
 
-//         // Collect form data
-//         var formData = new FormData(registrationForm);
+            disableButton();
 
-//         // Make AJAX request
-//         fetch('/users/register', {
-//             method: 'POST',
-//             body: formData
-//         })
-//         .then(response => {
-//             console.log('Response Headers:', response.headers);
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log('Response Body:', data);
-//             // Check if there are errors
-//             if (data.errors) {
-//                 // Clear existing error messages
-//                 errorList.innerHTML = '';
+            if (!validateInputs(formId)) {
+                enableButton();
+                event.preventDefault();
+            }
 
-//                 // Display new error messages
-//                 data.errors.forEach(function (error) {
-//                     var li = document.createElement('li');
-//                     li.textContent = error;
-//                     errorList.appendChild(li);
-//                 });
-//             } else {
-//                 // Redirect or perform any other action on success
-//                 window.location.href = '/users/login'; // Replace with your success page
-//             }
-//         })
-//         .catch(error => console.error('Error:', error));
-//     });
-// });
+        });
+
+        function enableButton() {
+            submitButton.disabled = false;
+        }
+
+        function disableButton() {
+            document.getElementById('submitButton').style.display = 'none';
+            submitButton.disabled = true;
+        }
+
+        function validateInputs(formId) {
+            const form = document.getElementById(formId);
+
+            const firstNameInput = form.querySelector('#firstNameInput');
+            const lastNameInput = form.querySelector('#lastNameInput');
+            const userNameInput = form.querySelector('#userNameInput');
+            const emailAddressInput = form.querySelector('#emailAddressInput');
+            const passwordInput = form.querySelector('#passwordInput');
+            const confirmPasswordInput = form.querySelector('#confirmPasswordInput');
+            const lineInput = form.querySelector('#lineInput');
+
+            const inputArr = [firstNameInput, lastNameInput, userNameInput, emailAddressInput, passwordInput, confirmPasswordInput, lineInput];
+
+            if (!firstNameInput || !lastNameInput || !userNameInput || !emailAddressInput || !passwordInput || !confirmPasswordInput || !lineInput) {
+                alert('All fields must be provided.');
+                return false;
+            }
+
+            if (!inputArr.every(input => typeof input === 'string' && input.trim() !== '')) {
+                alert('All inputs must be strings and/or cannot be empty spaces');
+                return false;
+            }
+
+
+            if (!/^[a-zA-Z]+$/.test(firstNameInput) || firstNameInput.length < 2 || firstNameInput.length > 25) {
+                alert('Invalid first name');
+                return false;
+            }
+
+            if (!/^[a-zA-Z]+$/.test(lastName) || lastName.length < 2 || lastName.length > 25) {
+                alert('Invalid last name');
+                return false;
+            }
+
+            if (userName.length < 3) {
+                alert(`Error: userName is too short.`);
+                return false;
+            }
+            if (userName.length > 15) {
+                alert(`Error: userName is too long.`);
+                return false;
+            }
+            const userRegex = /^(?!.*[._]{2})[a-zA-Z0-9._]{1,30}(?<![._])$/;
+            if (!(userRegex.test(userName))) {
+                alert(`Error: Username must only have alphanumeric characters, ., and _. Username must not end with . or _.`);
+                return false;
+            }
+
+            // regex from https://www.abstractapi.com/tools/email-regex-guide
+            email_regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            if (!(email_regex.test(emailAddressInput))) {
+                alert('Invalid email address');
+                return false;
+            };
+
+            // regex from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+            password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!(password_regex.test(passwordInput))) {
+                alert('Invalid password (password is not strong)');
+                return false;
+            }
+
+            if (lineInput.toLowerCase().trim() == '') {
+                alert('Invalid line');
+                return false;
+            }
+
+            enableButton()
+            return true;
+        }
+    });
+}
+
+function disableButton() {
+    document.getElementById('submitButton').style.display = 'none';
+
+    // Show the loading indicator
+    document.getElementById('loadingIndicator').style.display = 'block';
+
+    // Simulate some asynchronous operation (replace this with your actual processing logic)
+    setTimeout(() => {
+        // After completing the operation, you can optionally hide the loading indicator
+        document.getElementById('loadingIndicator').style.display = 'none';
+
+        // Show the button again
+        document.getElementById('submitButton').style.display = 'block';
+    }, 10000);
+}

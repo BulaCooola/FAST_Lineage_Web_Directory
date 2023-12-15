@@ -55,8 +55,14 @@
                 {{/each}}
             </ul>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit" id="submitButton" onclick="disableButton()">Sign Up</button>
+            <div id="loadingIndicator">
+                <div class="loader"></div>
+                <p>Loading...</p>
+            </div>
+
         </form>
+        <script src="../public/js/registration.js">validateForm('registration-form')</script>
 
     </div>
     <hr class="separator-line">

@@ -53,6 +53,8 @@ router.route('/register')
     })
     .post(async (req, res) => {
         //code here for POST
+        const submittedToken = req.body.csrfToken;
+
         let { userName, firstName, lastName, email, password, confirmPassword, line } = req.body;
 
         if (!userName || !firstName || !lastName || !email || !password || !confirmPassword || !line) {
@@ -82,13 +84,26 @@ router.route('/register')
 
         try {
             const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword, line);
+            console.log(result);
             if (result.insertedUser) {
-                const addtoline = await linesData.addMember(line, result)
-                res.redirect('/users/login');
+                let checkExists = await usersData.loginUser(email, password);
+                console.log(checkExists)
+                req.session.user = {
+                    firstName: checkExists.firstName,
+                    lastName: checkExists.lastName,
+                    userName: checkExists.userName,
+                    email: checkExists.email,
+                    line: checkExists.line,
+                };
+                const addtoline = await linesData.addMember(line, checkExists)
+                console.log(addtoline)
+                res.redirect('/users/profile');
             } else {
+                // ! different status code
                 res.status(500).render('errors', { error: 'Internal Server Error' });
             }
-        } catch (error) {
+        } catch (e) {
+            console.error(e)
             res.status(500).render('errors', { error: 'Internal Server Error' });
         }
 
