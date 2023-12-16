@@ -14,6 +14,7 @@ header {
             align-content: center;
             font-size: 50pt;
             padding: 20px;
+
             & a {
                 text-decoration: none;
                 color: black;
@@ -96,6 +97,65 @@ img {
     display: block;
     margin: 10px auto;
     width: 75%;
+}
+
+main.all-lines {
+    font-family: Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* ul list-lines, li line-name, ul list-members (class), li member-name */
+    & h1 {
+        color: #333;
+        font-weight: 1000;
+    }
+
+    & ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    & #list-lines {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 30%;
+    }
+
+    & #line-name {
+        text-align: left;
+        font-weight: 1000;
+        padding: 8px;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    & #line-name:hover {
+        background-color: rgb(102, 102, 102);
+        color: white;
+    }
+
+    /* & #line-member */
+
+    /* Style for the member lists */
+    & ul.member-list {
+        margin-left: 20px;
+        padding-left: 15px;
+        border-left: 1px solid #ccc;
+    }
+
+    /* Style for the search form */
+    & form {
+        margin-top: 20px;
+    }
+
+    /* Style for the search input and select */
+    & #searchType,
+    #searchMember {
+        margin-right: 10px;
+    }
 }
 
 /* Login form source: https://github.com/parthwebdev/UI-Components/tree/main/Log%20in/02 */
