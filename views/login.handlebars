@@ -20,11 +20,17 @@
             {{/each}}
         </ul>
 
-        <button type="submit">Login</button>
+        <button type="submit" id="submitButton" onclick="disableButton()">Login</button>
+        <div id="loadingIndicator">
+            <div class="loader"></div>
+            <p>Loading...</p>
+        </div>
     </form>
     </div>
     <hr class="separator-line">
     <p><a href="/users/register">Click here to register!</a></p>
+
+    <script src="../public/js/button.js"></script>
 
 
 </main>

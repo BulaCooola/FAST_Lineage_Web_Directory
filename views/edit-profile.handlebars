@@ -2,15 +2,10 @@
 
 <main class="edit-profile">
 
-    <div class="loading-container" id="loadingContainer">
-        <div class="loader"></div>
-        <p>Loading...</p>
-    </div>
-
     <div class="main-content" id="mainContent">
         <p><a href="/users/profile">Go Back!</a></p>
 
-        <form id="myForm" action="/users/profile/edit" method="POST">
+        <form action="/users/profile/edit" method="POST" id="myForm">
             {{!-- <!-- Image Upload -->
             <label for="profileImage">Profile Image URL:</label>
             <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
@@ -65,11 +60,19 @@
             <input type="email" id="email" name="email" required>
             <label for="password">*Password: </label>
             <input type="password" id="password" name="password" required>
-            <button type="submit">Save Changes</button>
+
+            <button type="submit" id="submitButton" onclick="disableButton()">Save Changes</button>
+            <div id="loadingIndicator">
+                <div class="loader"></div>
+                <p>Loading...</p>
+            </div>
+
         </form>
+        <script src="../../public/js/button.js"></script>
         <p><a href="/users/profile">Go Back!</a></p>
     </div>
 
-    <script src="../../public/js/edit-profile.js"></script>
+    {{!--
+    <script src="../public/js/edit-profile.js"></script> --}}
 
 </main>

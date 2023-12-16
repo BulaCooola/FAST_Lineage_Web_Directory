@@ -12,7 +12,7 @@ main.edit-profile {
     justify-content: center;
     align-content: center;
 
-    max-width: 800px;
+    /* max-width: 800px; */
     margin: 20px auto;
     padding: 20px;
     background-color: #f8f8f8;
@@ -43,13 +43,13 @@ main.edit-profile {
         inline-size: 300px;
 
     }
-/* 
-    & .loading-container {
-        display: flex;
+
+    & #loadingIndicator {
+        display: none;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        position: fixed;
+        /* position: fixed; */
         top: 0;
         left: 0;
         width: 100%;
@@ -65,10 +65,10 @@ main.edit-profile {
         width: 50px;
         height: 50px;
         animation: spin 1s linear infinite;
-    } */
+    }
 }
 
-/* @keyframes spin {
+@keyframes spin {
     0% {
         transform: rotate(0deg);
     }
@@ -76,7 +76,7 @@ main.edit-profile {
     100% {
         transform: rotate(360deg);
     }
-} */
+}
 
 main.profile {
     display: grid;

@@ -115,5 +115,5 @@ function disableButton() {
 
         // Show the button again
         document.getElementById('submitButton').style.display = 'block';
-    }, 10000);
+    }, 8000);
 }
