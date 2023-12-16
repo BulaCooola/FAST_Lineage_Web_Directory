@@ -9,7 +9,7 @@ import * as validators from '../validators.js'
 
 const exportedMethods = {
     async insertImage(image) {
-
+        
     }
 }
 
