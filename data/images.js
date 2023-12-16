@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { users } from '..config/mongoCollections.js'
-import * as validators from '../validators.js'
+import * as validation from '../validators.js'
 
 /*
     TODO createImageGallery

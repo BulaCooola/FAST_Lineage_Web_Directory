@@ -1,0 +1,14 @@
+#fastLogo {
+    width: 80px;
+    display: inline;
+    vertical-align: middle;
+}
+
+nav > ul > li {
+    display: inline-block;
+    margin: 0px 10px 10px;
+}
+
+nav > ul {
+    padding: 0px
+}

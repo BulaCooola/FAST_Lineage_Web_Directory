@@ -63,3 +63,5 @@ router.route('/login')
         res.render('profile', { user: req.session.user });
       }
     });
+
+export default router;

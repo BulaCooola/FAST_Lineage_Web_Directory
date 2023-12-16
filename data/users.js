@@ -2,7 +2,7 @@
 import {users} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import user from './users.js'
-import validation from '../validators.js';
+import * as validation from '../validators.js';
 import bcrypt from 'bcrypt';
 
 const exportedMethods = {
