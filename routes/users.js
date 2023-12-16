@@ -199,10 +199,10 @@ router.route('/searchuser')
         try {
             let searchTerm = req.body.searchMember;
             searchTerm = validator.validString(searchTerm, 'Member Name URL parameter');
-            let names = await characterData.searchCharacterByName(searchTerm);
+            let names = await usersData.getUserByUserName(searchTerm);
             res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
         } catch (e) {
-            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
         }
     });
 
