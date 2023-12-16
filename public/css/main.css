@@ -287,6 +287,12 @@ main.home {
     }
 }
 
+main.my-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 footer.home {
     display: grid;
     height: 100%;
