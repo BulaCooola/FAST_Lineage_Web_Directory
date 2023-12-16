@@ -3,7 +3,12 @@
     <h1>All Lines</h1>
     <ul>
         {{#each data}}
-        <li>{{this.lineName}} Line</li>
+        <h3><li onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li></h3>
+        <ul style="display:none;" id="{{this._id}}">
+            {{#each this.members}}
+            <li>{{this.firstName}} {{this.lastName}}</li>
+            {{/each}}
+        </ul>
         {{/each}}
     </ul>
     <h2>Or, search for a member of FAST:</h2>
@@ -53,4 +58,12 @@
             });
         });
     });
+    function toggleList(id) {
+        let hiddenList = document.getElementById(id);
+        if (hiddenList.style.display === "none") {
+            hiddenList.style.display = "block";
+        } else {
+            hiddenList.style.display = "none";
+        }
+    }
 </script>

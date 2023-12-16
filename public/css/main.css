@@ -13,18 +13,22 @@ header {
             justify-content: center;
             align-content: center;
             font-size: 50pt;
+            padding: 20px;
+            & a {
+                text-decoration: none;
+                color: black;
+            }
         }
 
         & ul {
             display: flex;
-            justify-content: center;
+            justify-content: space-evenly;
             align-content: center;
-
             background-color: rgba(153, 153, 153, 0.605);
             border: 2px solid;
-            margin: 0;
-            margin-left: 200px;
-            margin-right: 200px;
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
             padding: 0;
             padding-top: 15px;
             padding-bottom: 15px;
@@ -91,7 +95,7 @@ header {
 img {
     display: block;
     margin: 10px auto;
-    width: 30%;
+    width: 75%;
 }
 
 /* Login form source: https://github.com/parthwebdev/UI-Components/tree/main/Log%20in/02 */

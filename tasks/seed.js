@@ -34,16 +34,16 @@ console.log('Grand line created');
 const suave = await line.createLine('Suave');
 console.log('Suave line created');
 
-const LaurenEspinelli = await user.registerUser('lespinelli', 'Lauren', 'Espinelli', 'lespinelli@stevens.edu', 'Test@123', 'Test@123', 'Suave')
-const LEspinelli = await user.getUserByEmail('lespinelli@stevens.edu')
-const addLEspinelli = await line.addMember(LEspinelli.line, LEspinelli);
-console.log('lespinelli registered and added');
+const LaurenEspineli = await user.registerUser('lespineli', 'Lauren', 'Espineli', 'lespineli@stevens.edu', 'Test@123', 'Test@123', 'Suave')
+const LEspineli = await user.getUserByEmail('lespineli@stevens.edu')
+const addLEspineli = await line.addMember(LEspineli.line, LEspineli);
+console.log('lespineli registered and added');
 
-const RussellSanglang = await user.registerUser("rsanglang", "Russell", "Sanglang", "rsanglang@stevens.edu", "Test@123", "Test@123", 'Pretty Pretty Princesses');
-const RSanglang = await user.getUserByEmail("rsanglang@stevens.edu");
-console.log('rsanglang registered and added');
-const updatePPPHead = await line.addLineHead(RSanglang, 'Pretty Pretty Princesses');
-console.log('rsanglang now head of PPP');
+const RussellSangalang = await user.registerUser("rsangalang", "Russell", "Sangalang", "rsangalang@stevens.edu", "Test@123", "Test@123", 'Pretty Pretty Princesses');
+const RSangalang = await user.getUserByEmail("rsangalang@stevens.edu");
+console.log('rsangalang registered and added');
+const updatePPPHead = await line.addLineHead(RSangalang, 'Pretty Pretty Princesses');
+console.log('rsangalang now head of PPP');
 
 const DylanTran = await user.registerUser("dtran", "Dylan", "Tran", "dtran@stevens.edu", "Test@123", "Test@123", 'Dankest');
 const DTran = await user.getUserByEmail("dtran@stevens.edu");
