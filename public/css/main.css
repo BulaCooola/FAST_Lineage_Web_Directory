@@ -197,6 +197,10 @@ main.login {
     }
 }
 
+main.errorPage {
+    text-align: center;
+}
+
 main.home {
     display: grid;
     justify-content: center;

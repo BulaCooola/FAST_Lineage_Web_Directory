@@ -1,45 +1,45 @@
+<link rel="stylesheet" href="../../public/css/tree.css" />
 <h1>{{user.line}}</h1>
 <div id="tree">
-    <div class="gbig">
-        {{#if user.big.big}}
-            Your g-big (grandBig): {{user.big.big.firstName}} {{user.big.big.lastName}}
-        {{else}}
-            No gbigs
-        {{/if}}
-    </div>
-
-    <div class="big">
-        {{#if user.big}}
-            Your big: {{user.big.firstName}} {{user.big.lastName}}
-        {{else}}
-            No big
-        {{/if}}
-    </div>
-
-    <div class="user">
-        {{user.firstName}} {{user.lastName}}
-    </div>
-    
-    <div class="siblings">
-        {{#if big.littles.length}}
-            {{#each big.littles}}
-                {{big.littles.firstName}} {{big.littles.lastName}}
-            {{/each}}
-        {{/if}}
-    </div>
-
-    <div class="littles">
-        {{#if littles.length}}
-            {{#each little}}
-                {{little.firstName}} {{little.lastName}}
-            {{/each}}
-        {{/if}}
-    </div>
-</div>
-<div id="chat-container">
-    <div id="messages"></div>
-    <form>
-        <input id="message-input" type="text" placeholder="Type a message...">
-        <button type="submit">Send</button>
-    </form>
+    <ul>
+        <li>
+            {{#if user.big.big}}
+            <a>Your Grandbig: {{user.big.big.firstName}} {{user.big.big.lastName}}</a>
+            {{else}}
+            <a>No Grandbig found</a>
+            {{/if}}
+            <ul>
+                <li>
+                    {{#if user.big}}
+                    <a>Your Big: {{user.big.firstName}} {{user.big.lastName}}</a>
+                    {{else}}
+                    <a>No Big found</a>
+                    {{/if}}
+                    {{#if big.littles.length}}
+                    <ul>
+                        {{#each big.littles}}
+                        <li>
+                            <a>{{big.littles.firstName}} {{big.littles.lastName}}</a>
+                            {{#if this.littles.length}}
+                            <ul>
+                                {{#each this.littles}}
+                                <li>
+                                    <a>{{this.littles.firstName}} {{this.littles.lastName}}</a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{else}}
+                    <ul>
+                        <li>
+                            <a>{{user.firstName}} {{user.lastName}}</a>
+                        </li>
+                    </ul>
+                    {{/if}}
+            </ul>
+        </li>
+    </ul>
 </div>

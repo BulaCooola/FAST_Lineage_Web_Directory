@@ -38,10 +38,6 @@
                     <label for="lineInput">Line:</label>
                     <select id="lineInput" name="line">
                         <option disabled selected value> -- select an option -- </option>
-                        {{!-- <option value="Pretty Pretty Princesses">Pretty Pretty Princesses</option>
-                        <option value="Mya's Infinite Line Friends">Mya's Infinite Line Friends</option>
-                        <option value="Dankest">Dankest Line</option>
-                        <option value="Grand">Grand Line</option> --}}
                         {{#each lines}}
                         <option value="{{this.lineName}}">{{this.lineName}} Line</option>
                         {{/each}}

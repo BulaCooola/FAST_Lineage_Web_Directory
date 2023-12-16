@@ -70,7 +70,7 @@ app.use('/users/login', (req, res, next) => {
 
 app.use('/lines/myline', (req, res, next) => {
   if (!req.session.user) {
-    return res.redirect('/users/register')
+    return res.redirect('/users/login')
   } else {
     next();
   }
