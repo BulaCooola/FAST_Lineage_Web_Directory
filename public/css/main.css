@@ -401,6 +401,7 @@ footer.home {
     }
 
     & .socials-wrapper::before {
+        display: none;
         position: absolute;
         content: "";
         height: 8px;
