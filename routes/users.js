@@ -137,6 +137,7 @@ router.route('/profile/edit')
     .post(async (req, res) => {
         let { firstName, lastName, userName, major, gradYear, bio, email, password } = req.body;
         let user = null;
+        let line = req.session.user.line
 
         // validate email and password
         console.log('stage 1')
@@ -170,6 +171,9 @@ router.route('/profile/edit')
             if (gradYear.trim() !== '') {
                 gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
             }
+            if (bio.trim() !== '') {
+                bio = validator.validBio(bio, 'Bio Edit')
+            }
         } catch (e) {
             res.status(400).render('errors', { error: e });
         }
@@ -185,8 +189,16 @@ router.route('/profile/edit')
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);
+            req.session.user = {
+                firstName: firstName,
+                lastName: lastName,
+                userName: userName,
+                email: email,
+                line: line
+            }
             res.redirect('/users/profile')
         } catch (e) {
+            console.error(e);
             res.status(500).render('errors', { error: 'Internal server error' })
         }
     });

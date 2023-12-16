@@ -1,78 +1,82 @@
+function validateForm(formId) {
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById(formId);
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+            if (!validateInputs(formId)) {
+                event.preventDefault();
+            }
 
-//     form.addEventListener('submit', function (event) {
-//       if (!validateForm()) {
-//         event.preventDefault();
-//       }
-//     });
+        });
 
-//     function validateForm() {
-//       let isValid = true;
+        function validateInputs(formId) {
+            const form = document.getElementById(formId);
 
-//       // Validate First Name
-//       isValid = validateInput('firstNameInput', 'First Name is required.') && isValid;
+            const firstNameInput = form.querySelector('#firstNameInput');
+            const lastNameInput = form.querySelector('#lastNameInput');
+            const userNameInput = form.querySelector('#userNameInput');
+            const emailAddressInput = form.querySelector('#emailAddressInput');
+            const passwordInput = form.querySelector('#passwordInput');
+            const confirmPasswordInput = form.querySelector('#confirmPasswordInput');
+            const lineInput = form.querySelector('#lineInput');
 
-//       // Validate Last Name
-//       isValid = validateInput('lastNameInput', 'Last Name is required.') && isValid;
+            const inputArr = [firstNameInput, lastNameInput, userNameInput, emailAddressInput, passwordInput, confirmPasswordInput, lineInput];
 
-//       // Validate Username
-//       isValid = validateInput('userNameInput', 'Username is required.') && isValid;
+            if (!firstNameInput || !lastNameInput || !userNameInput || !emailAddressInput || !passwordInput || !confirmPasswordInput || !lineInput) {
+                alert('All fields must be provided.');
+                return false;
+            }
 
-//       // Validate Major
-//       isValid = validateInput('majorInput', 'Major is required.') && isValid;
+            if (!inputArr.every(input => typeof input === 'string' && input.trim() !== '')) {
+                alert('All inputs must be strings and/or cannot be empty spaces');
+                return false;
+            }
 
-//       // Validate Graduation Year
-//       isValid = validateInput('gradYearInput', 'Graduation Year is required.') && isValid;
 
-//       // Validate Bio
-//       isValid = validateInput('bioInput', 'Bio is required.') && isValid;
+            if (!/^[a-zA-Z]+$/.test(firstNameInput) || firstNameInput.length < 2 || firstNameInput.length > 25) {
+                alert('Invalid first name');
+                return false;
+            }
 
-//       // Validate Email
-//       isValid = validateEmail('email', 'Invalid email address.') && isValid;
+            if (!/^[a-zA-Z]+$/.test(lastName) || lastName.length < 2 || lastName.length > 25) {
+                alert('Invalid last name');
+                return false;
+            }
 
-//       // Validate Password
-//       isValid = validateInput('password', 'Password is required.') && isValid;
+            if (userName.length < 3) {
+                alert(`Error: userName is too short.`);
+                return false;
+            }
+            if (userName.length > 15) {
+                alert(`Error: userName is too long.`);
+                return false;
+            }
+            const userRegex = /^(?!.*[._]{2})[a-zA-Z0-9._]{1,30}(?<![._])$/;
+            if (!(userRegex.test(userName))) {
+                alert(`Error: Username must only have alphanumeric characters, ., and _. Username must not end with . or _.`);
+                return false;
+            }
 
-//       return isValid;
-//     }
+            // regex from https://www.abstractapi.com/tools/email-regex-guide
+            email_regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            if (!(email_regex.test(emailAddressInput))) {
+                alert('Invalid email address');
+                return false;
+            };
 
-//     function validateInput(id, errorMessage) {
-//       const input = document.getElementById(id);
-//       const value = input.value.trim();
-//       const errorElement = input.nextElementSibling;
+            // regex from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+            password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!(password_regex.test(passwordInput))) {
+                alert('Invalid password (password is not strong)');
+                return false;
+            }
 
-//       if (value === '') {
-//         showError(errorElement, errorMessage);
-//         return false;
-//       }
+            if (lineInput.toLowerCase().trim() == '') {
+                alert('Invalid line');
+                return false;
+            }
 
-//       hideError(errorElement);
-//       return true;
-//     }
-
-//     function validateEmail(id, errorMessage) {
-//       const input = document.getElementById(id);
-//       const value = input.value.trim();
-//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//       const errorElement = input.nextElementSibling;
-
-//       if (!emailRegex.test(value)) {
-//         showError(errorElement, errorMessage);
-//         return false;
-//       }
-
-//       hideError(errorElement);
-//       return true;
-//     }
-
-//     function showError(element, message) {
-//       element.textContent = message;
-//       element.style.color = 'red';
-//     }
-
-//     function hideError(element) {
-//       element.textContent = '';
-//     }
-//   });
+            return true;
+        }
+    });
+}

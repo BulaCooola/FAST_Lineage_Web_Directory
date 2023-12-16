@@ -1,12 +1,12 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <main class="all-lines">
     <h1>All Lines</h1>
-    <ul>
+    <ul id="list-lines">
         {{#each data}}
-        <h3><li onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li></h3>
-        <ul style="display:none;" id="{{this._id}}">
+        <h3><li id="line-name" onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li></h3>
+        <ul style="display:none;" id="{{this._id}}" class="list-members">
             {{#each this.members}}
-            <li>{{this.firstName}} {{this.lastName}}</li>
+            <li id="member-name">{{this.firstName}} {{this.lastName}}</li>
             {{/each}}
         </ul>
         {{/each}}
@@ -58,12 +58,6 @@
             });
         });
     });
-    function toggleList(id) {
-        let hiddenList = document.getElementById(id);
-        if (hiddenList.style.display === "none") {
-            hiddenList.style.display = "block";
-        } else {
-            hiddenList.style.display = "none";
-        }
-    }
 </script>
+
+<script src="../../public/js/button.js"></script>
