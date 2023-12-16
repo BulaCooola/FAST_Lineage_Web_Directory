@@ -1,5 +1,3 @@
-// validators
-// list of validation helper functionss
 import validator from 'validator';
 import { ObjectId } from 'mongodb';
 import isUrl from 'is-url';

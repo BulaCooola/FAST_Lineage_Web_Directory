@@ -1,4 +1,3 @@
-// LINES or USERS???
 import express from 'express';
 import path from 'path';
 import * as validator from '../validators.js';
@@ -11,6 +10,7 @@ const router = express.Router();
 router.route('/')
     .get(async (req, res) => {
         // return res.json({ error: 'YOU SHOULD NOT BE HERE!' });
+        // add some error / redirect to login
     });
 
 // login route (from 555 project)
@@ -109,13 +109,6 @@ router.route('/register')
 
     });
 
-
-// // home page (navigation to login, register, search profiles, and view own profile)
-// router.route('/users/home')
-//     .get(async (req, res) => {
-//         res.render('profile');
-//     });
-
 // profile
 router.route('/profile')
     .get(async (req, res) => {
@@ -124,11 +117,12 @@ router.route('/profile')
         res.render('profile', {
             pageTitle: 'Your Profile',
             user: userInfo
-            // gradYear: req.session.user.gradYear.toString()
         });
     });
 
 // profile edit
+// TODO: add profile image
+// TODO: major dropdown
 router.route('/profile/edit')
     .get(async (req, res) => {
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
@@ -203,6 +197,7 @@ router.route('/profile/edit')
         }
     });
 
+// TODO: move to ajax smth or other
 router.route('/searchuser')
     .get(async (req, res) => {
         res.render('searchResults');
@@ -218,26 +213,9 @@ router.route('/searchuser')
         }
     });
 
-router.route('/searchuser/:userName')
-    .get(async (req, res) => {
-        // res.render('searchResults', { title: "People Found", searchCharacterByName: searchTerm, characters: names })
-    });
-
-router.route('/assignBigLittle')
-    .get(async (req, res) => {
-
-    });
-
 router.route('/logout').get(async (req, res) => {
     req.session.destroy();
     return res.redirect('/');
 });
 export default router;
-
-// GET REQUESTS:
-// Search bar features: line name, profile name, graduation year, major
-// Each sends a list of names
-// ID specific pages: lines, users
-// Comment Board: comments (comments might become its own collection)
-// Nov 28, 2023 POST REQUESTS: User profile, Lines, Comments
 

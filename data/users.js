@@ -1,4 +1,3 @@
-// I don't know if we need this. Not hundred percent. - Branden Bulatao
 import { lines, users } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import user from './users.js'
@@ -90,21 +89,16 @@ const exportedMethods = {
 
     },
     async loginUser(email, password) {
-        // * Not sure what this is below
-        // validation.loginCheck(email, password)
-
         const userCollection = await users()
 
         email = email.toLowerCase()
         const getUser = await userCollection.findOne({ email: email })
         if (getUser === null) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
             throw `Either the email or password is invalid`;
         }
 
         let passMatch = await bcrypt.compare(password, getUser.password)
         if (!passMatch) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
             throw `Either the email or password is invalid`;
         }
         return {
@@ -132,11 +126,11 @@ const exportedMethods = {
             firstName = validation.validName(firstName, 'First Name Edit');
             lastName = validation.validName(lastName, 'Last Name Edit');
             userName = validation.validUsername(userName);
-            if (major === '') { major = null;}
+            if (major === '') { major = null; }
             else major = validation.validString(major, 'Major Edit');
-            if (gradYear === '') { gradYear = null;}
+            if (gradYear === '') { gradYear = null; } //cant do negative years
             else gradYear = validation.validNumber(gradYear, 'gradYear Edit');
-            if (userBio === '') { userBio = null;}
+            if (userBio === '') { userBio = null; }
             else userBio = validation.validBio(userBio, 'Bio Edit');
         } catch (e) {
             console.log(e);
@@ -184,7 +178,7 @@ const exportedMethods = {
             throw `Nothing to update`
         }
     },
-    async requestBigLittle(userName, requested_userName, role) {
+    async assignBigLittle(userName, requested_userName, role) {
         /* 
             userName = logged user
             requested_userName = selected user 
@@ -275,54 +269,6 @@ const exportedMethods = {
         }
         else {
             throw `Error: role (big or little) not announced.`
-        }
-    },
-    async assignBigLittle(userName, request_userName) {
-        const userCollection = await users()
-
-        const getUser = await userCollection.findOne({ userName: userName });
-        const getLittle = await userCollection.findOne({ userName: request_userName });
-
-        // Check if users are found.
-        if (getUser === null) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
-            throw `Error: User not found.`;
-        }
-        if (getLittle === null) {
-            throw `Error: User searched not found.`;
-        }
-
-        // Check if selected user is already your little
-        if (getUser.little.includes(getLittle)) {
-            throw `Error: Selected Member is already your little.`
-        }
-
-        // Check year
-        if (parseInt(getLittle.gradYear) < parseInt(getUser.gradYear)) {
-            throw `Error: Member cannot be your little, as they are a grade higher than you.`
-        }
-
-        // Check line
-        if (getLittle.line !== getUser.line) {
-            throw `Error: Member selected is not in your line`
-        }
-
-        const updateUserInfo = await userCollection.updateOne(
-            { _id: getUser._id },
-            { $push: { little: getLittle.userName } },
-        );
-        const updateLittleInfo = await userCollection.updateOne(
-            { _id: getLittle._id },
-            { $set: { big: getUser.userName } }
-        );
-        if (!updateUserInfo) {
-            throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
-        }
-        if (!updateLittleInfo) {
-            throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
-        }
-        else {
-            return await updateUserInfo;
         }
     }
 }

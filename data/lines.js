@@ -4,42 +4,6 @@ import user from './users.js'
 import * as validation from '../validators.js';
 
 const exportedMethods = {
-    async createaLine(
-        lineName,
-        lineDescription,
-        lineHead,
-        totalMembers,
-    ) {
-        try {
-            lineName = validation.validString(lineName, 'Line Name');
-            lineDescription = validation.validString(lineDescription, 'Line Description');
-            lineHead = validation.validObject(lineHead, 'Line Object');
-            totalMembers = validation.validNumber(totalMembers, 'Total Members');
-        } catch (e) {
-            throw `${e}`;
-        }
-
-        const linesCollection = await lines();
-        const checkExistingLine = await linesCollection.findOne({ lineName: lineName });
-        if (checkExistingLine) {
-            throw `Line Name already exists, pick another`
-        }
-
-        let newLine = {
-            lineId: new ObjectId(),
-            lineName: lineName,
-            lineDescription: lineDescription,
-            lineHead: lineHead,
-            totalMembers: 0,
-            members: null,
-            images: null
-        }
-        let insertLine = await linesCollection.insertOne(newLine);
-        if (!insertLine.acknowledged || !insertLine.insertedId) {
-            throw 'Error: Failed to add line';
-        }
-        return { insertLine: true };
-    },
     async getAllLines() {
         const linesCollection = await lines();
         return await linesCollection.find({}).toArray();
@@ -118,21 +82,6 @@ const exportedMethods = {
 
         return { status: "success", message: "Line head added successfully." };
     },
-    async updateLine(name, littles) {
-        let updatedLine = {
-            littles: littles
-        }
-        const linesCollection = await lines();
-        const newLine = await linesCollection.findOneAndReplace(
-            name,
-            updatedLine,
-            { returnDocument: 'after' }
-        );
-        if (!newLine) {
-            throw 'could not update line successfully';
-        }
-        return newLine;
-    },
     async deleteLine(name) {
         const linesCollection = await lines();
         const deletionInfo = await linesCollection.findOneAndDelete({
@@ -143,15 +92,6 @@ const exportedMethods = {
             throw 'Could not delete line ${name}';
         }
         return `${deletionInfo.name} has been deleted.`;
-    },
-    async getChildren(userName) {
-        const person = await user.getUserByUserName(userName);
-        if (person) {
-            console.log(person.children.map(childUserName => getUserByUserName(childUserName)))
-            return person.children.map(childUserName => getUserByUserName(childUserName))
-        } else {
-            return []
-        }
     },
     async addMember(lineName, member) {
         // lineName refers to the name of line
@@ -202,16 +142,8 @@ const exportedMethods = {
 
             return { status: "success", message: "Member added successfully." };
         }
-    },
-    async membersTree(user) {
-        return null;
     }
 };
-
-// // TODO getLine
-// // TODO getAllLines
-// TODO updateLine
-// TODO deleteLine
 
 export default exportedMethods;
 

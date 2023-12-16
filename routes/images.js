@@ -15,5 +15,7 @@ router.route('/')
       // res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
     }
   });
+// /images/:lineName
+// we get there from submitting filter from tag
 
 export default router;

@@ -1,4 +1,3 @@
-// app.js
 import express from 'express';
 const app = express();
 import session from 'express-session';
@@ -16,8 +15,6 @@ app.use('/public', staticDir);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(express.static('public'));
-
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
@@ -30,12 +27,10 @@ app.use(
     saveUninitialized: false
   })
 );
-
+//TODO: add middleware
 app.use('/', (req, res, next) => {
   console.log(`[${new Date().toUTCString()}] ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
-  //console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
-  //console.log(req.session)
-  console.log(req.cookie);
+  console.log(req.cookies);
   next();
 });
 
@@ -76,8 +71,6 @@ app.use('/lines/myline', (req, res, next) => {
     next();
   }
 })
-
-
 
 configRoutes(app);
 
