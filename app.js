@@ -35,6 +35,7 @@ app.use('/', (req, res, next) => {
   console.log(`[${new Date().toUTCString()}] ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
   //console.log(`${new Date().toUTCString()} ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
   //console.log(req.session)
+  console.log(req.cookie);
   next();
 });
 

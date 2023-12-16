@@ -3,30 +3,34 @@
 <main class="edit-profile">
 
     <div class="main-content" id="mainContent">
+        {{#if error}}
+        <p class="error">{{error}}</p>
+        {{/if}}
+
         <p><a href="/users/profile">Go Back!</a></p>
 
-        <form action="/users/profile/edit" method="POST" id="myForm">
+        <form action="/users/profile/edit" method="POST" id="myForm" onsubmit="validateForm('myForm')">
             {{!-- <!-- Image Upload -->
             <label for="profileImage">Profile Image URL:</label>
             <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
 
             <!-- Name -->
             <label for="firstNameInput">First Name:</label>
-            <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}">
+            <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}" required>
 
             <label for="lastNameInput">Last Name:</label>
-            <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}">
+            <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}" required>
 
             <!-- Username -->
             <label for="userNameInput">Username:</label>
-            <input type="text" id="userNameInput" name="userName" value="{{user.userName}}">
+            <input type="text" id="userNameInput" name="userName" value="{{user.userName}}" required>
 
             <!-- Major and Grad Year -->
             <label for="majorInput">Major:</label>
             <input type="text" id="majorInput" name="major" value="{{user.major}}">
 
             <label for="gradYearInput">Graduation Year:</label>
-            <input type="text" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
+            <input type="number" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
 
             <!-- Line -->
             {{!-- <label for="lineInput">Line:</label>
@@ -69,10 +73,10 @@
 
         </form>
         <script src="../../public/js/button.js"></script>
+        <script src="../../public/js/edit-profile.js">validateForm('myForm')</script>
+
         <p><a href="/users/profile">Go Back!</a></p>
     </div>
 
-    {{!--
-    <script src="../public/js/edit-profile.js"></script> --}}
 
 </main>

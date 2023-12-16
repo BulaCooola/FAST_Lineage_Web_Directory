@@ -112,7 +112,7 @@ const exportedMethods = {
             firstName: getUser.firstName,
             lastName: getUser.lastName,
             userBio: getUser.userBio,
-            major: getUser.major,   
+            major: getUser.major,
             gradYear: getUser.gradYear,
             line: getUser.line,
             big: getUser.big,
@@ -122,6 +122,36 @@ const exportedMethods = {
     },
     async updateProfile(user, email, password) {
         // user refers to an object describing the user
+
+        let { firstName, lastName, userName, major, gradYear, userBio } = user;
+        console.log(user);
+
+        try {
+            email = validation.validEmail(email, 'Email');
+            password = validation.validPassword(password);
+            firstName = validation.validName(firstName, 'First Name Edit');
+            lastName = validation.validName(lastName, 'Last Name Edit');
+            userName = validation.validUsername(userName);
+            if (major === '') { major = null;}
+            else major = validation.validString(major, 'Major Edit');
+            if (gradYear === '') { gradYear = null;}
+            else gradYear = validation.validNumber(gradYear, 'gradYear Edit');
+            if (userBio === '') { userBio = null;}
+            else userBio = validation.validBio(userBio, 'Bio Edit');
+        } catch (e) {
+            console.log(e);
+            throw `${e}`;
+        }
+
+        let cleanedUser = {
+            firstName: firstName,
+            lastName: lastName,
+            userName: userName,
+            major: major,
+            gradYear: gradYear,
+            userBio: userBio
+        }
+
         const userCollection = await users()
         email = email.toLowerCase()
         const getUser = await userCollection.findOne({ email: email })
@@ -138,7 +168,7 @@ const exportedMethods = {
         }
 
         const filteredData = Object.fromEntries(
-            Object.entries(user).filter(([key, value]) => value !== '')
+            Object.entries(cleanedUser).filter(([key, value]) => value !== 0)
         );
         console.log(filteredData);
 
@@ -200,24 +230,52 @@ const exportedMethods = {
             throw `Error: Member selected is not in your line`
         }
 
-        const updateUserInfo = await userCollection.updateOne(
-            { _id: getUser._id },
-            { $push: { little: getLittle.userName } },
-        );
-        const updateLittleInfo = await userCollection.updateOne(
-            { _id: getLittle._id },
-            { $set: { big: getLittle.userName } }
-        );
-        if (!updateUserInfo) {
-            throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
+        // if you are going to be the big
+        if (role === 'big') {
+
+            const updateUserInfo = await userCollection.updateOne(
+                { _id: getUser._id },
+                { $push: { little: getLittle.userName } },
+            );
+            const updateLittleInfo = await userCollection.updateOne(
+                { _id: getLittle._id },
+                { $set: { big: getLittle.userName } }
+            );
+
+            if (!updateUserInfo) {
+                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
+            }
+            if (!updateLittleInfo) {
+                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
+            }
+            else {
+                return await updateUserInfo;
+            }
         }
-        if (!updateLittleInfo) {
-            throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
+        // If you are going to be the little
+        if (role === 'little') {
+            const updateUserInfo = await userCollection.updateOne(
+                { _id: getUser._id },
+                { $set: { big: getLittle.userName } },
+            );
+            const updateLittleInfo = await userCollection.updateOne(
+                { _id: getLittle._id },
+                { $push: { little: getLittle.userName } }
+            );
+
+            if (!updateUserInfo) {
+                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
+            }
+            if (!updateLittleInfo) {
+                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
+            }
+            else {
+                return await updateUserInfo;
+            }
         }
         else {
-            return await updateUserInfo;
+            throw `Error: role (big or little) not announced.`
         }
-
     },
     async assignBigLittle(userName, request_userName) {
         const userCollection = await users()
