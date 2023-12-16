@@ -45,12 +45,12 @@ console.log('rsangalang registered and added');
 const updatePPPHead = await line.addLineHead(RSangalang, 'Pretty Pretty Princesses');
 console.log('rsangalang now head of PPP');
 
-const DylanTran = await user.registerUser("dtran", "Dylan", "Tran", "dtran@stevens.edu", "Test@123", "Test@123", 'Dankest');
+const DylanTran = await user.registerUser("dtran", "Dylan", "Tran", "dtran@stevens.edu", "Test@123", "Test@123", 'Pretty Pretty Princesses');
 const DTran = await user.getUserByEmail("dtran@stevens.edu");
 const addDTran = await line.addMember(DTran.line, DTran);
 console.log('dtran registered and added');
 
-const EdmundYuen = await user.registerUser("eyuen", "Edmund", "Yuen", "eyuen@stevens.edu", "Test@123", "Test@123", 'Grand');
+const EdmundYuen = await user.registerUser("eyuen", "Edmund", "Yuen", "eyuen@stevens.edu", "Test@123", "Test@123", 'Pretty Pretty Princesses');
 const EYuen = await user.getUserByEmail("eyuen@stevens.edu");
 const addEYuen = await line.addMember(EYuen.line, EYuen);
 console.log('eyuen registered and added');
