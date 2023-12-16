@@ -27,7 +27,20 @@ app.use(
     saveUninitialized: false
   })
 );
-//TODO: add middleware
+
+const isAuthenticated = (req, res, next) => {
+  if (req.session.user) {
+      res.locals.isAuthenticated = true; 
+      next();
+  } else {
+      res.locals.isAuthenticated = false;
+      next();
+  }
+};
+
+// Middleware to set isAuthenticated for all routes
+app.use(isAuthenticated);
+
 app.use('/', (req, res, next) => {
   console.log(`[${new Date().toUTCString()}] ${req.method} ${req.originalUrl} ${(req.session.user) ? "Authenticated User" : "Non-Authenticated User"}`)
   console.log(req.cookies);
