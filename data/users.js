@@ -1,5 +1,6 @@
 import { lines, users } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
+import user from './users.js'
 import * as validation from '../validators.js';
 import linesData from './lines.js';
 import bcrypt from 'bcrypt';
@@ -27,13 +28,6 @@ const exportedMethods = {
         userName = validation.validString(userName);        //subject to change
         const userCollection = await users();
         const user = await userCollection.findOne({ userName: userName });
-        if (!user) throw 'Error: User not found';
-        return user;
-    },
-    async getUserByFirstName(firstName) {
-        firstName = validation.validString(firstName);        //subject to change
-        const userCollection = await users();
-        const user = await userCollection.findOne({ firstName: { $regex: firstName, $options: 'i' } });
         if (!user) throw 'Error: User not found';
         return user;
     },
@@ -194,7 +188,7 @@ const exportedMethods = {
 
         const userInfo = await userCollection.findOne({ userName: userName });
         const newLittle = await userCollection.findOne({ userName: requested_userName });
-        const userLine = await lineCollection.findOne({ lineName: getUser.line })
+
 
         // Check if users are found.
         if (!userInfo) {
@@ -204,11 +198,9 @@ const exportedMethods = {
             throw `Error: User searched not found.`;
         }
 
-        // Check if selected user is already your little
-        if (userInfo.littles.some(little => little._id.equals(newLittle._id))) {
-            throw `Error: Selected Member is already your little.`;
-        }
+        const userLine = await lineCollection.findOne({ lineName: userInfo.line})
 
+        // Check if selected user is already your little
         if (newLittle.userName === userInfo.userName) {
             throw "Cannot assign yourself as your own big or little!";
         }
@@ -216,27 +208,13 @@ const exportedMethods = {
             throw "This person has a big already!";
         }
         if (newLittle.userName === userLine.lineHead.userName) {
-            throw "Cannot assign a line head as your little!";
-        }
-        if (userInfo.big) {
-            if ((newLittle.userName === userInfo.big)) {
-                throw "Cannot assign your big as your little!";
-            }
-            let big = await userCollection.findOne({ userName: userInfo.big });
-            if (userInfo.big.big) {
-                if ((newLittle.userName === userInfo.big.big)) {
-                    throw "Cannot assign your grandbig as your little!";
-                }
-            }
-        }
-        if (userInfo.littles.includes(newLittle) && (inputs.type === "little")) {
-            throw "This member is already your little";
+            throw "Cannot assign a line head as your little!"
         }
 
         userInfo.littles.push(newLittle);
         newLittle.big = userInfo.userName;
 
-        const updateuserInfo = await userCollection.updateOne(
+        const updateUserInfo = await userCollection.updateOne(
             { _id: userInfo._id },
             { $push: { littles: newLittle } },
         );
@@ -245,8 +223,8 @@ const exportedMethods = {
             { $set: { big: userInfo.userName } }
         );
 
-        if (!updateuserInfo) {
-            throw `Error: Could not assign ${newLittle.userName} as the little for ${getUser.userName}`;
+        if (!updateUserInfo) {
+            throw `Error: Could not assign ${newLittle.userName} as the little for ${userInfo.userName}`;
         }
         if (!updateLittleInfo) {
             throw `Error: Could not assign ${userInfo.userName} as the big for ${newLittle.userName}`
@@ -255,7 +233,7 @@ const exportedMethods = {
         // Update the littles of ancestors recursively
         await linesData.updateAncestorsLittles(userCollection, userInfo.userName, newLittle);
 
-        return updateuserInfo;
+        return updateUserInfo;
     }
 
 }
