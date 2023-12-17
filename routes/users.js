@@ -127,12 +127,20 @@ router.route('/profile')
     .get(async (req, res) => {
         console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
-        const big = await usersData.getUserByUserName(req.session.user.big)
-        res.render('profile', {
-            pageTitle: 'Your Profile',
-            user: userInfo,
-            big: big
-        });
+        if (userInfo.big) {
+            const big = await usersData.getUserByUserName(req.session.user.big);
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: big
+            });
+        } else {
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: null
+            });
+        }
     });
 
 // profile edit
@@ -190,7 +198,7 @@ router.route('/profile/edit')
             if (bio.trim() !== '') {
                 bio = validator.validBio(bio, 'Bio Edit')
             }
-            if(profilePicture.trim()!==''){
+            if (profilePicture.trim() !== '') {
                 profilePicture = validator.validLink(profilePicture, 'profilePicture Edit');
             }
         } catch (e) {
@@ -204,7 +212,7 @@ router.route('/profile/edit')
             major: major,
             gradYear: gradYear,
             userBio: bio,
-            profilePicture:profilePicture
+            profilePicture: profilePicture
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);
