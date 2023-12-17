@@ -92,6 +92,16 @@ const KAbe = await user.getUserByEmail('kabe@stevens.edu');
 const addKAbe = await line.addMember(KAbe.line, KAbe)
 console.log('kabe registered and added');
 
+const IsabelSutedjo = await user.registerUser('Isabel', 'Sutedjo', 'isutedjo@stevens.edu', 'Test@123', 'Test@123', `Dankest`);
+const ISutedjo = await user.getUserByEmail('isutedjo@stevens.edu');
+const addISutedjo = await line.addMember(ISutedjo.line, ISutedjo)
+console.log('isutedjo registered and added');
+
+const TeddyNuevaEspana = await user.registerUser('Teddy', 'NuevaEspana', 'tnuevaespana@stevens.edu', 'Test@123', 'Test@123', `Grand`);
+const TNuevaEspana = await user.getUserByEmail('tnuevaespana@stevens.edu');
+const addTNuevaEspana = await line.addMember(TNuevaEspana.line, TNuevaEspana)
+console.log('tnuevaespana registered and added');
+
 await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
 
@@ -105,6 +115,8 @@ console.log("Suave Image Added")
 await image.addImage("https://i.imgur.com/43snYnY.png", "Grand")
 console.log("Grand Image Added")
 await image.addImage("https://i.imgur.com/3Bt5MbB.png", "Dankest")
+console.log("Dankest Image Added")
+await image.addImage("https://i.imgur.com/bw5t6VM.png", "Dankest")
 console.log("Dankest Image Added")
 await image.addImage("https://i.imgur.com/L2eaJGs.png", "Mya's Infinite Line Friends")
 console.log("Mya's Infinite Line Friends Image Added")
