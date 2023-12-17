@@ -1,49 +1,58 @@
 <main class="my-line">
-<link rel="stylesheet" href="../../public/css/tree.css" />
-<h1>{{user.line}}</h1>
-<div id="tree">
-    <ul>
-        <li>
-            {{#if user.big.big}}
-            <a>Your Grandbig: {{user.big.big.firstName}} {{user.big.big.lastName}}</a>
-            {{else}}
-            <a>No Grandbig found</a>
-            {{/if}}
-            <ul>
-                <li>
-                    {{#if user.big}}
-                    <a>Your Big: {{user.big.firstName}} {{user.big.lastName}}</a>
-                    {{else}}
-                    <a>No Big found</a>
-                    {{/if}}
-                    {{#if big.littles.length}}
-                    <ul>
-                        {{#each big.littles}}
-                        <li>
-                            <a>{{big.littles.firstName}} {{big.littles.lastName}}</a>
-                            {{#if this.littles.length}}
-                            <ul>
-                                {{#each this.littles}}
-                                <li>
-                                    <a>{{this.littles.firstName}} {{this.littles.lastName}}</a>
-                                </li>
-                                {{/each}}
-                            </ul>
-                            {{/if}}
-                        </li>
-                        {{/each}}
-                    </ul>
-                    {{else}}
-                    <ul>
-                        <li>
-                            <a>{{user.firstName}} {{user.lastName}}</a>
-                        </li>
-                    </ul>
-                    {{/if}}
-            </ul>
-        </li>
-    </ul>
-</div>
+    <link rel="stylesheet" href="../../public/css/tree.css" />
+    <h1>{{user.line}}</h1>
+    <div id="tree">
+        <ul>
+            <li>
+                {{#if grandbig}}
+                <a>Your Grandbig: {{grandbig.firstName}} {{grandbig.lastName}}</a>
+                {{else}}
+                <a>No Grandbig found</a>
+                {{/if}}
+                <ul>
+                    <li>
+                        {{#if big}}
+                        <a>Your Big: {{big.firstName}} {{big.lastName}}</a>
+                        {{else}}
+                        <a>No Big found</a>
+                        {{/if}}
+                        {{#if big.littles.length}}
+                        <ul>
+                            {{#each big.littles}}
+                            <li>
+                                <a>{{big.littles.firstName}} {{big.littles.lastName}}</a>
+                                {{#if this.littles.length}}
+                                <ul>
+                                    {{#each this.littles}}
+                                    <li>
+                                        <a>{{this.firstName}} {{this.lastName}}</a>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{else}}
+                        <ul>
+                            <li>
+                                <a>{{user.firstName}} {{user.lastName}}</a>
+                                {{#if user.littles.length}}
+                                <ul>
+                                    {{#each user.littles}}
+                                    <li>
+                                        <a>{{this.firstName}} {{this.lastName}}</a>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                {{/if}}
+                            </li>
+                        </ul>
+                        {{/if}}
+                </ul>
+            </li>
+        </ul>
+    </div>
 </main>
 
 <p><a href="/lines/myline/messages">Message Board</a></p>

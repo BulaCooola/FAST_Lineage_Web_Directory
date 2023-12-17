@@ -22,10 +22,10 @@ router.route('/login')
         const inputs = req.body;
         try {
             if (!inputs.email || !inputs.password) {
-                return res.status(400).render('login', { error: "Username or password is incorrect" });
+                return res.status(400).render('errors', { error: "Username or password is incorrect" });
             }
         } catch (e) {
-            return res.status(400).render('login', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
@@ -36,6 +36,8 @@ router.route('/login')
                 userName: checkExists.userName,
                 email: checkExists.email,
                 line: checkExists.line,
+                big: checkExists.big,
+                littles: checkExists.littles
             };
             res.redirect('/users/profile');
         } catch (e) {
@@ -94,6 +96,8 @@ router.route('/register')
                     userName: checkExists.userName,
                     email: checkExists.email,
                     line: checkExists.line,
+                    big: checkExists.big,
+                    littles: checkExists.littles
                 };
                 const addtoline = await linesData.addMember(line, checkExists)
                 console.log(addtoline)

@@ -24,7 +24,24 @@ router.route('/myline')
         if (!req.session.user) {
             res.redirect('/users/login')
         } else {
-            res.render('myline', { pageTitle: 'My Line', user: req.session.user })
+            let big
+            let grandbig
+            if (req.session.user.big) {
+                big = await userData.getUserByUserName(req.session.user.big)
+            } else {
+                big = null
+            }
+            if (big) {
+                if (big.big) {
+                    grandbig = await userData.getUserByUserName(big.big)
+                } else {
+                    grandbig = null
+                }
+            } else {
+                grandbig = null
+            }
+
+            res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig})
         }
     });
 router.route('/myline/biglittle')
@@ -38,7 +55,48 @@ router.route('/myline/biglittle')
         }
     })
     .post(async (req, res) => {
-
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            let inputs = req.body
+            const userInfo = await userData.getUserByEmail(req.session.user.email)
+            const userLine = await lineData.getLineByName(userInfo.line)
+            if (!inputs.member) {
+                return res.status(400).render('errors', { error: "Fields missing" });
+            }
+            let newLittle = await userData.getUserByUserName(inputs.member)
+            console.log(newLittle)
+            if (newLittle.userName === req.session.user.userName) {
+                return res.status(400).render('errors', { error: "Cannot assign yourself as your own big or little!" });
+            }
+            if (newLittle.big) {
+                return res.status(400).render('errors', { error: "This person has a big already!" });
+            }
+            if (newLittle === userLine.lineHead) {
+                return res.status(400).render('errors', { error: "Cannot assign a line head as your little!" });
+            }
+            if (userInfo.big) {
+                if ((newLittle === userInfo.big)) {
+                    return res.status(400).render('errors', { error: "Cannot assign your big as your little!" });
+                }
+                if (userInfo.big.big) {
+                    if ((newLittle === userInfo.big.big)) {
+                        return res.status(400).render('errors', { error: "Cannot assign your grandbig as your little!" });
+                    }
+                }
+            }
+            console.log(req.session.user)
+            if (req.session.user.littles.includes(newLittle) && (inputs.type === "little")) {
+                return res.status(400).render('errors', { error: "This member is already your little" });
+            }
+            try {
+                await userData.assignLittles(req.session.user.userName, newLittle.userName)
+                console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
+                res.redirect('/lines/myline')
+            } catch(e) {
+                return res.status(400).render('errors', { error: e });
+            }
+        }
     });
 
 router.route('/myline/messages')

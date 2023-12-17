@@ -77,7 +77,7 @@ const exportedMethods = {
             major: null,
             gradYear: null,
             big: null,
-            littles: null,
+            littles: [],
             links: null,
             profilePicture: null
         }
@@ -182,7 +182,7 @@ const exportedMethods = {
             throw `Nothing to update`
         }
     },
-    async assignBigLittle(userName, requested_userName, role) {
+    async assignLittles(userName, requested_userName) {
         /* 
             userName = logged user
             requested_userName = selected user 
@@ -204,6 +204,9 @@ const exportedMethods = {
         const getUser = await userCollection.findOne({ userName: userName });
         const getLittle = await userCollection.findOne({ userName: requested_userName });
 
+        console.log(userName)
+        console.log(requested_userName)
+
         // Check if users are found.
         if (getUser === null) {
             // throw {code: 400, error: `Either the email or password is invalid`}
@@ -214,65 +217,31 @@ const exportedMethods = {
         }
 
         // Check if selected user is already your little
-        if (getUser.little.includes(getLittle)) {
+
+        if (getUser.littles.includes(getLittle)) {
             throw `Error: Selected Member is already your little.`
         }
 
-        // Check year
-        if (parseInt(getLittle.gradYear) < parseInt(getUser.gradYear)) {
-            throw `Error: Member cannot be your little, as they are a grade higher than you.`
+        getUser.littles.push(getLittle);
+        getLittle.big = getUser.userName;
+
+        const updateUserInfo = await userCollection.updateOne(
+            { _id: getUser._id },
+            { $push: { littles: getLittle } },
+        );
+        const updateLittleInfo = await userCollection.updateOne(
+            { _id: getLittle._id },
+            { $set: { big: getUser.userName } }
+        );
+
+        if (!updateUserInfo) {
+            throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
         }
-
-        // Check line
-        if (getLittle.line !== getUser.line) {
-            throw `Error: Member selected is not in your line`
-        }
-
-        // if you are going to be the big
-        if (role === 'big') {
-
-            const updateUserInfo = await userCollection.updateOne(
-                { _id: getUser._id },
-                { $push: { little: getLittle.userName } },
-            );
-            const updateLittleInfo = await userCollection.updateOne(
-                { _id: getLittle._id },
-                { $set: { big: getLittle.userName } }
-            );
-
-            if (!updateUserInfo) {
-                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
-            }
-            if (!updateLittleInfo) {
-                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
-            }
-            else {
-                return await updateUserInfo;
-            }
-        }
-        // If you are going to be the little
-        if (role === 'little') {
-            const updateUserInfo = await userCollection.updateOne(
-                { _id: getUser._id },
-                { $set: { big: getLittle.userName } },
-            );
-            const updateLittleInfo = await userCollection.updateOne(
-                { _id: getLittle._id },
-                { $push: { little: getLittle.userName } }
-            );
-
-            if (!updateUserInfo) {
-                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
-            }
-            if (!updateLittleInfo) {
-                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
-            }
-            else {
-                return await updateUserInfo;
-            }
+        if (!updateLittleInfo) {
+            throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
         }
         else {
-            throw `Error: role (big or little) not announced.`
+            return await updateUserInfo;
         }
     }
 }
