@@ -146,8 +146,32 @@ router.route('/myline/messages')
         }
     })
 
-// route for firstName
+//route for firstName
 router.route('/searchuser')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            // console.log("routes")
+            // console.log(req.body)
+            let searchValue = req.body.searchValue;
+            searchValue = validator.validString(searchValue, 'Member Name URL parameter');
+            let names = await userData.getUserByFirstName(searchValue);
+            //console.log(names);
+            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
+        }
+    });
+
+// route for major
+router.route('/searchMajor')
     .get(async (req, res) => {
         res.render('searchResults');
     })
@@ -155,10 +179,38 @@ router.route('/searchuser')
         try {
             let searchValue = req.body.searchValue;
             searchValue = validator.validString(searchValue, 'Member Name URL parameter');
-            let names = await userData.getUserByFirstName(searchValue);
-            res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+            let names = await userData.getUserByMajor(searchValue);
+            //console.log(names)
+            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
         } catch (e) {
-            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByMajor}'`, class: "error" })
+        }
+    });
+
+// route for gradYear
+router.route('/searchGradYear')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchValue = req.body.searchValue;
+            searchValue = validator.validInteger(searchValue, 'Member Name URL parameter');
+            let names = await userData.getUserByGradYear(searchValue);
+            //console.log(names)
+            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByGradYear}'`, class: "error" })
         }
     });
 

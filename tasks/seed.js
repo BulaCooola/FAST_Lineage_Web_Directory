@@ -7,16 +7,16 @@ import user from '../data/users.js'
 const db = await dbConnection();
 await db.dropDatabase();
 
-try{
+try {
     await db.collection('users').drop();
 }
-catch(err){
+catch (err) {
     console.log(err)
 }
-try{
+try {
     await db.collection('lines').drop();
 }
-catch(err){
+catch (err) {
     console.log(err)
 }
 const PrettyPrettyPrincesses = await line.createLine("Pretty Pretty Princesses");
@@ -93,6 +93,8 @@ console.log('kabe registered and added');
 
 await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
+
+await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", userName: "JAlcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "jalcalde@stevens.edu", "Test@123")
 
 console.log('Done Seeding')
 await closeConnection();

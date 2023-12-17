@@ -8,7 +8,8 @@
         </h3>
         <ul style="display:none;" id="{{this._id}}" class="list-members">
             {{#each this.members}}
-            <li id="member-name"><a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a></li>
+            <li id="member-name"><a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+            </li>
             {{/each}}
         </ul>
         {{/each}}
@@ -27,7 +28,7 @@
             <input type="text" name="searchValue" id="searchValue" />
             <button id="search" type="submit" value="Search">Search</button>
         </div>
-        <div id="myErrors" hidden></div>
+        <div id="myErrors"></div>
     </form>
     <div id="results-wrapper">
         <ul id="memberList"></ul>

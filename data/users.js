@@ -31,6 +31,27 @@ const exportedMethods = {
         if (!user) throw 'Error: User not found';
         return user;
     },
+    async getUserByFirstName(firstName) {
+        firstName = validation.validString(firstName);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ firstName: { $regex: firstName, $options: 'i' } }).toArray();
+        if (!user) throw 'Error: User not found';
+        return user;
+    },
+    async getUserByMajor(major) {
+        major = validation.validString(major);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ major: { $regex: major, $options: 'i' } }).toArray();
+        if (!user) throw 'Error: Major not found';
+        return user;
+    },
+    async getUserByGradYear(gradYear) {
+        major = validation.validNumber(gradYear);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ gradYear: { $regex: gradYear, $options: 'i' } }).toArray();
+        if (!user) throw 'Error: Graduation Year not found';
+        return user;
+    },
     async registerUser(firstName, lastName, email, password, confirmPassword, line) {
         //subject to change
         try {
@@ -195,7 +216,7 @@ const exportedMethods = {
             throw `Error: User searched not found.`;
         }
 
-        const userLine = await lineCollection.findOne({ lineName: userInfo.line})
+        const userLine = await lineCollection.findOne({ lineName: userInfo.line })
 
         // Check if selected user is already your little
         if (newLittle.userName === userInfo.userName) {
