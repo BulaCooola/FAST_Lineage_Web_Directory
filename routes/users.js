@@ -142,42 +142,12 @@ router.route('/profile')
         }
     });
 
-    router.route('/profile/:userName')
-    .get(async (req, res) => {
-        try {
-            req.params.userName = validator.validUsername(req.params.userName);
-        } catch (e) {
-            return res.status(404).render('errors', { error: e });
-        }
-        let userInfo
-        try {
-            userInfo = await usersData.getUserByUserName(req.params.userName)
-        } catch (e) {
-            return res.status(404).render('errors', { error: 'User not found' });
-        }
-        if (userInfo.big) {
-            const big = await usersData.getUserByUserName(userInfo.big);
-            res.render('profile', {
-                pageTitle: 'Your Profile',
-                user: userInfo,
-                big: big,
-                me: false
-            });
-        } else {
-            res.render('profile', {
-                pageTitle: 'Your Profile',
-                user: userInfo,
-                big: null,
-                me: false
-            });
-        }
-    });
-
 // profile edit
 // TODO: add profile image
 // TODO: major dropdown
 router.route('/profile/edit')
     .get(async (req, res) => {
+        
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
@@ -256,6 +226,37 @@ router.route('/profile/edit')
             return res.redirect('/users/profile')
         } catch (e) {
             return res.status(500).render('errors', { error: 'Internal server error' })
+        }
+    });
+    router.route('/profile/:userName')
+    .get(async (req, res) => {
+        try {
+            req.params.userName = validator.validUsername(req.params.userName);
+        } catch (e) {
+            return res.status(404).render('errors', { error: e });
+        }
+        let userInfo
+        try {
+            console.log("poop");
+            userInfo = await usersData.getUserByUserName(req.params.userName)
+        } catch (e) {
+            return res.status(404).render('errors', { error: 'User not found' });
+        }
+        if (userInfo.big) {
+            const big = await usersData.getUserByUserName(userInfo.big);
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: big,
+                me: false
+            });
+        } else {
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: null,
+                me: false
+            });
         }
     });
 
