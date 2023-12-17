@@ -21,10 +21,10 @@ router.route('/login')
         const inputs = req.body;
         try {
             if (!inputs.email || !inputs.password) {
-                return res.status(400).render('errors', { error: "Username or password is incorrect" });
+                return res.status(400).render('errors', { pageTitle: "Error", error: "Username or password is incorrect" });
             }
         } catch (e) {
-            return res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { pageTitle: "Error", error: e });
         }
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
@@ -41,7 +41,7 @@ router.route('/login')
             res.redirect('/users/profile');
         } catch (e) {
             console.error(e)
-            return res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { pageTitle: "Error", error: e });
         }
     });
 
@@ -66,7 +66,7 @@ router.route('/register')
         line = xss(line);
 
         if (!firstName || !lastName || !email || !password || !confirmPassword || !line) {
-            return res.status(400).render('errors', { error: 'All fields are required.' });
+            return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
         }
 
         console.log('--- Checked All Fields ---');
@@ -84,7 +84,7 @@ router.route('/register')
 
         console.log('--- Validating each field ---');
         if (password !== confirmPassword) {
-            return res.status(400).render('errors', { error: 'Passwords do not match.' });
+            return res.status(400).render('errors', { pageTitle: "Error", error: 'Passwords do not match.' });
         }
 
         console.log('--- Confirming password ---');
@@ -111,10 +111,10 @@ router.route('/register')
                 res.redirect('/users/profile');
             } else {
                 // ! different status code
-                res.status(500).render('errors', { error: 'Internal Server Error' });
+                res.status(500).render('errors', { pageTitle: "Error", error: 'Internal Server Error' });
             }
         } catch (e) {
-            res.status(500).render('errors', { error: e });
+            res.status(500).render('errors', { pageTitle: "Error", error: e });
         }
 
     });
@@ -187,7 +187,7 @@ router.route('/edit-profile')
             email = validator.validEmail(email, "Confirm Email");
             password = validator.validPassword(password);
         } catch (e) {
-            return res.status(400).render('errors', { error: 'Either email or password is invalid' });
+            return res.status(400).render('errors', { pageTitle: "Error", error: 'Either email or password is invalid' });
         }
 
         let userName = email.split("@")[0];
@@ -197,7 +197,7 @@ router.route('/edit-profile')
         try {
             user = await usersData.getUserByEmail(email);
         } catch (e) {
-            return res.status(404).render('errors', { error: 'User not found' })
+            return res.status(404).render('errors', { pageTitle: "Error", error: 'User not found' })
         }
 
         try {
@@ -229,7 +229,7 @@ router.route('/edit-profile')
                 spotify = validator.validSocialLink(spotify, 'spotify');
             }
         } catch (e) {
-            return res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { pageTitle: "Error", error: e });
         }
 
         const updateBody = {
@@ -255,7 +255,7 @@ router.route('/edit-profile')
             }
             return res.redirect('/users/profile')
         } catch (e) {
-            return res.status(500).render('errors', { error: e })
+            return res.status(500).render('errors', { pageTitle: "Error", error: e })
         }
     });
 router.route('/profile/:userName')
@@ -263,13 +263,13 @@ router.route('/profile/:userName')
         try {
             req.params.userName = validator.validUsername(req.params.userName);
         } catch (e) {
-            return res.status(404).render('errors', { error: e });
+            return res.status(404).render('errors', { pageTitle: "Error", error: e });
         }
         let userInfo
         try {
             userInfo = await usersData.getUserByUserName(req.params.userName)
         } catch (e) {
-            return res.status(404).render('errors', { error: 'User not found' });
+            return res.status(404).render('errors', { pageTitle: "Error", error: 'User not found' });
         }
         let type
         let id

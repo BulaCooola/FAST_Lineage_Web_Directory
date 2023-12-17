@@ -140,3 +140,7 @@ main.profile {
     border: 1px solid #ddd;
     margin: 20px 0;
 }
+
+#spotify {
+    margin-top: 10px;
+}
