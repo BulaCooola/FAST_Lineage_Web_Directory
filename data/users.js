@@ -41,7 +41,7 @@ const exportedMethods = {
             confirmPassword = validation.validPassword(confirmPassword);
             line = validation.validString(line, 'Line');
         } catch (e) {
-            throw `${e}`;
+            throw e;
         }
 
         const userCollection = await users();

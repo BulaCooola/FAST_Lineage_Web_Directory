@@ -92,7 +92,7 @@ router.route('/register')
         const userName = email.split("@")[0];
 
         try {
-            const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword, line);
+            const result = await usersData.registerUser(firstName, lastName, email, password, confirmPassword, line);
             console.log(result);
             if (result.insertedUser) {
                 let checkExists = await usersData.loginUser(email, password);
@@ -114,8 +114,7 @@ router.route('/register')
                 res.status(500).render('errors', { error: 'Internal Server Error' });
             }
         } catch (e) {
-            console.error(e)
-            res.status(500).render('errors', { error: 'Internal Server Error' });
+            res.status(500).render('errors', { error: e });
         }
 
     });

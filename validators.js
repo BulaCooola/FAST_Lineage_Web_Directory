@@ -35,7 +35,7 @@ export const validEmail = (email, argName) => {
         const emailFormat = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/; // from https://saturncloud.io/blog/how-can-i-validate-an-email-address-using-a-regular-expression/
         return emailFormat.test(contact);
     }
-    if (isValidEmail(email) === false) { throw `Error: Email address ${argName} is invalid`; }
+    if (isValidEmail(email) === false) { throw `Error: Email address ${email} is invalid`; }
     return email;
 }
 
