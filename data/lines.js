@@ -35,7 +35,8 @@ const exportedMethods = {
             lineName: name,
             lineDescription: null,
             lineHead: null,
-            members: []
+            members: [],
+            pictures:[]
         }
         let insertLine = await linesCollection.insertOne(newLine);
         if (!insertLine.acknowledged || !insertLine.insertedId) {
