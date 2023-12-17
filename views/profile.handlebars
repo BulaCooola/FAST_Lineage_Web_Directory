@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="../../public/css/profile.css" />
+{{!-- <img
+    src="https://   /mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg"
+    alt="{{user.userName}}"> --}}
+{{#if user.profilePicture}}
+<img src={{user.profilePicture}}>
+{{else}}
+<img src="../../public/images/no_profile_image.png">
+{{/if}}
+
+
+<main class="profile">
+    <h1>Welcome {{user.firstName}} {{user.lastName}}</h1>
+
+    <h2>Username:</h2>
+    <p> {{user.userName}} </p>
+
+    <h3>Line:</h3>
+    <p>{{user.line}}</p>
+
+    {{!-- {{#if isUser}}
+    <button>Edit Profile</button>
+    {{/if}} --}}
+
+    {{#if user.userBio}}
+    <h3>Bio:</h3>
+    <p>{{user.userBio}}</p>
+    {{/if}}
+
+    {{#if user.major}}
+    <h3>Major:</h3>
+    <p>{{user.major}}</p>
+    {{/if}}
+
+    {{#if user.gradYear}}
+    <h3>Class of</h3>
+    <p>{{user.gradYear}}</p>
+    {{/if}}
+
+
+    {{#if user.big}}
+    <h4>Big:</h4>
+    <p>{{user.big}}</p>
+    {{/if}}
+
+    {{#if user.littles}}
+    <h4>Littles:</h4>
+    <ul>
+        {{#each user.little}}
+        <li>{{this.firstName}} {{this.lastName}}</li>
+        {{/each}}
+    </ul>
+    {{/if}}
+
+
+    {{!-- some logic here that is basically like
+    if usersession.little.contains(user.userName) then they're ur big
+    if user.little.contains(usersession.userName) they're ur little
+    --}}
+    {{!--
+    <script src="../public/js/main.js"></script> --}}
+
+    <hr class="separator-line">
+
+    <div class="user-nav-wrapper">
+        <p><a href="/users/profile/edit">Edit Profile</a></p>
+        <p><a href="/lines/myline/biglittle">Add Bigs or Littles</a></p>
+        <p><a href="/users/logout">Log out</a></p>
+    </div>
+</main>

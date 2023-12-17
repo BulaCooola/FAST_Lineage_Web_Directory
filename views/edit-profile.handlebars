@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="../../public/css/profile.css" />
+
+<main class="edit-profile">
+
+    <div class="main-content" id="mainContent">
+        {{#if error}}
+        <p class="error">{{error}}</p>
+        {{/if}}
+
+        <p><a href="/users/profile">Go Back!</a></p>
+
+        <form action="/users/profile/edit" method="POST" id="myForm" onsubmit="validateForm('myForm')">
+            {{!-- <!-- Image Upload -->
+            <label for="profileImage">Profile Image URL:</label>
+            <input type="text" id="profileImage" name="profileImage" value="{{user.profileImage}}"> --}}
+            <!-- Name -->
+            <label for="firstNameInput">First Name:</label>
+            <input type="text" id="firstNameInput" name="firstName" value="{{user.firstName}}" required>
+
+            <label for="lastNameInput">Last Name:</label>
+            <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}" required>
+
+            <!-- Username -->
+            <label for="userNameInput">Username:</label>
+            <input type="text" id="userNameInput" name="userName" value="{{user.userName}}" required>
+
+            <!-- Major and Grad Year -->
+            <label for="majorInput">Major:</label>
+            <input type="text" id="majorInput" name="major" value="{{user.major}}" list="majorOptions">
+            <datalist id="majorOptions">
+                <option value="Accelerated Chemical Biology"></option>
+                <option value="Accelerated Law"></option>
+                <option value="Accounting and Analytics"></option>
+                <option value="Biology"></option>
+                <option value="Biomedical Engineering"></option>
+                <option value="Business and Technology"></option>
+                <option value="Business Undecided"></option>
+                <option value="Chemical Biology"></option>
+                <option value="Chemical Engineering"></option>
+                <option value="Chemistry"></option>
+                <option value="Civil Engineering"></option>
+                <option value="Computer Engineering"></option>
+                <option value="Computer Science"></option>
+                <option value="Cybersecurity"></option>
+                <option value="Data Visualization"></option>
+                <option value="Economics"></option>
+                <option value="Electrical Engineering"></option>
+                <option value="Engineering - Naval Engineering Concentration"></option>
+                <option value="Engineering - Optical Engineering Concentration"></option>
+                <option value="Engineering Management"></option>
+                <option value="Enviornmental Engineering"></option>
+                <option value="Finance"></option>
+                <option value="Humanities Undecided"></option>
+                <option value="Industrial & Systems Engineering"></option>
+                <option value="Information Systems"></option>
+                <option value="Literature"></option>
+                <option value="Management"></option>
+                <option value="Marketing Innovation & Analytics"></option>
+                <option value="Mathematics"></option>
+                <option value="Mechanical Engineering"></option>
+                <option value="Music and Technology"></option>
+                <option value="Philosophy"></option>
+                <option value="Physics"></option>
+                <option value="Quantitative Finance"></option>
+                <option value="Quantitative Social Sciences"></option>
+                <option value="Science Communication"></option>
+                <option value="Science, Technology & Society"></option>
+                <option value="Software Engineering"></option>
+                <option value="Technology Management"></option>
+                <option value="Visual Arts & Technology"></option>
+            </datalist>
+
+            <label for="gradYearInput">Graduation Year:</label>
+            <input type="number" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
+
+            <!-- Line -->
+            {{!-- <label for="lineInput">Line:</label>
+            <select id="lineInput" name="line">
+                <option value=""> -- select an option -- </option>
+                <option value="PPP">Pretty Pretty Princesses</option>
+                <option value="MILF">Mya's Infinite Line Friends</option>
+                <option value="Dankest">Dankest Line</option>
+                <option value="Grand">Grand Line</option>
+            </select> --}}
+
+            {{!-- <!-- Big and Littles -->
+            <label for="bigInput">Big:</label>
+            <input type="text" id="bigInput" name="big" value="{{user.big}}">
+
+            <label for="littles">Littles:</label>
+            <ul>
+                {{#each user.little}}
+                <li>{{this.firstName}} {{this.lastName}}</li>
+                {{/each}}
+            </ul> --}}
+
+            <!-- Bio -->
+            <label for="bioInput">Bio:</label>
+            <input type="text" id="bioInput" name="bio" rows="4" value="{{user.userBio}}">
+
+            <!-- Profile Picture -->
+            <label for="profilePictureInput">Profile Picture <p>Accepts imgur links only!</p></label>
+            <input type="text" id="profilePictureInput" name="profilePicture" value="{{user.profilePicture}}">
+
+            <hr class="separator-line">
+
+            <!-- Edit Profile Button -->
+            <label for="email">*Confirm (current) Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">*Password: </label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" id="submitButton" onclick="disableButton()">Save Changes</button>
+            <div id="loadingIndicator">
+                <div class="loader"></div>
+                <p>Loading...</p>
+            </div>
+
+        </form>
+        <script src="../../public/js/button.js"></script>
+        <script src="../../public/js/edit-profile.js">validateForm('myForm')</script>
+
+        <p><a href="/users/profile">Go Back!</a></p>
+    </div>
+
+
+</main>

@@ -1,0 +1,36 @@
+<main class="login">
+    <div class="form-wrapper"></div>
+    <h2 class="h2-login">Log In</h2>
+    <form action="/users/login" method="POST" id="login-form">
+        <div class="input-container">
+            <div class="input-group">
+                <label for="emailInput">Email Address:</label>
+                <input type="email" id="emailInput" name="email" required>
+            </div>
+
+            <div class="input-group">
+                <label for="passwordInput">Password:</label>
+                <input type="password" id="passwordInput" name="password" required>
+            </div>
+        </div>
+
+        <ul>
+            {{#each errors}}
+            <li>{{this}}</li>
+            {{/each}}
+        </ul>
+
+        <button type="submit" id="submitButton" onclick="disableButton()">Login</button>
+        <div id="loadingIndicator">
+            <div class="loader"></div>
+            <p>Loading...</p>
+        </div>
+    </form>
+    </div>
+    <hr class="separator-line">
+    <p><a href="/users/register">Click here to register!</a></p>
+
+    <script src="../public/js/button.js"></script>
+
+
+</main>

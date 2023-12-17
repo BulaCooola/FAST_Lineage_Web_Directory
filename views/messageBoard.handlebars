@@ -1,0 +1,26 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<body>
+    <h1>Message Board</h1>
+
+    {{#if error}}
+    <p class="error">{{error}}</p>
+    {{/if}}
+
+    <div id="messageList">
+        {{#each messages}}
+        <p><strong>{{userName}}:</strong> {{text}}</p>
+        {{/each}}
+    </div>
+
+    <div class="form-wrapper">
+        <form action="/lines/myline/messages" method="POST" id="messageForm">
+            <input type="text" id="user" name="user" placeholder="Your Name" value="{{user.userName}}" required
+                readonly hidden>
+            <input type="text" id="message" name="message" placeholder="Your Message" required>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+</body>
+
+{{!-- temporary --}}

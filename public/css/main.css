@@ -1,0 +1,442 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    & nav {
+        & h1 {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            font-size: 50pt;
+            padding: 20px;
+
+            & a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+
+        & ul {
+            display: flex;
+            justify-content: space-evenly;
+            align-content: center;
+            background-color: rgba(153, 153, 153, 0.605);
+            border: 2px solid;
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
+            padding: 0;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            display: flex;
+            list-style-type: none;
+
+            & li a {
+                color: rgb(0, 0, 0);
+                font-size: 20px;
+                text-decoration: none;
+                text-transform: uppercase;
+                padding: 5px 10px;
+                margin: 0px 10px;
+                position: relative;
+                transition: all .5s;
+            }
+
+            & a:hover {
+                background-color: rgb(0, 0, 0);
+                color: white;
+            }
+
+            & a::before {
+                content: "";
+                position: absolute;
+                bottom: 12px;
+                left: 12px;
+                height: 12px;
+                width: 12px;
+                border: 3px solid rgb(0, 0, 0);
+                border-width: 0 0 3px 3px;
+                opacity: 0;
+                transition: all 0.3s;
+            }
+
+            & a::after {
+                content: "";
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                height: 12px;
+                width: 12px;
+                border: 3x solid rgb(0, 0, 0);
+                border-width: 0 0 3px 3px;
+                opacity: 0;
+                transition: all 0.3s;
+            }
+
+            & a:hover::before {
+                opacity: 1;
+                bottom: -8px;
+                left: -8px;
+            }
+
+            & a:hover::after {
+                opacity: 1;
+                top: -8px;
+                right: -8px;
+            }
+        }
+    }
+}
+
+img {
+    display: block;
+    margin: 10px auto;
+    width: 75%;
+}
+
+main.all-lines {
+    font-family: Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* ul list-lines, li line-name, ul list-members (class), li member-name */
+    & h1 {
+        color: #333;
+        font-weight: 1000;
+    }
+
+    & ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    & #list-lines {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 30%;
+    }
+
+    & #line-name {
+        text-align: left;
+        font-weight: 1000;
+        padding: 8px;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    & #line-name:hover {
+        background-color: rgb(102, 102, 102);
+        color: white;
+    }
+
+    /* & #line-member */
+
+    /* Style for the member lists */
+    & ul.member-list {
+        margin-left: 20px;
+        padding-left: 15px;
+        border-left: 1px solid #ccc;
+    }
+
+    /* Style for the search form */
+    & form {
+        margin-top: 20px;
+    }
+
+    /* Style for the search input and select */
+    & #searchType,
+    #searchMember {
+        margin-right: 10px;
+    }
+}
+
+/* Login form source: https://github.com/parthwebdev/UI-Components/tree/main/Log%20in/02 */
+main.register,
+main.login {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    margin: 20px auto;
+    padding: 2.5rem 1rem;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    background-color: white;
+
+    & .h2-register,
+    .h2-login {
+        margin-bottom: 10px;
+    }
+
+    .form-wrapper>h2 {
+        margin-bottom: 0.1rem;
+    }
+
+    .form-wrapper>p {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-light);
+        margin-bottom: 2rem;
+    }
+
+    & .input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    & .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    & .form-group label {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: #16164d;
+    }
+
+    & .form-group input {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        padding: 0.5rem;
+        border: 2px solid var(--primary-lighter);
+        border-radius: 0.3rem;
+    }
+
+    & .form-group input:focus {
+        border: 2px solid #16164d;
+    }
+
+    & .separator-line {
+        border: 1px solid #ddd;
+        margin: 20px 0;
+    }
+
+    & #loadingIndicator {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* position: fixed; */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        z-index: 999;
+    }
+
+    & .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+main.errorPage {
+    text-align: center;
+}
+
+main.home {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    /* padding-bottom: 30px; */
+
+    & img {
+        display: block;
+        margin: 0 auto;
+        width: 30%;
+    }
+
+    & h1 {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        font-size: 32pt;
+    }
+
+    & p {
+        text-align: center;
+        width: 60%;
+        margin: 20px auto;
+    }
+
+    & a {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+
+        & button {
+            color: rgb(0, 0, 0);
+            font-size: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            margin: 20px 10px 10px 20px;
+            position: relative;
+            transition: all .5s;
+        }
+
+        & button:hover {
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+
+        & button::before {
+            content: "";
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            height: 12px;
+            width: 12px;
+            border: 3px solid rgb(0, 0, 0);
+            border-width: 0 0 3px 3px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        & button::after {
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            height: 12px;
+            width: 12px;
+            border: 3x solid rgb(0, 0, 0);
+            border-width: 0 0 3px 3px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        & button:hover::before {
+            opacity: 1;
+            bottom: -8px;
+            left: -8px;
+        }
+
+        & button:hover::after {
+            opacity: 1;
+            top: -8px;
+            right: -8px;
+        }
+    }
+}
+
+main.my-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer.home {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    place-items: center;
+    background: linear-gradient(315deg, #ffffff, #d7e1ec);
+
+    /* Styles from https://github.com/parthwebdev/UI-Components/blob/main/Socials/01/styles.css */
+    & .socials-wrapper {
+        display: inline-flex;
+        padding: 10px;
+        list-style: none;
+    }
+
+    & .socials-wrapper .icon {
+        position: relative;
+        background: #ffffff;
+        border-radius: 50%;
+        padding: 15px;
+        margin: 25px;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper .tooltip {
+        position: absolute;
+        top: 0;
+        font-size: 14px;
+        background: #ffffff;
+        color: #ffffff;
+        padding: 5px 8px;
+        border-radius: 5px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper::before {
+        display: none;
+        position: absolute;
+        content: "";
+        height: 8px;
+        width: 8px;
+        background: #ffffff;
+        bottom: -3px;
+        left: 50%;
+        transform: translate(-50%) rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    & .socials-wrapper:hover .tooltip {
+        top: -45px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    & .socials-wrapper .icon:hover span,
+    .socials-wrapper .icon:hover .tooltip {
+        text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .facebook {
+        --color: #1877f2;
+    }
+
+    .instagram {
+        --color: #e4405f;
+    }
+
+    .icon:hover,
+    .icon:hover .tooltip,
+    .icon:hover .tooltip::before {
+        background: var(--color);
+        color: white;
+    }
+}

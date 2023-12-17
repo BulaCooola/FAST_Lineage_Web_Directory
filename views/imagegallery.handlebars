@@ -1,0 +1,16 @@
+<h1>Image Gallery</h1>
+<form action="/images" method="GET" id="imageFilterForm">
+    <label for="tagFilter">Filter by Tag:</label>
+    <select id="tagFilter" name="tag">
+        <option disabled selected value> -- select an option -- </option>
+        <option value="PPP">Pretty Pretty Princesses</option>
+        <option value="MILF">Mya's Infinite Line Friends</option>
+        <option value="Dankest">Dankest Line</option>
+        <option value="Grand">Grand Line</option>
+    </select>
+    <button type="submit">Filter</button>
+    {{!-- Clear filter button should REDIRECT back to image gallery with all --}}
+    <button type="button">Clear Filters</button> 
+</form>
+
+{{!-- Render images from routes --}}

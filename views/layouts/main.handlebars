@@ -2,10 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
-    <link rel="stylesheet" href="../../public/css/site.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="../../public/css/main.css" />
 </head>
+
+<header>
+    <nav>
+        <h1>
+            <a href="/">FAST Family Finder</a>
+        </h1>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="/lines">All Lines</a>
+            </li>
+            <li>
+                <a href="/lines/myline">My Line</a>
+            </li>
+            <li>
+                <a href="/images">Image Gallery</a>
+            </li>
+            {{#if isAuthenticated}}
+            <li>
+                <a href="/users/profile">Profile</a>
+            </li>
+            {{else}}
+            <li>
+                <a href="/users/login">Login/Register</a>
+            </li>
+            {{/if}}
+        </ul>
+        </ul>
+    </nav>
+</header>
 
 <body>
     {{{body}}}
