@@ -1,26 +1,17 @@
 <main class="image-gallery">
+<link rel="stylesheet" href="../../public/css/gallery.css" />
 <h1>Image Gallery</h1>
-<form action="/images/filteredImages" method="GET" id="imageFilterForm">
-    <label for="tagFilterInput">Search Pictures by Tag:</label>
-    <input type="text" id="tagFilterInput" name="tagFilter" list="lineOptions">
-    <datalist id="lineOptions">
-        {{#each lines}}
-            <option id="line-name" value="{{this.lineName}}"></option>
-        {{/each}}
-    </datalist>
-    <button type="submit">See Pictures</button>
-    {{!-- Clear filter button should REDIRECT back to image gallery with all --}}
-</form>
-<form action="/images" method="GET" id="imageFilterResetFrom">
-    <button type="button">Clear Filter</button>
-</form>
-<form action="/images" method="POST" id="imageUploadForm">
-    <label for="imageURLInput">Imgur Image URL <p>Accepts imgur picture links only!</p></label>
-    <input type="text" id="imageURLInput" name="imageURL"></input>
-    <button type="submit">Upload Image</button>
-</form>
-{{#each data}}
-    <img src="{{this}}">
-{{/each}}
+<div id="formDiv">
+    <form action="/images" method="POST" id="imageUploadForm">
+        <label for="imageURLInput">Imgur Image URL <p>Accepts imgur picture links only!</p></label>
+        <input type="text" id="imageURLInput" name="imageURL"></input>
+        <button type="submit" id="submitBtn">Upload Image</button>
+    </form>
+</div>
+<div id="imagesDiv">
+    {{#each data}}
+        <img src="{{this}}" class="linePic">
+    {{/each}}
+</div>
 </main>
 {{!-- Render images from routes --}}
