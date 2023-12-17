@@ -72,7 +72,7 @@ if (biglittleForm) {
 }
 
 function validateLoginForm() {
-    const email = document.getElementById('emailAddressInput').value;
+    const email = document.getElementById('emailInput').value;
     const password = document.getElementById('passwordInput').value;
   
     if (!isValidEmail(email)) {
