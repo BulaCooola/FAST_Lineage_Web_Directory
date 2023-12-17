@@ -22,10 +22,10 @@ router.route('/login')
         const inputs = req.body;
         try {
             if (!inputs.email || !inputs.password) {
-                return res.status(400).render('login', { error: "Username or password is incorrect" });
+                return res.status(400).render('errors', { error: "Username or password is incorrect" });
             }
         } catch (e) {
-            return res.status(400).render('login', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
@@ -36,6 +36,8 @@ router.route('/login')
                 userName: checkExists.userName,
                 email: checkExists.email,
                 line: checkExists.line,
+                big: checkExists.big,
+                littles: checkExists.littles
             };
             res.redirect('/users/profile');
         } catch (e) {
@@ -94,6 +96,8 @@ router.route('/register')
                     userName: checkExists.userName,
                     email: checkExists.email,
                     line: checkExists.line,
+                    big: checkExists.big,
+                    littles: checkExists.littles
                 };
                 const addtoline = await linesData.addMember(line, checkExists)
                 console.log(addtoline)
@@ -134,19 +138,17 @@ router.route('/profile/edit')
         let line = req.session.user.line
 
         // validate email and password
-        console.log('stage 1')
         try {
             email = validator.validEmail(email, "Confirm Email");
             password = validator.validPassword(password);
         } catch (e) {
-            res.status(400).render('errors', { error: 'Either email or password is invalid' });
+            return res.status(400).render('errors', { error: 'Either email or password is invalid' });
         }
 
-        console.log('stage 3')
         try {
             user = await usersData.getUserByEmail(email);
         } catch (e) {
-            res.status(404).render('errors', { error: 'User not found' })
+            return res.status(404).render('errors', { error: 'User not found' })
         }
 
         try {
@@ -169,13 +171,12 @@ router.route('/profile/edit')
                 bio = validator.validBio(bio, 'Bio Edit')
             }
             if(profilePicture.trim()!==''){
-                profilePicture = validator.validLink(profilePicture, 'profilePicture link');
+                profilePicture = validator.validLink(profilePicture, 'profilePicture Edit');
             }
         } catch (e) {
-            res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
 
-        console.log('stage 4')
         const updateBody = {
             firstName: firstName,
             lastName: lastName,
@@ -194,10 +195,9 @@ router.route('/profile/edit')
                 email: email,
                 line: line
             }
-            res.redirect('/users/profile')
+            return res.redirect('/users/profile')
         } catch (e) {
-            console.error(e);
-            res.status(500).render('errors', { error: 'Internal server error' })
+            return res.status(500).render('errors', { error: 'Internal server error' })
         }
     });
 

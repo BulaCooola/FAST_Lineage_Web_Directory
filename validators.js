@@ -48,8 +48,8 @@ export const validBio = (string, argName) => {
 }
 
 export const validLink = (string, argName) => {
-    //regex from https://stackoverflow.com/questions/26457485/how-would-i-detect-what-is-an-imgur-picture-link-and-what-isnt
-    var imgur_re = /^https?:\/\/(\w+\.)?imgur.com\/(\w*\d\w*)+(\.[a-zA-Z]{3})?$/;
+    //regex from chatgpt
+    var imgur_re = /^(https?:\/\/)?(www\.)?(i\.)?imgur\.com\/(gallery\/)?([a-zA-Z0-9]{5,})[^\s]*$/;
     if(isUrl(string)){
         if(imgur_re.test(string)){
             return string;
