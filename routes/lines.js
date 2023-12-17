@@ -52,7 +52,7 @@ router.route('/myline/biglittle')
         } else {
             const userInfo = await userData.getUserByEmail(req.session.user.email)
             const userLine = await lineData.getLineByName(userInfo.line)
-            res.render('biglittle', { pageTitle: "Big/Little Form", user: userInfo, line: userLine })
+            return res.render('biglittle', { pageTitle: 'Big/Little Form', user: userInfo, line: userLine })
         }
     })
     .post(async (req, res) => {
