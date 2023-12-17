@@ -1,6 +1,5 @@
 import { lines, users } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
-import user from './users.js'
 import * as validation from '../validators.js';
 
 const exportedMethods = {

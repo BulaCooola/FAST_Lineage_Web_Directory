@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb";
-import { lines, users } from '../config/mongoCollections.js'
+import { lines } from '../config/mongoCollections.js'
 import * as validators from '../validators.js'
 import lineData from "./lines.js"
 

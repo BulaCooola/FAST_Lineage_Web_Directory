@@ -1,9 +1,7 @@
 import express from 'express';
-import path from 'path';
 import * as validator from '../validators.js';
 import usersData from '../data/users.js';
 import linesData from '../data/lines.js';
-import { stringify } from 'querystring';
 import xss from 'xss';
 const router = express.Router();
 
@@ -128,17 +126,50 @@ router.route('/profile')
         console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         if (userInfo.big) {
-            const big = await usersData.getUserByUserName(req.session.user.big);
+            const big = await usersData.getUserByUserName(userInfo.big);
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
-                big: big
+                big: big,
+                me: true
             });
         } else {
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
-                big: null
+                big: null,
+                me: true
+            });
+        }
+    });
+
+    router.route('/profile/:userName')
+    .get(async (req, res) => {
+        try {
+            req.params.userName = validator.validUsername(req.params.userName);
+        } catch (e) {
+            return res.status(404).render('errors', { error: e });
+        }
+        let userInfo
+        try {
+            userInfo = await usersData.getUserByUserName(req.params.userName)
+        } catch (e) {
+            return res.status(404).render('errors', { error: 'User not found' });
+        }
+        if (userInfo.big) {
+            const big = await usersData.getUserByUserName(userInfo.big);
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: big,
+                me: false
+            });
+        } else {
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: null,
+                me: false
             });
         }
     });

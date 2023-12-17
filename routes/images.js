@@ -1,5 +1,4 @@
 import express from 'express';
-import * as validator from '../validators.js';
 import imageData from '../data/images.js';
 import lineData from '../data/lines.js';
 const router = express.Router();

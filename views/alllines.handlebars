@@ -8,7 +8,7 @@
         </h3>
         <ul style="display:none;" id="{{this._id}}" class="list-members">
             {{#each this.members}}
-            <li id="member-name">{{this.firstName}} {{this.lastName}}</li>
+            <li id="member-name"><a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a></li>
             {{/each}}
         </ul>
         {{/each}}

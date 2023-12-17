@@ -2,40 +2,36 @@
     <link rel="stylesheet" href="../../public/css/tree.css" />
     <h1>{{user.line}}</h1>
     <div id="tree">
+        {{#if grandbig}}
         <ul>
             <li>
-                {{#if grandbig}}
                 {{!-- Grandbig --}}
-                <a>{{grandbig.firstName}} {{grandbig.lastName}}</a>
-                {{else}}
-                <a>No Grandbig found</a>
+                <a href="/users/profile/{{grandbig.userName}}">{{grandbig.firstName}} {{grandbig.lastName}}</a>
                 {{/if}}
+                {{#if big}}
                 <ul>
                     <li>
-                        {{#if big}}
                         {{!-- Big --}}
-                        <a>{{big.firstName}} {{big.lastName}}</a>
-                        {{else}}
-                        <a>No Big found</a>
+                        <a href="/users/profile/{{big.userName}}">{{big.firstName}} {{big.lastName}}</a>
                         {{/if}}
                         {{#if big.littles.length}}
                         <ul>
                             {{#each big.littles}}
                             <li>
                                 {{!-- Siblings --}}
-                                <a>{{this.firstName}} {{this.lastName}}</a> 
+                                <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
                                 {{#if this.littles.length}}
                                 <ul>
                                     {{#each this.littles}}
                                     <li>
                                         {{!-- Littles --}}
-                                        <a>{{this.firstName}} {{this.lastName}}</a>
+                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
                                         {{#if this.littles.length}}
                                         <ul>
                                             {{#each this.littles}}
                                             <li>
                                                 {{!-- Grandlittles --}}
-                                                <a>{{this.firstName}} {{this.lastName}}</a>
+                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
                                             </li>
                                             {{/each}}
                                         </ul>
@@ -50,12 +46,24 @@
                         {{else}}
                         <ul>
                             <li>
-                                <a>{{user.firstName}} {{user.lastName}}</a>
+                                {{!-- Me with no big --}}
+                                <a href="/users/profile/{{user.userName}}">{{user.firstName}} {{user.lastName}}</a>
                                 {{#if user.littles.length}}
                                 <ul>
                                     {{#each user.littles}}
                                     <li>
-                                        <a>{{this.firstName}} {{this.lastName}}</a>
+                                        {{!-- Littles --}}
+                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                        {{#if this.littles.length}}
+                                        <ul>
+                                            {{#each this.littles}}
+                                            <li>
+                                                {{!-- Grandlittles --}}
+                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                        {{/if}}
                                     </li>
                                     {{/each}}
                                 </ul>
@@ -63,9 +71,14 @@
                             </li>
                         </ul>
                         {{/if}}
+                        {{#if big}}
+                    </li>
                 </ul>
+                {{/if}}
+                {{#if grandbig}}
             </li>
         </ul>
+        {{/if}}
     </div>
 </main>
 

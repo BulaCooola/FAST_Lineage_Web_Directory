@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import * as validator from '../validators.js';
 import lineData from '../data/lines.js';
 import userData from '../data/users.js';
@@ -67,14 +66,13 @@ router.route('/myline/biglittle')
                 return res.status(400).render('errors', { error: "Fields missing" });
             }
             let newLittle = await userData.getUserByUserName(inputs.member)
-            console.log(newLittle)
             if (newLittle.userName === userInfo.userName) {
                 return res.status(400).render('errors', { error: "Cannot assign yourself as your own big or little!" });
             }
             if (newLittle.big) {
                 return res.status(400).render('errors', { error: "This person has a big already!" });
             }
-            if (newLittle === userLine.lineHead) {
+            if (newLittle.userName === userLine.lineHead.userName) {
                 return res.status(400).render('errors', { error: "Cannot assign a line head as your little!" });
             }
             if (userInfo.big) {
