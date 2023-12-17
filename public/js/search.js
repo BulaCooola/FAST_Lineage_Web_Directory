@@ -16,9 +16,7 @@
         for (const x of response) {
             let li = document.createElement("li")
             let a = document.createElement("a")
-            //console.log(x.username);
             a.setAttribute("href", `users/profile/${x.username}`)
-            //console.log(x._links.self.href)
             let memberName = `${x.firstName} ${x.lastName}`
             let textNode = document.createTextNode(memberName)
             a.appendChild(textNode)
@@ -67,7 +65,6 @@
                     for (const x of responseMessage) {
                         let li = document.createElement("li")
                         let a = document.createElement("a")
-                        //console.log(x);
                         a.setAttribute("href", `users/profile/${x.username}`)
                         let memberName = `${x.firstName} ${x.lastName}`
                         let textNode = document.createTextNode(memberName)

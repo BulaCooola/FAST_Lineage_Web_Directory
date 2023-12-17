@@ -138,7 +138,7 @@ router.route('/myline/messages')
                 res.render('messageBoard', { pageTitle: 'Message Board', messages: updatedLine.messages, user: req.session.user });
 
             } catch (e) {
-                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
+                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages.reverse(), user: req.session.user });
             }
 
             console.log('stage 3')
@@ -158,7 +158,8 @@ router.route('/searchuser')
             let names = await userData.getUserByFirstName(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -178,7 +179,8 @@ router.route('/searchMajor')
             let names = await userData.getUserByMajor(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -198,7 +200,8 @@ router.route('/searchGradYear')
             let names = await userData.getUserByGradYear(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
