@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { users } from '../config/mongoCollections.js'
 import * as validators from '../validators.js'
+import lines from "./lines.js"
 
 /*
     TODO createImageGallery
@@ -8,8 +9,11 @@ import * as validators from '../validators.js'
 */
 
 const exportedMethods = {
-    async insertImage(image) {
-        
+    async getAllImages() {
+        let imgArr = []
+        let lineArr = await lines.getAllLines()
+        lineArr.forEach((line) => imgArr = imgArr + line.pictures)
+        return lineArr;
     }
 }
 
