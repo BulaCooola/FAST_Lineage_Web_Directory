@@ -31,6 +31,13 @@ const exportedMethods = {
         if (!user) throw 'Error: User not found';
         return user;
     },
+    async getUserByFirstName(firstName) {
+        firstName = validation.validString(firstName);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.findOne({ firstName: { $regex: firstName, $options: 'i' } });
+        if (!user) throw 'Error: User not found';
+        return user;
+    },
     async registerUser(userName, firstName, lastName, email, password, confirmPassword, line) {
         //subject to change
         try {

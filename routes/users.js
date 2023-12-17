@@ -229,22 +229,6 @@ router.route('/profile/edit')
         }
     });
 
-// TODO: move to ajax smth or other
-router.route('/searchuser')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
-    .post(async (req, res) => {
-        try {
-            let searchTerm = xss(req.body.searchMember);
-            searchTerm = validator.validString(searchTerm, 'Member Name URL parameter');
-            let names = await usersData.getUserByUserName(searchTerm);
-            res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
-        } catch (e) {
-            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
-        }
-    });
-
 router.route('/logout').get(async (req, res) => {
     req.session.destroy();
     return res.redirect('/');

@@ -41,7 +41,9 @@ router.route('/myline')
             } else {
                 grandbig = null
             }
-            res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig})
+            res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig })
+
+            res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
         }
     });
 router.route('/myline/biglittle')
@@ -92,7 +94,7 @@ router.route('/myline/biglittle')
                 await userData.assignLittles(userInfo.userName, newLittle.userName)
                 console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
                 res.redirect('/lines/myline')
-            } catch(e) {
+            } catch (e) {
                 return res.status(400).render('errors', { error: e });
             }
         }
@@ -145,6 +147,38 @@ router.route('/myline/messages')
 
         }
     })
+
+// route for firstName
+router.route('/searchuser')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchValue = req.body.searchValue;
+            searchValue = validator.validString(searchValue, 'Member Name URL parameter');
+            let names = await userData.getUserByFirstName(searchValue);
+            res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
+        }
+    });
+
+router.get('/allusers', async (req, res) => {
+    try {
+        const allUsers = await userData.getAllUsers();
+        const filteredUsers = allUsers.map(user => ({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            major: user.major,
+            gradYear: user.gradYear
+        }));
+        res.json(filteredUsers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 export default router;
 

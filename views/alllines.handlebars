@@ -3,7 +3,9 @@
     <h2>All Lines</h2>
     <ul id="list-lines">
         {{#each data}}
-        <h4><li id="line-name" onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li></h4>
+        <h3>
+            <li id="line-name" onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li>
+        </h3>
         <ul style="display:none;" id="{{this._id}}" class="list-members">
             {{#each this.members}}
             <li id="member-name">{{this.firstName}} {{this.lastName}}</li>
@@ -11,53 +13,27 @@
         </ul>
         {{/each}}
     </ul>
-    <h3>Or, search for a member of FAST:</h3>
-    <form method="POST" action="/searchMember">
-        <div>
+    <h2>Or, search for a member of FAST:</h2>
+    <form id="searchForm">
+        <div class="form-wrapper">
             <label for="searchType">Search by:</label>
             <select id="searchType" name="searchType">
                 <option disabled selected value> -- select an option -- </option>
-                <option value="name">Name</option>
+                <option value="first-name">First Name</option>
                 <option value="class">Graduating Class</option>
                 <option value="major">Major</option>
             </select>
+            <label for="searchValue">Value: </label>
+            <input type="text" name="searchValue" id="searchValue" />
+            <button id="search" type="submit" value="Search">Search</button>
         </div>
-        <div>
-            <label for="searchMember">Value: </label>
-            <input type="text" name="searchMember" id="searchMember" />
-        </div>
-        <input type="submit" value="Search" />
+        <div id="myErrors" hidden></div>
     </form>
+    <div id="results-wrapper">
+        <ul id="memberList"></ul>
+        <ul id="showMembers"></ul>
+    </div>
 </main>
 
-<script>
-    $(document).ready(function () {
-        // Listen for form submission
-        $('form').submit(function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Get the form data
-            const formData = {
-                searchType: $('#searchType').val(),
-                searchMember: $('#searchMember').val()
-            };
-
-            // Make an AJAX request
-            $.ajax({
-                type: 'POST',
-                url: '/searchMember', // Replace with your server endpoint
-                data: formData,
-                success: function (response) {
-                    // Handle the response here
-                    console.log(response);
-                    // Update your HTML to display search results
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
-    });
-</script>
-
-<script src="../../public/js/button.js"></script>
+<script src="../public/js/button.js"></script>
+<script src="../public/js/search.js"></script>
