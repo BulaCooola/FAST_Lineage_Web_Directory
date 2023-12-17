@@ -35,6 +35,7 @@
         $(showMembers).empty()
 
         if ($(searchValue).val().trim().length == 0) {
+            myErrors.innerHTML = ""
             $('#resultDiv').show()
             $('#myErrors').show()
             let errorDiv = document.createElement("div")
