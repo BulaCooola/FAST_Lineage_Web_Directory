@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../../public/css/profile.css" />
+<link rel="stylesheet" href="../../public/css/profile.css">
 
 <main class="edit-profile">
 
@@ -23,7 +23,7 @@
             <!-- Major and Grad Year -->
             <label for="majorInput">Major:</label>
             <!--<input type="text" id="majorInput" name="major" value="{{user.major}}" list="majorOptions">-->
-            <select type="text" id="majorInput" name="major" value="{{user.major}}">
+            <select id="majorInput" name="major">
                 <option disabled selected value> -- select an option -- </option>
                 <option value="Accelerated Chemical Biology">Accelerated Chemical Biology</option>
                 <option value="Accelerated Law">Accelerated Law</option>
@@ -93,10 +93,11 @@
 
             <!-- Bio -->
             <label for="bioInput">Bio:</label>
-            <input type="text" id="bioInput" name="bio" rows="4" value="{{user.userBio}}">
+            <input type="text" id="bioInput" name="bio" value="{{user.userBio}}">
 
             <!-- Profile Picture -->
-            <label for="profilePictureInput">Profile Picture: <p>Please use valid and existing imgur picture links!</p></label>
+            <label for="profilePictureInput">Profile Picture:</label>
+            <label for="profilePictureInput">(Please use valid and existing imgur picture links!)</label>
             <input type="text" id="profilePictureInput" name="profilePicture" value="{{user.profilePicture}}">
 
             <hr class="separator-line">
@@ -121,6 +122,8 @@
             <label for="password">*Password: </label>
             <input type="password" id="password" name="password" required>
 
+            <br>
+
             <button type="submit" id="submitButton" onclick="disableButton()">Save Changes</button>
             <div id="loadingIndicator">
                 <div class="loader"></div>
@@ -129,7 +132,7 @@
 
         </form>
         <script src="../../public/js/button.js"></script>
-        <script src="../../public/js/edit-profile.js">validateForm('myForm')</script>
+        <script src="../../public/js/edit-profile.js"></script>
 
         <p><a href="/users/profile">Go Back!</a></p>
     </div>

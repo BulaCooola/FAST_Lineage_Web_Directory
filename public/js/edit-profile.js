@@ -80,3 +80,5 @@ function validateForm(formId) {
         }
     });
 }
+
+validateForm('myForm')

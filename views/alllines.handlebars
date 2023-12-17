@@ -3,15 +3,15 @@
     <h2>All Lines</h2>
     <ul id="list-lines">
         {{#each data}}
-        <h3>
-            <li id="line-name" onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li>
-        </h3>
+        <li class="line-name" onclick="toggleList('{{this._id}}')">{{this.lineName}} Line</li>
+        <li>
         <ul style="display:none;" id="{{this._id}}" class="list-members">
             {{#each this.members}}
-            <li id="member-name"><a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+            <li class="member-name"><a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
             </li>
             {{/each}}
         </ul>
+        </li>
         {{/each}}
     </ul>
     <h2>Or, search for a member of FAST:</h2>
@@ -25,7 +25,7 @@
                 <option value="major">Major</option>
             </select>
             <label for="searchValue">Value: </label>
-            <input type="text" name="searchValue" id="searchValue" />
+            <input type="text" name="searchValue" id="searchValue">
             <button id="search" type="submit" value="Search">Search</button>
         </div>
         <div id="myErrors"></div>
