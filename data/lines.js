@@ -36,7 +36,8 @@ const exportedMethods = {
             lineHead: null,
             members: [],
             pictures: [],
-            messages: []
+            messages: [],
+            hangouts: []
         }
         let insertLine = await linesCollection.insertOne(newLine);
         if (!insertLine.acknowledged || !insertLine.insertedId) {
@@ -229,6 +230,173 @@ const exportedMethods = {
             little = user;
             currentUserName = big.userName;
         }
+    },
+    // referenced lab 6
+    async getAllEvents(line) {
+        // returns a list of hangouts from line
+        const linesCollection = await line();
+        line = await linesCollection.find({}).toArray();
+        const hangouts = line.hangouts;
+        return hangouts
+    },
+    async getEventById(id, line) {
+        id = validation.validId(id);            //subject to change
+        const linesCollection = await line()
+        const lineEvent = await linesCollection.findOne({ lineName: line, 'hangouts._id': { _id: id } });
+        if (!lineEvent) throw 'Error: Event not found';
+        return lineEvent;
+    },
+    async removeHangout(id, line) {
+        id = validation.validId(id)
+        const getEvent = await this.getEventById(id, line)
+        const deletedObject = {
+            eventName: getEvent.eventName,
+            deleted: null
+        }
+        const linesCollection = await lines();
+        const deletedHangout = await linesCollection.findOneAndDelete({
+            lineName: line, 'hangouts._id': new ObjectId(id)
+        })
+        if (!deletedHangout) { throw `Error could not find event with id ${eventId}`; }
+        deletedObject.deleted = true;
+        return deletedObject;
+    },
+    async createHangout(
+        line,
+        eventName,
+        description,
+        eventLocation,
+        eventDate,
+        startTime,
+        endTime
+    ) {
+        // ! validate parameters
+
+        const newEvent = {
+            _id: new ObjectId(),
+            timestamp: new Date().toUTCString(),
+            eventName: eventName,
+            description: description,
+            eventLocation: eventLocation,
+            eventDate: eventDate,
+            startTime: startTime,
+            endTime: endTime,
+            attendees: [],
+            totalAttendees: 0
+        }
+
+        const lineCollection = await lines();
+        const insertHangout = await lineCollection.findOneAndUpdate(
+            { lineName: line },
+            {
+                $push: {
+                    hangouts: newEvent
+                }
+            }
+        )
+        if (!insertHangout.acknowledged || !insertHangout.insertedId) {
+            throw `Error: Could not add event`;
+        }
+
+        return await getEventById(newEvent._id.toString());
+    },
+    async updateHangout(
+        eventId,
+        eventName,
+        description,
+        eventLocation,
+        eventDate,
+        startTime,
+        endTime
+    ) {
+        // ! validate parameters
+
+        const updatedEvent = {
+            _id: eventId,
+            timestamp: new Date().toUTCString(),
+            eventName: eventName,
+            description: description,
+            eventLocation: eventLocation,
+            eventDate: eventDate,
+            startTime: startTime,
+            endTime: endTime,
+        }
+
+        const linesCollection = await lines();
+        const updatedHangout = await linesCollection.findOneAndUpdate(
+            { lineName: line, 'hangouts._id': new ObjectId(updatedEvent._id) },
+            { $set: { 'hangouts.&': updatedEvent } },
+            { returnDocument: 'after' }
+        );
+        if (!updatedHangout) {
+            throw `Error: Could not update event successfully`;
+        }
+        updatedHangout._id = new ObjectId();
+        return updatedHangout;
+    },
+    async addAttendee(
+        eventId,
+        line,
+        firstName,
+        lastName,
+        email
+    ) {
+        // validate attendees
+
+        const newAttendeeId = new ObjectId();
+        const newAttendee = {
+            _id: newAttendeeId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        }
+
+        const lineCollection = await lines()
+        const eventNew = await lineCollection.findOne({ lineName: line, 'hangout._id': new ObjectId(eventId) })
+        if (eventNew) {
+            eventNew.hangouts.attendees.push(newAttendee)
+            eventNew.hangouts.totalNumberOfAttendees += 1;
+            const updatedInfo = await lineCollection.findOneAndUpdate(
+                { lineName: line, 'hangout._id': new ObjectId(eventId) },
+                { $set: eventNew },
+                { returnDocument: 'after' }
+            )
+            updatedInfo._id = new ObjectId(eventId);
+            return updatedInfo
+        } else {
+            throw `Error: Could not update attendee successfully`
+        }
+    },
+    async getAllAttendees(line, eventId) {
+        eventId = validation.validId(eventId);
+
+        const linesCollection = await lines();
+        const lineHangout = await linesCollection.findOne({ lineName: line, 'hangout._id': new ObjectId(eventId) });
+        if (lineHangout) {
+            return lineHangout.hangouts.attendees;
+        } else {
+            throw `Error: Hangout not found`
+        }
+    },
+    async deleteAttendee(firstName, lastName, eventId, line) {
+        firstName = validation.validString(firstName);
+        lastName = validation.validString(lastName);
+        eventId = validation.validId(eventid);
+
+        const linesCollection = await lines();
+        const filter = { lineName: line }
+        const update = { $pull: { 'hangouts.attendees.firstName': firstName } };
+        const updatedHangout = await linesCollection.findOneAndUpdate(
+            filter,
+            update,
+            { returnDocument: 'after' }
+        )
+        if (!updatedHangout) {
+            throw `Error: attendee could not be deleted`;
+        } else {
+            return updatedHangout
+        }
+
     }
 
 };
