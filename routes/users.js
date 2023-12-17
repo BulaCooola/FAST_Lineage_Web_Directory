@@ -163,7 +163,6 @@ router.route('/profile')
 // TODO: major dropdown
 router.route('/edit-profile')
     .get(async (req, res) => {
-
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
