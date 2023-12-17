@@ -56,9 +56,8 @@ router.route('/register')
         //code here for POST
         const submittedToken = req.body.csrfToken;
 
-        let { userName, firstName, lastName, email, password, confirmPassword, line } = req.body;
+        let { firstName, lastName, email, password, confirmPassword, line } = req.body;
 
-        userName = xss(userName);
         firstName = xss(firstName);
         lastName = xss(lastName);
         email = xss(email);
@@ -66,13 +65,12 @@ router.route('/register')
         confirmPassword = xss(confirmPassword);
         line = xss(line);
 
-        if (!userName || !firstName || !lastName || !email || !password || !confirmPassword || !line) {
+        if (!firstName || !lastName || !email || !password || !confirmPassword || !line) {
             return res.status(400).render('errors', { error: 'All fields are required.' });
         }
 
         console.log('--- Checked All Fields ---');
         try {
-            userName = validator.validUsername(userName);
             firstName = validator.validName(firstName, 'First Name');
             lastName = validator.validName(lastName, 'Last Name');
             email = validator.validEmail(email, 'Email routes');
@@ -90,6 +88,8 @@ router.route('/register')
         }
 
         console.log('--- Confirming password ---');
+
+        const userName = email.split("@")[0];
 
         try {
             const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword, line);

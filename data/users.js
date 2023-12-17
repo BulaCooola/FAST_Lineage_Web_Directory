@@ -31,13 +31,12 @@ const exportedMethods = {
         if (!user) throw 'Error: User not found';
         return user;
     },
-    async registerUser(userName, firstName, lastName, email, password, confirmPassword, line) {
+    async registerUser(firstName, lastName, email, password, confirmPassword, line) {
         //subject to change
         try {
-            userName = validation.validString(userName, 'User Name');
             firstName = validation.validString(firstName, 'First Name');
             lastName = validation.validString(lastName, 'Last Name');
-            email = validation.validEmail(email, 'Email');
+            email = validation.validEmail(email, 'Email').toLowerCase();
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
             line = validation.validString(line, 'Line');
@@ -46,15 +45,13 @@ const exportedMethods = {
         }
 
         const userCollection = await users();
-        const findUser = await userCollection.findOne({ userName: userName });
-        if (findUser) {
-            throw `Error: userName already exists, pick another.`;
-        }
 
         const findEmail = await userCollection.findOne({ email: email });
         if (findEmail) {
             throw `Error: email already exists, pick another.`;
         }
+
+        const userName = email.split("@")[0];
 
         if (password !== confirmPassword) {
             throw 'Error: Passwords must be the same';
