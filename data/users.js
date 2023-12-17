@@ -147,7 +147,7 @@ const exportedMethods = {
             major: major,
             gradYear: gradYear,
             userBio: userBio,
-            profilePicture:profilePicture
+            profilePicture: profilePicture
         }
 
         const userCollection = await users()
@@ -183,43 +183,22 @@ const exportedMethods = {
         }
     },
     async assignLittles(userName, requested_userName) {
-        /* 
-            userName = logged user
-            requested_userName = selected user 
-            role = big / little
-
-            WHEN ON THE FORM FOR ASSIGNING A BIG OR LITTLE, THEY MUST 
-            When calling this function, you will take userName from cookie and the user that they call on
-            ! try using ajax
-                * When finding little or big, you will be directed to a page that searches for users
-                *   Search for all members on line and everyone on the same year as you and below:
-                *       If search parameter results in no user:  throw `Error: No results`
-                *       If they are not in your line:  throw `Error: Member choosen is not in the same line`
-                *       
-                *       
-        */
-
-        const userCollection = await users()
+        const userCollection = await users();
 
         const getUser = await userCollection.findOne({ userName: userName });
         const getLittle = await userCollection.findOne({ userName: requested_userName });
 
-        console.log(userName)
-        console.log(requested_userName)
-
         // Check if users are found.
-        if (getUser === null) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
+        if (!getUser) {
             throw `Error: User not found.`;
         }
-        if (getLittle === null) {
+        if (!getLittle) {
             throw `Error: User searched not found.`;
         }
 
         // Check if selected user is already your little
-
-        if (getUser.littles.includes(getLittle)) {
-            throw `Error: Selected Member is already your little.`
+        if (getUser.littles.some(little => little._id.equals(getLittle._id))) {
+            throw `Error: Selected Member is already your little.`;
         }
 
         getUser.littles.push(getLittle);
@@ -240,10 +219,13 @@ const exportedMethods = {
         if (!updateLittleInfo) {
             throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
         }
-        else {
-            return await updateUserInfo;
-        }
+
+        // Update the littles of ancestors recursively
+        await linesData.updateAncestorsLittles(userCollection, getUser.userName, getLittle);
+
+        return updateUserInfo;
     }
+
 }
 
 export default exportedMethods;

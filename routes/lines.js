@@ -26,8 +26,9 @@ router.route('/myline')
         } else {
             let big
             let grandbig
-            if (req.session.user.big) {
-                big = await userData.getUserByUserName(req.session.user.big)
+            let user = await userData.getUserByUserName(req.session.user.userName)
+            if (user.big) {
+                big = await userData.getUserByUserName(user.big)
             } else {
                 big = null
             }
@@ -40,8 +41,7 @@ router.route('/myline')
             } else {
                 grandbig = null
             }
-
-            res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig})
+            res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig})
         }
     });
 router.route('/myline/biglittle')
@@ -66,7 +66,7 @@ router.route('/myline/biglittle')
             }
             let newLittle = await userData.getUserByUserName(inputs.member)
             console.log(newLittle)
-            if (newLittle.userName === req.session.user.userName) {
+            if (newLittle.userName === userInfo.userName) {
                 return res.status(400).render('errors', { error: "Cannot assign yourself as your own big or little!" });
             }
             if (newLittle.big) {
@@ -85,12 +85,11 @@ router.route('/myline/biglittle')
                     }
                 }
             }
-            console.log(req.session.user)
-            if (req.session.user.littles.includes(newLittle) && (inputs.type === "little")) {
+            if (userInfo.littles.includes(newLittle) && (inputs.type === "little")) {
                 return res.status(400).render('errors', { error: "This member is already your little" });
             }
             try {
-                await userData.assignLittles(req.session.user.userName, newLittle.userName)
+                await userData.assignLittles(userInfo.userName, newLittle.userName)
                 console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
                 res.redirect('/lines/myline')
             } catch(e) {

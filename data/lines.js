@@ -36,7 +36,7 @@ const exportedMethods = {
             lineDescription: null,
             lineHead: null,
             members: [],
-            pictures:[],
+            pictures: [],
             messages: []
         }
         let insertLine = await linesCollection.insertOne(newLine);
@@ -196,7 +196,42 @@ const exportedMethods = {
         } catch (e) {
             throw `${e}`;
         }
+    },
+    async updateAncestorsLittles(userCollection, userName, little) {
+        let currentUserName = userName;
+
+        while (currentUserName) {
+            const user = await userCollection.findOne({ userName: currentUserName });
+
+            if (!user || !user.big) {
+                // If the current user does not have a big, or there is no big, exit the loop
+                break;
+            }
+
+            const big = await userCollection.findOne({ userName: user.big });
+
+            if (!big) {
+                // If the big is not found, exit the loop
+                break;
+            }
+
+            // Find the person whose little we need to add in their big's little array
+            if (big.littles.some(l => l.userName === user.userName)) {
+                console.log("we found someone equal: " + user.userName);
+                // Add the little to the user's littles within the big's littles array
+                await userCollection.updateOne(
+                    { _id: big._id, 'littles.userName': user.userName },
+                    { $push: { 'littles.$.littles': little } }
+                );
+            }
+
+
+            // Update the currentUserName for the next iteration
+            little = user;
+            currentUserName = big.userName;
+        }
     }
+
 };
 
 export default exportedMethods;
