@@ -25,11 +25,24 @@ router.route('/')
     try{
       const userLine = req.session.user.line;
       let inputs = req.body.imageURL;
-      
       console.log(inputs)
       const updateImage = await imageData.addImage(inputs, userLine);
       console.log("--- Successfully added " + inputs + " as picture.");
       res.redirect('/')
+    }
+    catch(e){
+      return res.status(400).render('errors', { error: e });
+    }
+  });
+
+  router.route('/filteredImages')
+  .get(async (req, res) => {
+    try {
+      let inputs = req.body.tagFilter;
+      //console.log(req.body)
+      console.log("tagFilter = " + req.body.tagFilter)
+      const filteredPics = await imageData.getImagesByTag(inputs)
+      res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: filteredPics})
     }
     catch(e){
       return res.status(400).render('errors', { error: e });

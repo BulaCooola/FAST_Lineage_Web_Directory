@@ -1,16 +1,18 @@
 <main class="image-gallery">
 <h1>Image Gallery</h1>
-<form action="/images" method="GET" id="imageFilterForm">
-    <label for="tagFilter">Search Pictures by Tag:</label>
-    <input type="text" id="searchTagInput" name="searchTag" list="lines">
-    <datalist id="lines">
+<form action="/images/filteredImages" method="GET" id="imageFilterForm">
+    <label for="tagFilterInput">Search Pictures by Tag:</label>
+    <input type="text" id="tagFilterInput" name="tagFilter" list="lineOptions">
+    <datalist id="lineOptions">
         {{#each lines}}
-            <option id="line-name">{{this.lineName}}</option>
+            <option id="line-name" value="{{this.lineName}}"></option>
         {{/each}}
     </datalist>
     <button type="submit">See Pictures</button>
     {{!-- Clear filter button should REDIRECT back to image gallery with all --}}
-    <button type="button">Clear Tags</button>
+</form>
+<form action="/images" method="GET" id="imageFilterResetFrom">
+    <button type="button">Clear Filter</button>
 </form>
 <form action="/images" method="POST" id="imageUploadForm">
     <label for="imageURLInput">Imgur Image URL <p>Accepts imgur picture links only!</p></label>

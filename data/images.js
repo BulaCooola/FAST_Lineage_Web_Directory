@@ -26,7 +26,22 @@ const exportedMethods = {
             throw `${e}`
         }
     },
-    
+
+    async getImagesByTag(lineName){
+        try{
+            lineName = validators.validString(lineName)
+            let imgArr = []
+            let line = await lineData.getLineByName(lineName)
+            console.log("line = " + line);
+            imgArr = imgArr.concat(line.pictures)
+            console.log("imgArr = " + imgArr)
+            return imgArr;
+        }
+        catch(e){
+            throw `${e}`
+        }
+    },
+
     async addImage(imageUrl, lineName){
         try{
             imageUrl = validators.validLink(imageUrl, "imageUrl")
