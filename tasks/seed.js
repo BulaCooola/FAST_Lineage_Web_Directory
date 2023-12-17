@@ -95,6 +95,7 @@ await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
 
 await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", userName: "JAlcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "jalcalde@stevens.edu", "Test@123")
+await user.updateProfile({ firstName: "Sean", lastName: "Payba", userName: "SPayba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "spayba@stevens.edu", "Test@123")
 
 console.log('Done Seeding')
 await closeConnection();

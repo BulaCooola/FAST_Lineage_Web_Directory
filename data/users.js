@@ -46,9 +46,9 @@ const exportedMethods = {
         return user;
     },
     async getUserByGradYear(gradYear) {
-        major = validation.validNumber(gradYear);        //subject to change
+        gradYear = validation.validNumber(gradYear);        //subject to change
         const userCollection = await users();
-        const user = await userCollection.find({ gradYear: { $regex: gradYear, $options: 'i' } }).toArray();
+        const user = await userCollection.find({ gradYear: gradYear }).toArray();
         if (!user) throw 'Error: Graduation Year not found';
         return user;
     },
