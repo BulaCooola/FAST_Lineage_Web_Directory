@@ -3,14 +3,14 @@
 <h1>Image Gallery</h1>
 <div id="formDiv">
     <form action="/images" method="POST" id="imageUploadForm">
-        <label for="imageURLInput">Imgur Image URL <p>Accepts imgur picture links only!</p></label>
+        <label for="imageURLInput">Imgur Image URL (Accepts imgur picture links only!)</label>
         <input type="text" id="imageURLInput" name="imageURL"></input>
         <button type="submit" id="submitBtn">Upload Image</button>
     </form>
 </div>
 <div id="imagesDiv">
     {{#each data}}
-        <img src="{{this}}" class="linePic">
+        <img src="{{this}}" class="linePic" alt="linePicture">
     {{/each}}
 </div>
 </main>
