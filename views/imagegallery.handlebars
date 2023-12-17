@@ -10,19 +10,12 @@
     </datalist>
     <button type="submit">See Pictures</button>
     {{!-- Clear filter button should REDIRECT back to image gallery with all --}}
-    <button type="button">Clear Tags</button> 
+    <button type="button">Clear Tags</button>
 </form>
 <form action="/images" method="POST" id="imageUploadForm">
     <label for="imageURLInput">Imgur Image URL</label>
     <input type="text" id="imageURLInput" name="imageURL"></input>
-    <label for="imageTagsInput">Image Tags</label>
-    <input type="text" id="uploadTagInput" name="uploadTag" list="lines">
-    <datalist id="lines">
-        {{#each lines}}
-            <option id="line-name">{{this.lineName}}</option>
-        {{/each}}
-    </datalist>
-    <button type="submit">Upload Image and Tags</button>
+    <button type="submit">Upload Image</button>
 </form>
 </main>
 

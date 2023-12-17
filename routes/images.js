@@ -12,11 +12,25 @@ router.route('/')
       // *FROM LAB8* res.render('characterSearchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
       const allPics = await imageData.getAllImages()
       const allLines = await lineData.getAllLines()
-      console.log("here")
-      console.log(allLines)
       res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics, lines: allLines})
     } catch (e) {
-      // res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.searchCharacterByName}'`, class: "error" })
+      return res.status(400).render('errors', { error: e });
+    }
+  })
+
+  .post(async (req, res) =>{
+    if(!req.session.user){
+      res.redirect('/users/login');
+    }
+    try{
+      const userLine = req.session.user.line;
+      let inputs = req.body;
+      await imageData.addImage(inputs, userLine);
+      console.log("--- Successfully added " + inputs + " as picture.");
+      res.redirect('/')
+    }
+    catch(e){
+      return res.status(400).render('errors', { error: e });
     }
   });
 // /images/:lineName
