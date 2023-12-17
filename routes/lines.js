@@ -41,6 +41,54 @@ router.route('/myline/biglittle')
 
     });
 
+router.route('/myline/messages')
+    .get(async (req, res) => {
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            const userLine = req.session.user.line
+            const line = await lineData.getLineByName(userLine);
+            console.log(line.messages)
+            res.render('messageBoard', { pageTitle: 'Message Board', messages: line.messages, user: req.session.user })
+        }
+    })
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            res.redirect('/users/login');
+        } else {
+            // req.body should be: userName, message
+            // access line through req.session
+            let { user, message } = req.body
+            // let userName = req.session.user.userName;
+            let line = req.session.user.line;
+
+            console.log('stage 1');
+            try {
+                user = validator.validString(user, 'UserName');
+                message = validator.validString(message, 'Text');
+                line = validator.validString(line, 'Line');
+            } catch (e) {
+                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
+            }
+
+            console.log('stage 2');
+
+            try {
+                const insertmessage = await lineData.createMessage(user, message, line);
+                console.log(insertmessage)
+                const updatedLine = await lineData.getLineByName(line);
+                console.log(updatedLine);
+                res.render('messageBoard', { pageTitle: 'Message Board', messages: updatedLine.messages, user: req.session.user });
+
+            } catch (e) {
+                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
+            }
+
+            console.log('stage 3')
+
+        }
+    })
+
 export default router;
 
 // GET REQUESTS:

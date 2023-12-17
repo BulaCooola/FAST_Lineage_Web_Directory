@@ -36,7 +36,8 @@ const exportedMethods = {
             lineDescription: null,
             lineHead: null,
             members: [],
-            pictures:[]
+            pictures:[],
+            messages: []
         }
         let insertLine = await linesCollection.insertOne(newLine);
         if (!insertLine.acknowledged || !insertLine.insertedId) {
@@ -142,6 +143,58 @@ const exportedMethods = {
             if (updateMembers.modifiedCount === 0) { throw `Error: Could not add line Head` }
 
             return { status: "success", message: "Member added successfully." };
+        }
+    },
+    async createMessage(userName, msg, line) {
+        const linesCollection = await lines();
+
+        console.log('data stage 1');
+
+        try {
+            userName = validation.validString(userName, 'UserName');
+            msg = validation.validString(msg, 'Message');
+            if (msg.length > 1000) {
+                throw `Error: Message limit passed (1000 characters).`;
+            }
+            line = validation.validString(line, 'Line');
+        } catch (e) {
+            throw `${e}`
+        }
+
+        console.log('data stage 2');
+        try {
+            // get the line4
+            const getLine = await linesCollection.findOne({ lineName: line })
+            if (!getLine) {
+                // 404
+                throw `Error: Line not found`;
+            }
+            console.log('data stage 2.1');
+            console.log(getLine.messages.length)
+
+
+            const newMessage = {
+                _id: getLine.messages.length,
+                timestamp: new Date().toUTCString(),
+                userName: userName,
+                text: msg
+            }
+
+            console.log('data stage 2.2');
+
+            const result = await linesCollection.updateOne(
+                { lineName: line },
+                { $push: { messages: newMessage } }
+            );
+
+            if (result.matchedCount !== 1) {
+                throw `Error: Unable to add message to database.`;
+            }
+
+            console.log('data stage 2.3');
+
+        } catch (e) {
+            throw `${e}`;
         }
     }
 };
