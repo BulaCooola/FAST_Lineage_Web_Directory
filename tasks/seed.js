@@ -1,6 +1,7 @@
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import line from '../data/lines.js'
 import user from '../data/users.js'
+import image from '../data/images.js'
 
 //Test Connection to Database
 
@@ -96,6 +97,17 @@ await user.assignLittles("jalcalde", "kabe")
 
 await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", userName: "JAlcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "jalcalde@stevens.edu", "Test@123")
 await user.updateProfile({ firstName: "Sean", lastName: "Payba", userName: "SPayba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "spayba@stevens.edu", "Test@123")
+
+await image.addImage("https://i.imgur.com/E1EUKpZ.jpg", "Pretty Pretty Princesses")
+console.log("Pretty Pretty Princessses Image Added")
+await image.addImage("https://i.imgur.com/cisBXv1.png", "Suave")
+console.log("Suave Image Added")
+await image.addImage("https://i.imgur.com/43snYnY.png", "Grand")
+console.log("Grand Image Added")
+await image.addImage("https://i.imgur.com/3Bt5MbB.png", "Dankest")
+console.log("Dankest Image Added")
+await image.addImage("https://i.imgur.com/L2eaJGs.png", "Mya's Infinite Line Friends")
+console.log("Mya's Infinite Line Friends Image Added")
 
 console.log('Done Seeding')
 await closeConnection();
