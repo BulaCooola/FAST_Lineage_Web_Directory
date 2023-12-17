@@ -447,3 +447,7 @@ main.image-gallery {
     align-items: center;
     gap: 5px;
 }
+
+#results-wrapper {
+    padding-bottom: 20px
+}
