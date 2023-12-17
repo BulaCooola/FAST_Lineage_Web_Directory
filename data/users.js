@@ -137,7 +137,6 @@ const exportedMethods = {
             if (profilePicture === '') { profilePicture = null; }
             else profilePicture = validation.validLink(profilePicture, 'profilePicture Edit');
         } catch (e) {
-            console.log(e);
             throw `${e}`;
         }
 

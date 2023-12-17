@@ -134,19 +134,17 @@ router.route('/profile/edit')
         let line = req.session.user.line
 
         // validate email and password
-        console.log('stage 1')
         try {
             email = validator.validEmail(email, "Confirm Email");
             password = validator.validPassword(password);
         } catch (e) {
-            res.status(400).render('errors', { error: 'Either email or password is invalid' });
+            return res.status(400).render('errors', { error: 'Either email or password is invalid' });
         }
 
-        console.log('stage 3')
         try {
             user = await usersData.getUserByEmail(email);
         } catch (e) {
-            res.status(404).render('errors', { error: 'User not found' })
+            return res.status(404).render('errors', { error: 'User not found' })
         }
 
         try {
@@ -169,13 +167,12 @@ router.route('/profile/edit')
                 bio = validator.validBio(bio, 'Bio Edit')
             }
             if(profilePicture.trim()!==''){
-                profilePicture = validator.validLink(profilePicture, 'profilePicture link');
+                profilePicture = validator.validLink(profilePicture, 'profilePicture Edit');
             }
         } catch (e) {
-            res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
 
-        console.log('stage 4')
         const updateBody = {
             firstName: firstName,
             lastName: lastName,
@@ -194,10 +191,9 @@ router.route('/profile/edit')
                 email: email,
                 line: line
             }
-            res.redirect('/users/profile')
+            return res.redirect('/users/profile')
         } catch (e) {
-            console.error(e);
-            res.status(500).render('errors', { error: 'Internal server error' })
+            return res.status(500).render('errors', { error: 'Internal server error' })
         }
     });
 
