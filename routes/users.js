@@ -145,7 +145,7 @@ router.route('/profile')
 // profile edit
 // TODO: add profile image
 // TODO: major dropdown
-router.route('/profile/edit')
+router.route('/edit-profile')
     .get(async (req, res) => {
         
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
