@@ -4,6 +4,7 @@ import * as validator from '../validators.js';
 import usersData from '../data/users.js';
 import linesData from '../data/lines.js';
 import { stringify } from 'querystring';
+import xss from 'xss';
 const router = express.Router();
 
 // middleware to not be there?
@@ -58,6 +59,14 @@ router.route('/register')
         const submittedToken = req.body.csrfToken;
 
         let { userName, firstName, lastName, email, password, confirmPassword, line } = req.body;
+
+        userName = xss(userName);
+        firstName = xss(firstName);
+        lastName = xss(lastName);
+        email = xss(email);
+        password = xss(password);
+        confirmPassword = xss(confirmPassword);
+        line = xss(line);
 
         if (!userName || !firstName || !lastName || !email || !password || !confirmPassword || !line) {
             return res.status(400).render('errors', { error: 'All fields are required.' });
@@ -134,8 +143,17 @@ router.route('/profile/edit')
     })
     .post(async (req, res) => {
         let { firstName, lastName, userName, major, gradYear, bio, email, password, profilePicture } = req.body;
+        firstName = xss(firstName);
+        lastName = xss(lastName);
+        userName = xss(userName);
+        major = xss(major);
+        gradYear = xss(gradYear);
+        bio = xss(bio);
+        email = xss(email);
+        password = xss(password);
+        profilePicture = xss(profilePicture);
         let user = null;
-        let line = req.session.user.line
+        let line = xss(req.session.user.line)
 
         // validate email and password
         try {
@@ -208,7 +226,7 @@ router.route('/searchuser')
     })
     .post(async (req, res) => {
         try {
-            let searchTerm = req.body.searchMember;
+            let searchTerm = xss(req.body.searchMember);
             searchTerm = validator.validString(searchTerm, 'Member Name URL parameter');
             let names = await usersData.getUserByUserName(searchTerm);
             res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
