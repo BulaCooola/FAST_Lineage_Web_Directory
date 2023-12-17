@@ -27,7 +27,6 @@ if (biglittleForm) {
 }
 
   function validateRegisterForm() {
-    const userName = document.getElementById('userNameInput').value;
     const firstName = document.getElementById('firstNameInput').value;
     const lastName = document.getElementById('lastNameInput').value;
     const email = document.getElementById('emailInput').value;
