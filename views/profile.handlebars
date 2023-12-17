@@ -38,15 +38,15 @@
     {{/if}}
 
 
-    {{#if user.big}}
+    {{#if big}}
     <h4>Big:</h4>
-    <p>{{user.big}}</p>
+    <p>{{big.firstName}} {{big.lastName}}</p>
     {{/if}}
 
-    {{#if user.littles}}
+    {{#if user.littles.length}}
     <h4>Littles:</h4>
     <ul>
-        {{#each user.little}}
+        {{#each user.littles}}
         <li>{{this.firstName}} {{this.lastName}}</li>
         {{/each}}
     </ul>

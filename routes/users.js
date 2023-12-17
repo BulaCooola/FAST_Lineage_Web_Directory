@@ -127,9 +127,11 @@ router.route('/profile')
     .get(async (req, res) => {
         console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
+        const big = await usersData.getUserByUserName(req.session.user.big)
         res.render('profile', {
             pageTitle: 'Your Profile',
-            user: userInfo
+            user: userInfo,
+            big: big
         });
     });
 

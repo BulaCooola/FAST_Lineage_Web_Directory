@@ -5,14 +5,16 @@
         <ul>
             <li>
                 {{#if grandbig}}
-                <a>Your Grandbig: {{grandbig.firstName}} {{grandbig.lastName}}</a>
+                {{!-- Grandbig --}}
+                <a>{{grandbig.firstName}} {{grandbig.lastName}}</a>
                 {{else}}
                 <a>No Grandbig found</a>
                 {{/if}}
                 <ul>
                     <li>
                         {{#if big}}
-                        <a>Your Big: {{big.firstName}} {{big.lastName}}</a>
+                        {{!-- Big --}}
+                        <a>{{big.firstName}} {{big.lastName}}</a>
                         {{else}}
                         <a>No Big found</a>
                         {{/if}}
@@ -20,12 +22,24 @@
                         <ul>
                             {{#each big.littles}}
                             <li>
-                                <a>{{big.littles.firstName}} {{big.littles.lastName}}</a>
+                                {{!-- Siblings --}}
+                                <a>{{this.firstName}} {{this.lastName}}</a> 
                                 {{#if this.littles.length}}
                                 <ul>
                                     {{#each this.littles}}
                                     <li>
+                                        {{!-- Littles --}}
                                         <a>{{this.firstName}} {{this.lastName}}</a>
+                                        {{#if this.littles.length}}
+                                        <ul>
+                                            {{#each this.littles}}
+                                            <li>
+                                                {{!-- Grandlittles --}}
+                                                <a>{{this.firstName}} {{this.lastName}}</a>
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                        {{/if}}
                                     </li>
                                     {{/each}}
                                 </ul>

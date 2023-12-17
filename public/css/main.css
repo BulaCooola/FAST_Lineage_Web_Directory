@@ -12,8 +12,9 @@ header {
             display: flex;
             justify-content: center;
             align-content: center;
-            font-size: 50pt;
+            font-size: 48pt;
             padding: 20px;
+            font-family: 'Verdana', Tahoma, Geneva, Verdana, sans-serif;
 
             & a {
                 text-decoration: none;
@@ -30,6 +31,7 @@ header {
             width: 80%;
             margin-left: 10%;
             margin-right: 10%;
+            margin-bottom: 20px;
             padding: 0;
             padding-top: 15px;
             padding-bottom: 15px;
@@ -104,6 +106,7 @@ main.all-lines {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 15px;
 
     /* ul list-lines, li line-name, ul list-members (class), li member-name */
     & h1 {
@@ -146,11 +149,6 @@ main.all-lines {
         border-left: 1px solid #ccc;
     }
 
-    /* Style for the search form */
-    & form {
-        margin-top: 20px;
-    }
-
     /* Style for the search input and select */
     & #searchType,
     #searchMember {
@@ -172,7 +170,7 @@ main.login {
 
     & .h2-register,
     .h2-login {
-        margin-bottom: 10px;
+        font-family:'Helvetica', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
 
     .form-wrapper>h2 {
@@ -348,6 +346,7 @@ main.home {
 }
 
 main.my-line {
+    font-family: Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -439,4 +438,12 @@ footer.home {
         background: var(--color);
         color: white;
     }
+}
+
+main.image-gallery {
+    font-family: Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }

@@ -78,5 +78,21 @@ const BEltemsah = await user.getUserByEmail('beltemsah@stevens.edu');
 const addBEltemsah = await line.addMember(BEltemsah.line, BEltemsah)
 console.log('beltemsah registered and added');
 
+await user.assignLittles("bbulatao", "beltemsah")
+await user.assignLittles("mphu", "spayba")
+
+const JeddAlcalde = await user.registerUser('jalcalde', 'Jedd', 'Alcalde', 'jalcalde@stevens.edu', "Test@123", "Test@123", `Pretty Pretty Princesses`);
+const JAlcalde = await user.getUserByEmail("jalcalde@stevens.edu");
+const addJAlcalde = await line.addMember(JAlcalde.line, JAlcalde);
+console.log('jalcalde registered and added');
+
+const KanaAbe = await user.registerUser('kabe', 'Kana', 'Abe', 'kabe@stevens.edu', 'Test@123', 'Test@123', `Pretty Pretty Princesses`);
+const KAbe = await user.getUserByEmail('kabe@stevens.edu');
+const addKAbe = await line.addMember(KAbe.line, KAbe)
+console.log('kabe registered and added');
+
+await user.assignLittles("rsangalang", "dtran")
+await user.assignLittles("jalcalde", "kabe")
+
 console.log('Done Seeding')
 await closeConnection();
