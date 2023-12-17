@@ -2,7 +2,13 @@
 {{!-- <img
     src="https://   /mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg"
     alt="{{user.userName}}"> --}}
+{{#if user.profilePicture}}
+<img src={{user.profilePicture}}>
+{{else}}
 <img src="../../public/images/no_profile_image.png">
+{{/if}}
+
+
 <main class="profile">
     <h1>Welcome {{user.firstName}} {{user.lastName}}</h1>
 
@@ -30,6 +36,7 @@
     <h3>Class of</h3>
     <p>{{user.gradYear}}</p>
     {{/if}}
+
 
     {{#if user.big}}
     <h4>Big:</h4>

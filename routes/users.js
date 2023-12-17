@@ -129,7 +129,7 @@ router.route('/profile/edit')
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
     .post(async (req, res) => {
-        let { firstName, lastName, userName, major, gradYear, bio, email, password } = req.body;
+        let { firstName, lastName, userName, major, gradYear, bio, email, password, profilePicture } = req.body;
         let user = null;
         let line = req.session.user.line
 
@@ -168,6 +168,9 @@ router.route('/profile/edit')
             if (bio.trim() !== '') {
                 bio = validator.validBio(bio, 'Bio Edit')
             }
+            if(profilePicture.trim()!==''){
+                profilePicture = validator.validLink(profilePicture, 'profilePicture link');
+            }
         } catch (e) {
             res.status(400).render('errors', { error: e });
         }
@@ -179,7 +182,8 @@ router.route('/profile/edit')
             userName: userName,
             major: major,
             gradYear: gradYear,
-            userBio: bio
+            userBio: bio,
+            profilePicture:profilePicture
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);

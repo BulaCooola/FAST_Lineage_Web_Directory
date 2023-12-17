@@ -78,7 +78,8 @@ const exportedMethods = {
             gradYear: null,
             big: null,
             littles: null,
-            links: null
+            links: null,
+            profilePicture: null
         }
 
         let insertInfo = await userCollection.insertOne(newUser);
@@ -111,13 +112,14 @@ const exportedMethods = {
             line: getUser.line,
             big: getUser.big,
             littles: getUser.littles,
-            email: getUser.email
+            email: getUser.email,
+            profilePicture: getUser.profilePicture
         }
     },
     async updateProfile(user, email, password) {
         // user refers to an object describing the user
 
-        let { firstName, lastName, userName, major, gradYear, userBio } = user;
+        let { firstName, lastName, userName, major, gradYear, userBio, profilePicture } = user;
         console.log(user);
 
         try {
@@ -132,6 +134,8 @@ const exportedMethods = {
             else gradYear = validation.validNumber(gradYear, 'gradYear Edit');
             if (userBio === '') { userBio = null; }
             else userBio = validation.validBio(userBio, 'Bio Edit');
+            if (profilePicture === '') { profilePicture = null; }
+            else profilePicture = validation.validLink(profilePicture, 'profilePicture Edit');
         } catch (e) {
             console.log(e);
             throw `${e}`;
@@ -143,7 +147,8 @@ const exportedMethods = {
             userName: userName,
             major: major,
             gradYear: gradYear,
-            userBio: userBio
+            userBio: userBio,
+            profilePicture:profilePicture
         }
 
         const userCollection = await users()
