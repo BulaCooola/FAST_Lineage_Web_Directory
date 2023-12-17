@@ -1,23 +1,29 @@
 <main class="hangouts">
     <h1>HANGOUTS!!!!!!!!!!!!!!!!!!</h1>
+    {{#if hangout}}
     <ul id="eventsList">
         <div class="hangout-item">
-            <div id="eventTitle" onclick="toggleAnswer({{this.eventTitle}})"></div>
+            {{#each hangout}}
+            <div id="eventTitle" onclick="toggleAnswer({{hangout.eventTitle}})"></div>
             <div id="eventDetails">
                 <button id="create" type="submit" value="create" hidden>Create Event</button>
                 <ul>
-                    <li>Event Description: {{this.eventDescription}}</li>
-                    <li>Event Location: {{this.eventLocation}}</li>
-                    <li>Start Time: {{this.startTime}}</li>
-                    <li>End Time: {{this.endTime}}</li>
-                    <li>Event Date: {{this.eventDate}}</li>
+                    <li>Event Description: {{hangout.eventDescription}}</li>
+                    <li>Event Location: {{hangout.eventLocation}}</li>
+                    <li>Start Time: {{hangout.startTime}}</li>
+                    <li>End Time: {{hangout.endTime}}</li>
+                    <li>Event Date: {{hangout.eventDate}}</li>
                 </ul>
                 <button id="accept" type="submit" value="accept">Accept</button>
                 <button id="decline" type="submit" value="decline">Decline</button>
                 <button id="edit" type="submit" value="edit" hidden>Edit</button>
             </div>
+            {{/each}}
         </div>
     </ul>
+    {{#else}}
+    <p>No Hangouts found!</p>
+    {{/else}}
     <a href="/myline">Go back to line!</a>
 
 </main>
