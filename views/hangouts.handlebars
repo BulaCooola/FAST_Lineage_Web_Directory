@@ -1,0 +1,22 @@
+<main class="hangouts">
+    <h1>HANGOUTS!!!!!!!!!!!!!!!!!!</h1>
+    <ul id="eventsList">
+        <div class="hangout-item">
+            <div id="eventTitle" onclick="toggleAnswer({{this.eventTitle}})"></div>
+            <div id="eventDetails">
+                <ul>
+                    <li>{{this.eventDescription}}</li>
+                    <li>{{this.eventLocation}}</li>
+                    <li>{{this.startTime}}</li>
+                    <li>{{this.endTime}}</li>
+                    <li>{{this.eventDate}}</li>
+                </ul>
+                <button id="RSVP" type="submit" value="RSVP">Accept</button>
+                <button id="RSVP" type="submit" value="RSVP">Decline</button>
+                <button id="RSVP" type="submit" value="RSVP" hidden>Edit</button>
+            </div>
+        </div>
+    </ul>
+    <a href="/myline">Go back to line!</a>
+   
+</main>
