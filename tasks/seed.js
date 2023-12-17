@@ -86,7 +86,7 @@ const JAlcalde = await user.getUserByEmail("jalcalde@stevens.edu");
 const addJAlcalde = await line.addMember(JAlcalde.line, JAlcalde);
 console.log('jalcalde registered and added');
 
-const KanaAbe = await user.registerUser('kabe', 'Belal', 'Eltemsah', 'kabe@stevens.edu', 'Test@123', 'Test@123', `Pretty Pretty Princesses`);
+const KanaAbe = await user.registerUser('kabe', 'Kana', 'Abe', 'kabe@stevens.edu', 'Test@123', 'Test@123', `Pretty Pretty Princesses`);
 const KAbe = await user.getUserByEmail('kabe@stevens.edu');
 const addKAbe = await line.addMember(KAbe.line, KAbe)
 console.log('kabe registered and added');
