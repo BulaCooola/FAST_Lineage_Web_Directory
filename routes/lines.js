@@ -221,6 +221,74 @@ router.get('/allusers', async (req, res) => {
     }
 });
 
+router.route('/myline/hangouts')
+    .get(async (req, res) => {
+        // VIEW ALL HANGOUT EVENTS
+        // * validate 
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            // * validate inputs
+            // * const hangouts = query all hangouts
+            // * res.render('allhangouts', {pageTitle: Hangouts, hangouts: hangouts })
+            // * after clicking all events then reroute to :eventId
+        }
+    });
+
+router.route('/myline/hangouts/:eventId/')
+    .get(async (req, res) => {
+        // TODO GET event
+        // * validate all fields in req.body
+    })
+    .post(async (req, res) => {
+        // TODO ADD RSVP
+        // * validate inputs
+        // * if not null or reject invite then rsvp (prevents double rsvping)
+    })
+    .delete(async (req, res) => {
+        // TODO DELETE RSVP
+        // * validate inputs
+        // * if not null or accept invite then decline rsvp (prevents double rsvping)
+    });
+
+router.route('/myline/hangouts/:eventId/edit')
+    .get(async (req, res) => {
+        // ONLY LINE HEAD SHOULD HAVE ACCESS
+        // TODO GET EDIT EVENT FORMS
+        // * get lineHead
+        // * if (req.session.user !== lineHead) REJECT
+        // * else :
+        //      *   
+        //      * res.render('edit-hangouts', { pageTitle: })
+        // * check if event id exists, is a valid string
+        // * get event by id 
+    })
+    .post(async (req, res) => {
+        // TODO ADD EVENT
+        // * get the req.body
+        // * validate it
+        try {
+            // create event with fields from req.body
+        }
+        catch {
+            //errors 
+        }
+    })
+    .put(async (req, res) => {
+        // TODO UPDATE EVENT
+        // * get the req.body
+        // * validate req
+        // * try catch the update
+    })
+    .delete(async (req, res) => {
+        // TODO DELETE EVENT
+        // * try catch validating if the eventId exists
+        // * try catch the remove
+    });
+
+router.route('/myline/hangouts/')
+
+
 export default router;
 
 // GET REQUESTS:
