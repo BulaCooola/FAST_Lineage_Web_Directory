@@ -95,8 +95,8 @@ console.log('kabe registered and added');
 await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
 
-await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", userName: "JAlcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "jalcalde@stevens.edu", "Test@123")
-await user.updateProfile({ firstName: "Sean", lastName: "Payba", userName: "SPayba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg" }, "spayba@stevens.edu", "Test@123")
+await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: {facebook: '', instagram: '', spotify: ''}}, "jalcalde@stevens.edu", "Test@123")
+await user.updateProfile({ firstName: "Sean", lastName: "Payba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: {facebook: 'https://www.facebook.com/people/Sean-Payba/pfbid02fhsGU61FQUNMC9Etwnhs1SqSeKWpGNc325kzUbGk6HGQA21XgDACeriHRsXbMQGtl/', instagram: 'https://www.instagram.com/seanpayba/', spotify: 'https://open.spotify.com/track/6VBuuMGYskvpkK8V9zmJau'}}, "spayba@stevens.edu", "Test@123")
 
 await image.addImage("https://i.imgur.com/E1EUKpZ.jpg", "Pretty Pretty Princesses")
 console.log("Pretty Pretty Princessses Image Added")

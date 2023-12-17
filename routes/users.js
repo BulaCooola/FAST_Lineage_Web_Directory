@@ -124,20 +124,36 @@ router.route('/profile')
     .get(async (req, res) => {
         console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
+        let type
+        let id
+        if (userInfo.links.spotify) {
+            type = userInfo.links.spotify.split('/')[3]
+            id = userInfo.links.spotify.split('/')[4].split('?')[0]
+        }
+        let socials = false;
+        if (userInfo.links.instagram || userInfo.links.facebook) {
+            socials = true;
+        }
         if (userInfo.big) {
             const big = await usersData.getUserByUserName(userInfo.big);
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
                 big: big,
-                me: true
+                me: true,
+                type: type,
+                id: id,
+                socials: socials
             });
         } else {
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
                 big: null,
-                me: true
+                me: true,
+                type: type,
+                id: id,
+                socials: socials
             });
         }
     });
@@ -152,10 +168,9 @@ router.route('/edit-profile')
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
     .post(async (req, res) => {
-        let { firstName, lastName, userName, major, gradYear, bio, email, password, profilePicture } = req.body;
+        let { firstName, lastName, major, gradYear, bio, email, password, profilePicture, facebook, instagram, spotify } = req.body;
         firstName = xss(firstName);
         lastName = xss(lastName);
-        userName = xss(userName);
         major = xss(major);
         gradYear = xss(gradYear);
         bio = xss(bio);
@@ -163,7 +178,10 @@ router.route('/edit-profile')
         password = xss(password);
         profilePicture = xss(profilePicture);
         let user = null;
-        let line = xss(req.session.user.line)
+        let line = xss(req.session.user.line);
+        facebook = xss(facebook);
+        instagram = xss(instagram);
+        spotify = xss(spotify);
 
         // validate email and password
         try {
@@ -172,6 +190,10 @@ router.route('/edit-profile')
         } catch (e) {
             return res.status(400).render('errors', { error: 'Either email or password is invalid' });
         }
+
+        let userName = email.split("@")[0];
+
+        userName = xss(userName);
 
         try {
             user = await usersData.getUserByEmail(email);
@@ -186,9 +208,6 @@ router.route('/edit-profile')
             if (lastName.trim() !== '') {
                 lastName = validator.validName(lastName, 'Last Name Edit');
             }
-            if (userName.trim() !== '') {
-                userName = validator.validUsername(userName);
-            }
             if (major.trim() !== '') {
                 major = validator.validString(major, 'Major Edit');
             }
@@ -201,6 +220,15 @@ router.route('/edit-profile')
             if (profilePicture.trim() !== '') {
                 profilePicture = validator.validLink(profilePicture, 'profilePicture Edit');
             }
+            if (facebook.trim() !== '') {
+                facebook = validator.validSocialLink(facebook, 'facebook');
+            }
+            if (instagram.trim() !== '') {
+                instagram = validator.validSocialLink(instagram, 'instagram');
+            }
+            if (spotify.trim() !== '') {
+                spotify = validator.validSocialLink(spotify, 'spotify');
+            }
         } catch (e) {
             return res.status(400).render('errors', { error: e });
         }
@@ -212,7 +240,8 @@ router.route('/edit-profile')
             major: major,
             gradYear: gradYear,
             userBio: bio,
-            profilePicture: profilePicture
+            profilePicture: profilePicture,
+            links: {facebook: facebook, instagram: instagram, spotify: spotify}
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);
@@ -221,11 +250,13 @@ router.route('/edit-profile')
                 lastName: lastName,
                 userName: userName,
                 email: email,
-                line: line
+                line: line,
+                big: user.big,
+                littles: user.littles
             }
             return res.redirect('/users/profile')
         } catch (e) {
-            return res.status(500).render('errors', { error: 'Internal server error' })
+            return res.status(500).render('errors', { error: e })
         }
     });
 router.route('/profile/:userName')
@@ -241,20 +272,36 @@ router.route('/profile/:userName')
         } catch (e) {
             return res.status(404).render('errors', { error: 'User not found' });
         }
+        let type
+        let id
+        if (userInfo.links.spotify) {
+            type = userInfo.links.spotify.split('/')[3]
+            id = userInfo.links.spotify.split('/')[4].split('?')[0]
+        }
+        let socials = false;
+        if (userInfo.links.instagram || userInfo.links.facebook) {
+            socials = true;
+        }
         if (userInfo.big) {
             const big = await usersData.getUserByUserName(userInfo.big);
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
                 big: big,
-                me: false
+                me: true,
+                type: type,
+                id: id,
+                socials: socials
             });
         } else {
             res.render('profile', {
                 pageTitle: 'Your Profile',
                 user: userInfo,
                 big: null,
-                me: false
+                me: true,
+                type: type,
+                id: id,
+                socials: socials
             });
         }
     });

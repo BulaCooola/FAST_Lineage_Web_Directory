@@ -20,10 +20,6 @@
             <label for="lastNameInput">Last Name:</label>
             <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}" required>
 
-            <!-- Username -->
-            <label for="userNameInput">Username:</label>
-            <input type="text" id="userNameInput" name="userName" value="{{user.userName}}" required>
-
             <!-- Major and Grad Year -->
             <label for="majorInput">Major:</label>
             <input type="text" id="majorInput" name="major" value="{{user.major}}" list="majorOptions">
@@ -99,8 +95,22 @@
             <input type="text" id="bioInput" name="bio" rows="4" value="{{user.userBio}}">
 
             <!-- Profile Picture -->
-            <label for="profilePictureInput">Profile Picture <p>Accepts imgur picture links only!</p></label>
+            <label for="profilePictureInput">Profile Picture: <p>Accepts imgur picture links only!</p></label>
             <input type="text" id="profilePictureInput" name="profilePicture" value="{{user.profilePicture}}">
+
+            <hr class="separator-line">
+
+            <!-- Facebook -->
+            <label for="facebook">Facebook link: </label>
+            <input type="text" id="facebook" name="facebook" value="{{user.links.facebook}}"> 
+
+            <!-- Instagram -->
+            <label for="instagram">Instagram link: </label>
+            <input type="text" id="instagram" name="instagram" value="{{user.links.instagram}}">  
+
+            <!-- Spotify  -->
+            <label for="spotify">Spotiy playlist/album/track: </label>
+            <input type="text" id="spotify" name="spotify" value="{{user.links.spotify}}">         
 
             <hr class="separator-line">
 

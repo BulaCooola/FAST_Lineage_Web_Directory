@@ -30,7 +30,7 @@ export const validId = (id, argName) => {
 }
 
 export const validEmail = (email, argName) => {
-    email = validString(email, argName);
+    email = validString(email, argName).toLowerCase();
     function isValidEmail(contact) {
         const emailFormat = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/; // from https://saturncloud.io/blog/how-can-i-validate-an-email-address-using-a-regular-expression/
         return emailFormat.test(contact);
@@ -122,3 +122,33 @@ export const validPassword = (str) => {
     }
     return password;
 }
+
+export const validSocialLink = (link, site) => {
+    // regex from https://github.com/lorey/social-media-profiles-regexs
+    link = link.trim();
+
+    if (!link || link === '') {
+        throw 'Error: no link provided';
+    }
+
+    let validLink;
+
+    if (site === "instagram") {
+        validLink = /^(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/;
+    } else if (site === "facebook") {
+        validLink = /^(?:https?:\/\/)?(?:www\.)?facebook\.com\/[A-Za-z0-9?=_./-]+$/;
+    } else if (site === "spotify") {
+        validLink = /^https:\/\/(?:open\.spotify\.com\/(?:track|album|playlist)\/|spotify:(?:track:|album:|playlist:))(?:[a-zA-Z0-9]+)(?:[\/?].*)?$/;
+    } else {
+        throw 'Error: Invalid social media site';
+    }
+
+    console.log(link);
+    console.log(site);
+
+    if (!validLink.test(link)) {
+        throw "Invalid link for " + site;
+    }
+
+    return link;
+};

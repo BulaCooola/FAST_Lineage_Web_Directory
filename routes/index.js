@@ -1,9 +1,6 @@
 import userRoutes from "./users.js"
 import lineRoutes from "./lines.js";
 import imageRoutes from "./images.js"
-import path from 'path';
-
-
 
 const constructorMethod = (app) => {
   app.get('/', function (req, res) {

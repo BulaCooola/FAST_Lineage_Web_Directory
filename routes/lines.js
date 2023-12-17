@@ -217,7 +217,7 @@ router.get('/allusers', async (req, res) => {
         res.json(filteredUsers);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 });
 
