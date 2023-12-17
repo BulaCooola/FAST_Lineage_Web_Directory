@@ -40,9 +40,9 @@ router.route('/myline')
             } else {
                 grandbig = null
             }
-            res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig })
+            return res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig })
 
-            res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
+           // return res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
         }
     });
 router.route('/myline/biglittle')
