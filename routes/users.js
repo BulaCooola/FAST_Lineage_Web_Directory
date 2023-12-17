@@ -147,7 +147,7 @@ router.route('/profile')
 // TODO: major dropdown
 router.route('/edit-profile')
     .get(async (req, res) => {
-        
+
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
@@ -228,7 +228,7 @@ router.route('/edit-profile')
             return res.status(500).render('errors', { error: 'Internal server error' })
         }
     });
-    router.route('/profile/:userName')
+router.route('/profile/:userName')
     .get(async (req, res) => {
         try {
             req.params.userName = validator.validUsername(req.params.userName);
@@ -237,7 +237,6 @@ router.route('/edit-profile')
         }
         let userInfo
         try {
-            console.log("poop");
             userInfo = await usersData.getUserByUserName(req.params.userName)
         } catch (e) {
             return res.status(404).render('errors', { error: 'User not found' });

@@ -42,7 +42,7 @@ router.route('/myline')
             }
             return res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig })
 
-           // return res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
+            // return res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
         }
     });
 router.route('/myline/biglittle')
@@ -212,8 +212,7 @@ router.get('/allusers', async (req, res) => {
         const filteredUsers = allUsers.map(user => ({
             firstName: user.firstName,
             lastName: user.lastName,
-            major: user.major,
-            gradYear: user.gradYear
+            username: user.userName
         }));
         res.json(filteredUsers);
     } catch (error) {
