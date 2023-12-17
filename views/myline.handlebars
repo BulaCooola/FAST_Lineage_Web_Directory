@@ -25,13 +25,15 @@
                                     {{#each this.littles}}
                                     <li>
                                         {{!-- Littles --}}
-                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}}
+                                            {{this.lastName}}</a>
                                         {{#if this.littles.length}}
                                         <ul>
                                             {{#each this.littles}}
                                             <li>
                                                 {{!-- Grandlittles --}}
-                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}}
+                                                    {{this.lastName}}</a>
                                             </li>
                                             {{/each}}
                                         </ul>
@@ -53,13 +55,15 @@
                                     {{#each user.littles}}
                                     <li>
                                         {{!-- Littles --}}
-                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                        <a href="/users/profile/{{this.userName}}">{{this.firstName}}
+                                            {{this.lastName}}</a>
                                         {{#if this.littles.length}}
                                         <ul>
                                             {{#each this.littles}}
                                             <li>
                                                 {{!-- Grandlittles --}}
-                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}} {{this.lastName}}</a>
+                                                <a href="/users/profile/{{this.userName}}">{{this.firstName}}
+                                                    {{this.lastName}}</a>
                                             </li>
                                             {{/each}}
                                         </ul>

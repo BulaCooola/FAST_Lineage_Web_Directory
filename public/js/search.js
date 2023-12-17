@@ -16,7 +16,7 @@
         for (const x of response) {
             let li = document.createElement("li")
             let a = document.createElement("a")
-            //console.log(x.userName);
+            //console.log(x.username);
             a.setAttribute("href", `users/profile/${x.username}`)
             //console.log(x._links.self.href)
             let memberName = `${x.firstName} ${x.lastName}`
