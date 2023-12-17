@@ -1,6 +1,7 @@
 //FROM LAB 10 SEAN PAYBA
 const registerForm = document.getElementById('registration-form');
 const loginForm = document.getElementById('login-form');
+const biglittleForm = document.getElementById('biglittle-form');
 if (registerForm) {
     registerForm.addEventListener('submit', function (event) {
       if (!validateRegisterForm()) {
@@ -9,13 +10,21 @@ if (registerForm) {
     });
   }
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', function (event) {
-      if (!validateLoginForm()) {
-        event.preventDefault(); 
-      }
-    });
-  }
+if (loginForm) {
+  loginForm.addEventListener('submit', function (event) {
+    if (!validateLoginForm()) {
+      event.preventDefault(); 
+    }
+  });
+}
+
+if (biglittleForm) {
+  biglittleForm.addEventListener('submit', function (event) {
+    if (!validateBigLittleForm()) {
+      event.preventDefault(); 
+    }
+  });
+}
 
   function validateRegisterForm() {
     const userName = document.getElementById('userNameInput').value;
@@ -24,7 +33,6 @@ if (registerForm) {
     const email = document.getElementById('emailInput').value;
     const password = document.getElementById('passwordInput').value;
     const confirmPassword = document.getElementById('confirmPasswordInput').value;
-    const line = document.getElementById('lineInput').value;
     if (!isValidUsername(userName)) {
         showError('Invalid userName.');
         return false;
@@ -80,9 +88,19 @@ function validateLoginForm() {
     // If all validations pass
     return true;
   }
-  
+
+function validateBigLittleForm(){
+    const member = document.getElementById('memberInput').value;
+    if(!member){
+      showError('Invalid member');
+      return false;
+    }
+}
+  function isValidUsername(userName){
+    return /^(?!.*[._]{2})[a-zA-Z0-9._]{1,30}(?<![._])$/.test(userName) && userName.length >= 3 && userName.length <= 15;
+  }
   function isValidName(name) {
-    return /^[a-zA-Z]+$/.test(name) && name.length >= 2 && name.length <= 25;
+    return /^[a-zA-Z]+$/.test(name) && name.length >= 1 && name.length <= 25;
   }
   
   function isValidEmail(email) {
@@ -94,10 +112,8 @@ function validateLoginForm() {
   const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$/;
     return passwordRegex.test(password);
   }
+
   
-  function isValidRole(role) {
-    return role.toLowerCase() === 'admin' || role.toLowerCase() === 'user';
-  }
   
   function showError(message) {
       const errorElement = document.getElementById('error');
