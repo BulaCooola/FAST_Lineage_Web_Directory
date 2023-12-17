@@ -61,7 +61,7 @@ app.use('/users/profile', (req, res, next) => {
   next();
 });
 
-app.use('/users/profile/edit', (req, res, next) => {
+app.use('/users/edit-profile', (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/users/login');
   }

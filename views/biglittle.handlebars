@@ -1,6 +1,6 @@
 <main class="register">
     <div class="form-wrapper">
-        <h2 class="h2-register">Add Bigs or Littles</h2>
+        <h2 class="h2-register">Add Littles</h2>
         <form action="/lines/myline/biglittle" method="POST" id="biglittle-form">
             <div class="input-container">
                 <div class="input-group">
@@ -8,16 +8,11 @@
                     <select id="memberInput" name="member">
                         <option disabled selected value> -- select an option -- </option>
                         {{#each line.members}}
-                        <option value="{{this.email}}">{{this.firstName}} {{this.lastName}}</option>
+                        {{#if this.big}}
+                        {{else}}
+                        <option value="{{this.userName}}">{{this.firstName}} {{this.lastName}}</option>
+                        {{/if}}
                         {{/each}}
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label for="typeInput">Relation to you:</label>
-                    <select id="typeInput" name="type">
-                        <option disabled selected value> -- select an option -- </option>
-                        <option value="big">Big</option>
-                        <option value="little">Little</option>
                     </select>
                 </div>
             </div>

@@ -1,26 +1,19 @@
 <link rel="stylesheet" href="../../public/css/profile.css" />
-{{!-- <img
-    src="https://   /mviowpldu823/2BBnn2NqlWkrBfUE1KVA8P/651c842b4542f2bb18fb5424737067db/phill.jpg"
-    alt="{{user.userName}}"> --}}
 {{#if user.profilePicture}}
-<img src={{user.profilePicture}}>
+<img src={{user.profilePicture}} style="width:200px; height: 200px;border-radius: 50%;">
 {{else}}
 <img src="../../public/images/no_profile_image.png">
 {{/if}}
 
 
 <main class="profile">
-    <h1>Welcome {{user.firstName}} {{user.lastName}}</h1>
+    <h1>{{user.firstName}} {{user.lastName}}</h1>
 
     <h2>Username:</h2>
     <p> {{user.userName}} </p>
 
     <h3>Line:</h3>
     <p>{{user.line}}</p>
-
-    {{!-- {{#if isUser}}
-    <button>Edit Profile</button>
-    {{/if}} --}}
 
     {{#if user.userBio}}
     <h3>Bio:</h3>
@@ -38,15 +31,15 @@
     {{/if}}
 
 
-    {{#if user.big}}
+    {{#if big}}
     <h4>Big:</h4>
-    <p>{{user.big}}</p>
+    <p>{{big.firstName}} {{big.lastName}}</p>
     {{/if}}
 
-    {{#if user.littles}}
+    {{#if user.littles.length}}
     <h4>Littles:</h4>
     <ul>
-        {{#each user.little}}
+        {{#each user.littles}}
         <li>{{this.firstName}} {{this.lastName}}</li>
         {{/each}}
     </ul>
@@ -60,11 +53,13 @@
     {{!--
     <script src="../public/js/main.js"></script> --}}
 
+    {{#if me}}
     <hr class="separator-line">
 
     <div class="user-nav-wrapper">
-        <p><a href="/users/profile/edit">Edit Profile</a></p>
-        <p><a href="/lines/myline/biglittle">Add Bigs or Littles</a></p>
+        <p><a href="/users/edit-profile">Edit Profile</a></p>
+        <p><a href="/lines/myline/biglittle">Add Littles</a></p>
         <p><a href="/users/logout">Log out</a></p>
     </div>
+    {{/if}}
 </main>

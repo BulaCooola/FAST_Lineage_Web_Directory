@@ -11,8 +11,8 @@ export const validString = (string, argName) => {
 }
 
 export const validNumber = (number, argName) => {
-    if (number.length == 0) { throw `Error: ${argName} must be supplied`; }
-    if (typeof number !== 'number') { throw `Error: ${argName} is not of type String`; }
+    if (number.toString().length == 0) { throw `Error: ${argName} must be supplied`; }
+    if (typeof number !== 'number') { throw `Error: ${argName} is not of type Number`; }
     if (number < 0) { throw `Error: ${argName} should be a positive number`; }
     return number;
 }
@@ -35,7 +35,7 @@ export const validEmail = (email, argName) => {
         const emailFormat = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/; // from https://saturncloud.io/blog/how-can-i-validate-an-email-address-using-a-regular-expression/
         return emailFormat.test(contact);
     }
-    if (isValidEmail(email) === false) { throw `Error: Email address ${argName} is invalid`; }
+    if (isValidEmail(email) === false) { throw `Error: Email address ${email} is invalid`; }
     return email;
 }
 
@@ -48,13 +48,13 @@ export const validBio = (string, argName) => {
 }
 
 export const validLink = (string, argName) => {
-    //regex from https://stackoverflow.com/questions/26457485/how-would-i-detect-what-is-an-imgur-picture-link-and-what-isnt
-    var imgur_re = /^https?:\/\/(\w+\.)?imgur.com\/(\w*\d\w*)+(\.[a-zA-Z]{3})?$/;
-    if(isUrl(string)){
-        if(imgur_re.test(string)){
+    //regex from chatgpt
+    var imgur_re = /^(https?:\/\/)?(www\.)?(i\.)?imgur\.com\/(gallery\/)?([a-zA-Z0-9]{5,})[^\s]*$/;
+    if (isUrl(string)) {
+        if (imgur_re.test(string)) {
             return string;
         }
-        else{
+        else {
             { throw `Error: ${argName} is not a valid imgur link`; }
         }
     }

@@ -1,9 +1,8 @@
 import express from 'express';
-import path from 'path';
 import * as validator from '../validators.js';
 import usersData from '../data/users.js';
 import linesData from '../data/lines.js';
-import { stringify } from 'querystring';
+import xss from 'xss';
 const router = express.Router();
 
 // middleware to not be there?
@@ -22,10 +21,10 @@ router.route('/login')
         const inputs = req.body;
         try {
             if (!inputs.email || !inputs.password) {
-                return res.status(400).render('login', { error: "Username or password is incorrect" });
+                return res.status(400).render('errors', { error: "Username or password is incorrect" });
             }
         } catch (e) {
-            return res.status(400).render('login', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
@@ -36,6 +35,8 @@ router.route('/login')
                 userName: checkExists.userName,
                 email: checkExists.email,
                 line: checkExists.line,
+                big: checkExists.big,
+                littles: checkExists.littles
             };
             res.redirect('/users/profile');
         } catch (e) {
@@ -55,15 +56,21 @@ router.route('/register')
         //code here for POST
         const submittedToken = req.body.csrfToken;
 
-        let { userName, firstName, lastName, email, password, confirmPassword, line } = req.body;
+        let { firstName, lastName, email, password, confirmPassword, line } = req.body;
 
-        if (!userName || !firstName || !lastName || !email || !password || !confirmPassword || !line) {
+        firstName = xss(firstName);
+        lastName = xss(lastName);
+        email = xss(email);
+        password = xss(password);
+        confirmPassword = xss(confirmPassword);
+        line = xss(line);
+
+        if (!firstName || !lastName || !email || !password || !confirmPassword || !line) {
             return res.status(400).render('errors', { error: 'All fields are required.' });
         }
 
         console.log('--- Checked All Fields ---');
         try {
-            userName = validator.validUsername(userName);
             firstName = validator.validName(firstName, 'First Name');
             lastName = validator.validName(lastName, 'Last Name');
             email = validator.validEmail(email, 'Email routes');
@@ -82,8 +89,10 @@ router.route('/register')
 
         console.log('--- Confirming password ---');
 
+        const userName = email.split("@")[0];
+
         try {
-            const result = await usersData.registerUser(userName, firstName, lastName, email, password, confirmPassword, line);
+            const result = await usersData.registerUser(firstName, lastName, email, password, confirmPassword, line);
             console.log(result);
             if (result.insertedUser) {
                 let checkExists = await usersData.loginUser(email, password);
@@ -94,6 +103,8 @@ router.route('/register')
                     userName: checkExists.userName,
                     email: checkExists.email,
                     line: checkExists.line,
+                    big: checkExists.big,
+                    littles: checkExists.littles
                 };
                 const addtoline = await linesData.addMember(line, checkExists)
                 console.log(addtoline)
@@ -103,8 +114,7 @@ router.route('/register')
                 res.status(500).render('errors', { error: 'Internal Server Error' });
             }
         } catch (e) {
-            console.error(e)
-            res.status(500).render('errors', { error: 'Internal Server Error' });
+            res.status(500).render('errors', { error: e });
         }
 
     });
@@ -114,39 +124,59 @@ router.route('/profile')
     .get(async (req, res) => {
         console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
-        res.render('profile', {
-            pageTitle: 'Your Profile',
-            user: userInfo
-        });
+        if (userInfo.big) {
+            const big = await usersData.getUserByUserName(userInfo.big);
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: big,
+                me: true
+            });
+        } else {
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: null,
+                me: true
+            });
+        }
     });
 
 // profile edit
 // TODO: add profile image
 // TODO: major dropdown
-router.route('/profile/edit')
+router.route('/edit-profile')
     .get(async (req, res) => {
+
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         res.render('edit-profile', { pageTitle: 'Edit Profile', user: userInfo })
     })
     .post(async (req, res) => {
         let { firstName, lastName, userName, major, gradYear, bio, email, password, profilePicture } = req.body;
+        firstName = xss(firstName);
+        lastName = xss(lastName);
+        userName = xss(userName);
+        major = xss(major);
+        gradYear = xss(gradYear);
+        bio = xss(bio);
+        email = xss(email);
+        password = xss(password);
+        profilePicture = xss(profilePicture);
         let user = null;
-        let line = req.session.user.line
+        let line = xss(req.session.user.line)
 
         // validate email and password
-        console.log('stage 1')
         try {
             email = validator.validEmail(email, "Confirm Email");
             password = validator.validPassword(password);
         } catch (e) {
-            res.status(400).render('errors', { error: 'Either email or password is invalid' });
+            return res.status(400).render('errors', { error: 'Either email or password is invalid' });
         }
 
-        console.log('stage 3')
         try {
             user = await usersData.getUserByEmail(email);
         } catch (e) {
-            res.status(404).render('errors', { error: 'User not found' })
+            return res.status(404).render('errors', { error: 'User not found' })
         }
 
         try {
@@ -168,14 +198,13 @@ router.route('/profile/edit')
             if (bio.trim() !== '') {
                 bio = validator.validBio(bio, 'Bio Edit')
             }
-            if(profilePicture.trim()!==''){
-                profilePicture = validator.validLink(profilePicture, 'profilePicture link');
+            if (profilePicture.trim() !== '') {
+                profilePicture = validator.validLink(profilePicture, 'profilePicture Edit');
             }
         } catch (e) {
-            res.status(400).render('errors', { error: e });
+            return res.status(400).render('errors', { error: e });
         }
 
-        console.log('stage 4')
         const updateBody = {
             firstName: firstName,
             lastName: lastName,
@@ -183,7 +212,7 @@ router.route('/profile/edit')
             major: major,
             gradYear: gradYear,
             userBio: bio,
-            profilePicture:profilePicture
+            profilePicture: profilePicture
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);
@@ -194,26 +223,39 @@ router.route('/profile/edit')
                 email: email,
                 line: line
             }
-            res.redirect('/users/profile')
+            return res.redirect('/users/profile')
         } catch (e) {
-            console.error(e);
-            res.status(500).render('errors', { error: 'Internal server error' })
+            return res.status(500).render('errors', { error: 'Internal server error' })
         }
     });
-
-// TODO: move to ajax smth or other
-router.route('/searchuser')
+router.route('/profile/:userName')
     .get(async (req, res) => {
-        res.render('searchResults');
-    })
-    .post(async (req, res) => {
         try {
-            let searchTerm = req.body.searchMember;
-            searchTerm = validator.validString(searchTerm, 'Member Name URL parameter');
-            let names = await usersData.getUserByUserName(searchTerm);
-            res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
+            req.params.userName = validator.validUsername(req.params.userName);
         } catch (e) {
-            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
+            return res.status(404).render('errors', { error: e });
+        }
+        let userInfo
+        try {
+            userInfo = await usersData.getUserByUserName(req.params.userName)
+        } catch (e) {
+            return res.status(404).render('errors', { error: 'User not found' });
+        }
+        if (userInfo.big) {
+            const big = await usersData.getUserByUserName(userInfo.big);
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: big,
+                me: false
+            });
+        } else {
+            res.render('profile', {
+                pageTitle: 'Your Profile',
+                user: userInfo,
+                big: null,
+                me: false
+            });
         }
     });
 

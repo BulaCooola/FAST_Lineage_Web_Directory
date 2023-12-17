@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import * as validator from '../validators.js';
 import lineData from '../data/lines.js';
 import userData from '../data/users.js';
@@ -24,7 +23,26 @@ router.route('/myline')
         if (!req.session.user) {
             res.redirect('/users/login')
         } else {
-            res.render('myline', { pageTitle: 'My Line', user: req.session.user })
+            let big
+            let grandbig
+            let user = await userData.getUserByUserName(req.session.user.userName)
+            if (user.big) {
+                big = await userData.getUserByUserName(user.big)
+            } else {
+                big = null
+            }
+            if (big) {
+                if (big.big) {
+                    grandbig = await userData.getUserByUserName(big.big)
+                } else {
+                    grandbig = null
+                }
+            } else {
+                grandbig = null
+            }
+            return res.render('myline', { pageTitle: 'My Line', user: user, big: big, grandbig: grandbig })
+
+            // return res.render('myline', { pageTitle: 'My Line', user: req.session.user, big: big, grandbig: grandbig })
         }
     });
 router.route('/myline/biglittle')
@@ -38,7 +56,46 @@ router.route('/myline/biglittle')
         }
     })
     .post(async (req, res) => {
-
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            let inputs = req.body
+            const userInfo = await userData.getUserByEmail(req.session.user.email)
+            const userLine = await lineData.getLineByName(userInfo.line)
+            if (!inputs.member) {
+                return res.status(400).render('errors', { error: "Fields missing" });
+            }
+            let newLittle = await userData.getUserByUserName(inputs.member)
+            if (newLittle.userName === userInfo.userName) {
+                return res.status(400).render('errors', { error: "Cannot assign yourself as your own big or little!" });
+            }
+            if (newLittle.big) {
+                return res.status(400).render('errors', { error: "This person has a big already!" });
+            }
+            if (newLittle.userName === userLine.lineHead.userName) {
+                return res.status(400).render('errors', { error: "Cannot assign a line head as your little!" });
+            }
+            if (userInfo.big) {
+                if ((newLittle === userInfo.big)) {
+                    return res.status(400).render('errors', { error: "Cannot assign your big as your little!" });
+                }
+                if (userInfo.big.big) {
+                    if ((newLittle === userInfo.big.big)) {
+                        return res.status(400).render('errors', { error: "Cannot assign your grandbig as your little!" });
+                    }
+                }
+            }
+            if (userInfo.littles.includes(newLittle) && (inputs.type === "little")) {
+                return res.status(400).render('errors', { error: "This member is already your little" });
+            }
+            try {
+                await userData.assignLittles(userInfo.userName, newLittle.userName)
+                console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
+                res.redirect('/lines/myline')
+            } catch (e) {
+                return res.status(400).render('errors', { error: e });
+            }
+        }
     });
 
 router.route('/myline/messages')
@@ -88,6 +145,81 @@ router.route('/myline/messages')
 
         }
     })
+
+//route for firstName
+router.route('/searchuser')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchValue = req.body.searchValue;
+            searchValue = validator.validString(searchValue, 'Member Name URL parameter');
+            let names = await userData.getUserByFirstName(searchValue);
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByUserName}'`, class: "error" })
+        }
+    });
+
+// route for major
+router.route('/searchMajor')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchValue = req.body.searchValue;
+            searchValue = validator.validString(searchValue, 'Member Name URL parameter');
+            let names = await userData.getUserByMajor(searchValue);
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByMajor}'`, class: "error" })
+        }
+    });
+
+// route for gradYear
+router.route('/searchGradYear')
+    .get(async (req, res) => {
+        res.render('searchResults');
+    })
+    .post(async (req, res) => {
+        try {
+            let searchValue = Number(req.body.searchValue);
+            searchValue = validator.validNumber(searchValue), 'Member Name URL parameter';
+            let names = await userData.getUserByGradYear(searchValue);
+            const filteredNames = names.map(user => ({
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
+            res.json(filteredNames)
+        } catch (e) {
+            return res.status(400).render('error', { title: "Error", error: `Invalid input: '${req.body.getUserByGradYear}'`, class: "error" })
+        }
+    });
+
+router.get('/allusers', async (req, res) => {
+    try {
+        const allUsers = await userData.getAllUsers();
+        const filteredUsers = allUsers.map(user => ({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.userName
+        }));
+        res.json(filteredUsers);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 export default router;
 

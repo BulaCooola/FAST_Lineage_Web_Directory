@@ -31,30 +31,48 @@ const exportedMethods = {
         if (!user) throw 'Error: User not found';
         return user;
     },
-    async registerUser(userName, firstName, lastName, email, password, confirmPassword, line) {
+    async getUserByFirstName(firstName) {
+        firstName = validation.validString(firstName);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ firstName: { $regex: firstName, $options: 'i' } }).toArray();
+        if (!user) throw 'Error: User not found';
+        return user;
+    },
+    async getUserByMajor(major) {
+        major = validation.validString(major);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ major: { $regex: major, $options: 'i' } }).toArray();
+        if (!user) throw 'Error: Major not found';
+        return user;
+    },
+    async getUserByGradYear(gradYear) {
+        gradYear = validation.validNumber(gradYear);        //subject to change
+        const userCollection = await users();
+        const user = await userCollection.find({ gradYear: gradYear }).toArray();
+        if (!user) throw 'Error: Graduation Year not found';
+        return user;
+    },
+    async registerUser(firstName, lastName, email, password, confirmPassword, line) {
         //subject to change
         try {
-            userName = validation.validString(userName, 'User Name');
             firstName = validation.validString(firstName, 'First Name');
             lastName = validation.validString(lastName, 'Last Name');
-            email = validation.validEmail(email, 'Email');
+            email = validation.validEmail(email, 'Email').toLowerCase();
             password = validation.validPassword(password);
             confirmPassword = validation.validPassword(confirmPassword);
             line = validation.validString(line, 'Line');
         } catch (e) {
-            throw `${e}`;
+            throw e;
         }
 
         const userCollection = await users();
-        const findUser = await userCollection.findOne({ userName: userName });
-        if (findUser) {
-            throw `Error: userName already exists, pick another.`;
-        }
 
         const findEmail = await userCollection.findOne({ email: email });
         if (findEmail) {
             throw `Error: email already exists, pick another.`;
         }
+
+        const userName = email.split("@")[0];
 
         if (password !== confirmPassword) {
             throw 'Error: Passwords must be the same';
@@ -77,7 +95,7 @@ const exportedMethods = {
             major: null,
             gradYear: null,
             big: null,
-            littles: null,
+            littles: [],
             links: null,
             profilePicture: null
         }
@@ -137,7 +155,6 @@ const exportedMethods = {
             if (profilePicture === '') { profilePicture = null; }
             else profilePicture = validation.validLink(profilePicture, 'profilePicture Edit');
         } catch (e) {
-            console.log(e);
             throw `${e}`;
         }
 
@@ -148,7 +165,7 @@ const exportedMethods = {
             major: major,
             gradYear: gradYear,
             userBio: userBio,
-            profilePicture:profilePicture
+            profilePicture: profilePicture
         }
 
         const userCollection = await users()
@@ -183,99 +200,60 @@ const exportedMethods = {
             throw `Nothing to update`
         }
     },
-    async assignBigLittle(userName, requested_userName, role) {
-        /* 
-            userName = logged user
-            requested_userName = selected user 
-            role = big / little
+    async assignLittles(userName, requested_userName) {
+        const userCollection = await users();
+        const lineCollection = await lines();
 
-            WHEN ON THE FORM FOR ASSIGNING A BIG OR LITTLE, THEY MUST 
-            When calling this function, you will take userName from cookie and the user that they call on
-            ! try using ajax
-                * When finding little or big, you will be directed to a page that searches for users
-                *   Search for all members on line and everyone on the same year as you and below:
-                *       If search parameter results in no user:  throw `Error: No results`
-                *       If they are not in your line:  throw `Error: Member choosen is not in the same line`
-                *       
-                *       
-        */
+        const userInfo = await userCollection.findOne({ userName: userName });
+        const newLittle = await userCollection.findOne({ userName: requested_userName });
 
-        const userCollection = await users()
-
-        const getUser = await userCollection.findOne({ userName: userName });
-        const getLittle = await userCollection.findOne({ userName: requested_userName });
 
         // Check if users are found.
-        if (getUser === null) {
-            // throw {code: 400, error: `Either the email or password is invalid`}
+        if (!userInfo) {
             throw `Error: User not found.`;
         }
-        if (getLittle === null) {
+        if (!newLittle) {
             throw `Error: User searched not found.`;
         }
 
+        const userLine = await lineCollection.findOne({ lineName: userInfo.line })
+
         // Check if selected user is already your little
-        if (getUser.little.includes(getLittle)) {
-            throw `Error: Selected Member is already your little.`
+        if (newLittle.userName === userInfo.userName) {
+            throw "Cannot assign yourself as your own big or little!";
+        }
+        if (newLittle.big) {
+            throw "This person has a big already!";
+        }
+        if (newLittle.userName === userLine.lineHead.userName) {
+            throw "Cannot assign a line head as your little!"
         }
 
-        // Check year
-        if (parseInt(getLittle.gradYear) < parseInt(getUser.gradYear)) {
-            throw `Error: Member cannot be your little, as they are a grade higher than you.`
+        userInfo.littles.push(newLittle);
+        newLittle.big = userInfo.userName;
+
+        const updateUserInfo = await userCollection.updateOne(
+            { _id: userInfo._id },
+            { $push: { littles: newLittle } },
+        );
+        const updateLittleInfo = await userCollection.updateOne(
+            { _id: newLittle._id },
+            { $set: { big: userInfo.userName } }
+        );
+
+        if (!updateUserInfo) {
+            throw `Error: Could not assign ${newLittle.userName} as the little for ${userInfo.userName}`;
+        }
+        if (!updateLittleInfo) {
+            throw `Error: Could not assign ${userInfo.userName} as the big for ${newLittle.userName}`
         }
 
-        // Check line
-        if (getLittle.line !== getUser.line) {
-            throw `Error: Member selected is not in your line`
-        }
+        // Update the littles of ancestors recursively
+        await linesData.updateAncestorsLittles(userCollection, userInfo.userName, newLittle);
 
-        // if you are going to be the big
-        if (role === 'big') {
-
-            const updateUserInfo = await userCollection.updateOne(
-                { _id: getUser._id },
-                { $push: { little: getLittle.userName } },
-            );
-            const updateLittleInfo = await userCollection.updateOne(
-                { _id: getLittle._id },
-                { $set: { big: getLittle.userName } }
-            );
-
-            if (!updateUserInfo) {
-                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
-            }
-            if (!updateLittleInfo) {
-                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
-            }
-            else {
-                return await updateUserInfo;
-            }
-        }
-        // If you are going to be the little
-        if (role === 'little') {
-            const updateUserInfo = await userCollection.updateOne(
-                { _id: getUser._id },
-                { $set: { big: getLittle.userName } },
-            );
-            const updateLittleInfo = await userCollection.updateOne(
-                { _id: getLittle._id },
-                { $push: { little: getLittle.userName } }
-            );
-
-            if (!updateUserInfo) {
-                throw `Error: Could not assign ${getLittle.userName} as the little for ${getUser.userName}`;
-            }
-            if (!updateLittleInfo) {
-                throw `Error: Could not assign ${getUser.userName} as the big for ${getLittle.userName}`
-            }
-            else {
-                return await updateUserInfo;
-            }
-        }
-        else {
-            throw `Error: role (big or little) not announced.`
-        }
+        return updateUserInfo;
     }
+
 }
 
 export default exportedMethods;
