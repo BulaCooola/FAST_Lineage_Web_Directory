@@ -153,13 +153,9 @@ router.route('/searchuser')
     })
     .post(async (req, res) => {
         try {
-            // console.log("routes")
-            // console.log(req.body)
             let searchValue = req.body.searchValue;
             searchValue = validator.validString(searchValue, 'Member Name URL parameter');
             let names = await userData.getUserByFirstName(searchValue);
-            //console.log(names);
-            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
                 lastName: user.lastName
@@ -180,8 +176,6 @@ router.route('/searchMajor')
             let searchValue = req.body.searchValue;
             searchValue = validator.validString(searchValue, 'Member Name URL parameter');
             let names = await userData.getUserByMajor(searchValue);
-            //console.log(names)
-            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
                 lastName: user.lastName
@@ -199,11 +193,9 @@ router.route('/searchGradYear')
     })
     .post(async (req, res) => {
         try {
-            let searchValue = req.body.searchValue;
-            searchValue = validator.validInteger(searchValue, 'Member Name URL parameter');
+            let searchValue = Number(req.body.searchValue);
+            searchValue = validator.validNumber(searchValue), 'Member Name URL parameter';
             let names = await userData.getUserByGradYear(searchValue);
-            //console.log(names)
-            //res.render('searchResults', { title: "People Found", searchMember: searchTerm, member: names })
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
                 lastName: user.lastName
