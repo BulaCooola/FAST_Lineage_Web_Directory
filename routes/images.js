@@ -33,20 +33,6 @@ router.route('/')
       return res.status(400).render('errors', { error: e });
     }
   });
-
-  router.route('/filteredImages')
-  .get(async (req, res) => {
-    try {
-      let inputs = req.body.tagFilter;
-      //console.log(req.body)
-      console.log("tagFilter = " + req.body.tagFilter)
-      const filteredPics = await imageData.getImagesByTag(inputs)
-      res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: filteredPics})
-    }
-    catch(e){
-      return res.status(400).render('errors', { error: e });
-    }
-  });
 // /images/:lineName
 // we get there from submitting filter from tag
 
