@@ -148,9 +148,6 @@ router.route('/myline/messages')
 
 //route for firstName
 router.route('/searchuser')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = req.body.searchValue;
@@ -169,9 +166,6 @@ router.route('/searchuser')
 
 // route for major
 router.route('/searchMajor')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = req.body.searchValue;
@@ -190,9 +184,6 @@ router.route('/searchMajor')
 
 // route for gradYear
 router.route('/searchGradYear')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = Number(req.body.searchValue);
