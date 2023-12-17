@@ -12,7 +12,7 @@ router.route('/')
       // *FROM LAB8* res.render('characterSearchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
       const allPics = await imageData.getAllImages()
       const allLines = await lineData.getAllLines()
-      res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics, lines: allLines})
+      res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics})
     } catch (e) {
       return res.status(400).render('errors', { error: e });
     }
@@ -24,8 +24,10 @@ router.route('/')
     }
     try{
       const userLine = req.session.user.line;
-      let inputs = req.body;
-      await imageData.addImage(inputs, userLine);
+      let inputs = req.body.imageURL;
+      
+      console.log(inputs)
+      const updateImage = await imageData.addImage(inputs, userLine);
       console.log("--- Successfully added " + inputs + " as picture.");
       res.redirect('/')
     }

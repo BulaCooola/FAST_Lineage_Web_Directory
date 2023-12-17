@@ -13,8 +13,14 @@ const exportedMethods = {
         try{
             let imgArr = []
             let lineArr = await lineData.getAllLines()
-            lineArr.forEach((line) => imgArr = imgArr + line.pictures)
-            return lineArr;
+            //console.log(lineArr);
+            for(let i = 0; i < lineArr.length; i++){
+                //console.log("lineArr = " + lineArr)
+                //console.log("lineArrData 1 = " + lineArr[i].pictures)
+                imgArr = imgArr.concat(lineArr[i].pictures)
+            }
+            //console.log("imgArr = " + imgArr)
+            return imgArr;
         }
         catch(e){
             throw `${e}`
@@ -24,13 +30,15 @@ const exportedMethods = {
     async addImage(imageUrl, lineName){
         try{
             imageUrl = validators.validLink(imageUrl, "imageUrl")
+            console.log(imageUrl);
             lineName = validators.validString(lineName, "lineName")
+            console.log(lineName);
             const linesCollection = await lines();
             const findLine = await linesCollection.findOne({ lineName: lineName })
             const updatePictures = await linesCollection.updateOne(
                 { _id: findLine._id },
                 {
-                    $push: { "pictures": imageUrl },
+                    $push: { "pictures": imageUrl }
                 }
             )
             if (updatePictures.modifiedCount === 0) { throw `Error: Could not add picture` }

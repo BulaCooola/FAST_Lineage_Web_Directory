@@ -17,15 +17,8 @@
     <input type="text" id="imageURLInput" name="imageURL"></input>
     <button type="submit">Upload Image</button>
 </form>
+{{#each data}}
+    <img src="{{this}}">
+{{/each}}
 </main>
-
-{{#if lines}}
-    {{#each lines}}
-        {{#each lines.pictures}}
-            <img src="{{this}}">
-        {{/each}}
-    {{/each}}
-{{else}}
-    <h3>No lines have pictures yet</h3>
-{{/if}}
 {{!-- Render images from routes --}}
