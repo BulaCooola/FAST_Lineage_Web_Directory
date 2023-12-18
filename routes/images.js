@@ -19,7 +19,7 @@ router.route('/')
 
   .post(async (req, res) =>{
     if(!req.session.user){
-      res.redirect('/users/login');
+      return res.redirect('/users/login');
     }
     try{
       let userLine = req.session.user.line;
@@ -27,7 +27,7 @@ router.route('/')
       userLine = validator.validString(userLine)
       inputs = validator.validLink(inputs)
       const updateImage = await imageData.addImage(inputs, userLine);
-      res.redirect('/images')
+      return res.redirect('/images')
     }
     catch(e){
       return res.status(400).render('errors', { pageTitle: "Error", error: e });
