@@ -18,10 +18,6 @@
 * Login with username: ```spayba@stevens.edu``` password: ```Test@123``` to be a profile that is not a line head
 * Login with username: ```mphy@stevens.edu``` password: ```Test@123``` to be a profile that is a line head
 
-* To Populate Database : Run "npm run seed" in the terminal
-
-* To Run Website on local host : Run "npm start" in the terminal
-
 * To Upload Images on Profile Pic or Image Gallery : Go to Imgur and upload links that valid and existing links that start with "https://i.imgur.com/".
  
 ## Proposal
