@@ -307,6 +307,7 @@ router.route('/myline/hangouts/create')
     })
     .post(async (req, res) => {
         let { eventTitle, eventDescription, eventAddress, eventCity, eventState, eventZipcode, startTime, endTime, eventDate } = req.body
+        console.log(req.body)
         eventTitle = xss(eventTitle)
         eventDescription = xss(eventDescription)
         eventAddress = xss(eventAddress)
@@ -319,6 +320,7 @@ router.route('/myline/hangouts/create')
         if (!eventTitle || !eventDescription || !eventAddress || !eventCity || !eventState || !eventZipcode || !startTime || !endTime || !eventDate) {
             return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
         }
+        console.log('hello')
         try {
             eventTitle = validator.validTitle(eventTitle, "Event Name")
             eventDescription = validator.validBio(eventDescription, "Event Description")
@@ -327,20 +329,27 @@ router.route('/myline/hangouts/create')
             eventState = validator.validState(eventState, "Event State")
             eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
             let time = validator.validTime(startTime, endTime)
-            startTime = (time)[0][0] + ":" + (time)[0][1]
-            endTime = (time)[1][0] + ":" + (time)[1][1]
+            // startTime = (time)[0][0] + ":" + (time)[0][1]
+            // endTime = (time)[1][0] + ":" + (time)[1][1]
             eventDate = validator.validDate(eventDate, "Event Date")
         }
         catch (e) {
-            return res.status(400).render('errors'), { error: e };
+            console.log(e);
+            return res.status(400).render('errors'), { error: `${e}` };
         }
+        console.log('hello2')
+
         try {
             let eventLocation = { streetAddress: eventAddress, city: eventCity, state: eventState, zip: eventZipcode }
             // console.log(eventLocation)
             // console.log(eventTitle)
+            console.log('hello3')
+
             const result = await lineData.createHangout(req.session.user.line, eventTitle, eventDescription, eventLocation, eventDate, startTime, endTime);
             // console.log(result);
             if (result) {
+                console.log('hello4')
+
                 res.redirect('/lines/myline/hangouts');
             } else {
                 // ! different status code

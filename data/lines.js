@@ -271,10 +271,10 @@ const exportedMethods = {
         try {
             eventName = validation.validTitle(eventName, "Event Name")
             description = validation.validBio(description, "Event Description")
-            eventAddress = validation.validAddress(eventAddress, "Event Address")
-            eventCity = validation.validCity(eventCity, "Event City")
-            eventState = validation.validState(eventState, "Event State")
-            eventZipcode = validation.validZipcode(eventZipcode, "Event Zipcode")
+            eventLocation.streetAddress = validation.validAddress( eventLocation.streetAddress, "Event Address")
+            eventLocation.city = validation.validCity(eventLocation.city, "Event City")
+            eventLocation.state = validation.validState(eventLocation.state, "Event State")
+            eventLocation.zip = validation.validZipcode(eventLocation.zip, "Event Zipcode")
             let time = validation.validTime(startTime, endTime)
             eventDate = validation.validDate(eventDate, "Event Date")
         }

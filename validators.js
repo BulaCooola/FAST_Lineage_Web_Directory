@@ -157,6 +157,7 @@ export const validDate = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid date`; }
     if (trimDate.length === 0) { throw `Error: ${argName} has length 0. Empty date`; }
+    
     //error checking dates
     if (trimDate[2] !== "/" || trimDate[5] !== "/") {
         throw "Error: Invalid date format.";
@@ -166,7 +167,7 @@ export const validDate = (string, argName) => {
     }
     let date = trimDate.split("/");
     if ((Number(date[0]) > 12) || (Number(date[0]) < 1)) {
-        throw "Error: Month is not valid.";
+        throw "Error: Month is not valid";
     }
     const thirtyOne = [1, 3, 5, 7, 8, 10, 12];
     const thirty = [4, 6, 9, 11];
@@ -191,17 +192,19 @@ export const validDate = (string, argName) => {
     const currDate = new Date();
     let currDay = currDate.getDate();
     let currMonth = currDate.getMonth() + 1;
+    console.log(currMonth);
     let currYear = currDate.getFullYear();
 
     if (Number(date[2]) < currYear) {
         throw "Error: Year is not valid.";
     }
     else if (Number(date[2]) === currYear) {
-        if (Number(date[1]) > currMonth) {
+        if (Number(date[0]) > currMonth) {
             throw "Error: Month is not valid.";
         }
-        else if (Number(date[1]) === currMonth) {
-            if (Number(date[0]) > currDay) {
+        else if (Number(date[0]) === currMonth) {
+            console.log(Number(date[1]), currDay)
+            if (Number(date[1]) < currDay) {
                 throw "Error: Day is not valid.";
             }
         }
