@@ -323,10 +323,11 @@ router.route('/myline/hangouts/create')
             eventCity = validator.validCity(eventCity, "Event City")
             eventState = validator.validState(eventState, "Event State")
             eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
-            // let time = validator.validTime(startTime, endTime)
-            // startTime = (time)[0]
-            // endTime = (time)[1]
-            //eventDate = validator.validDate(eventDate, "Event Date")
+            let time = validator.validTime(startTime, endTime)
+            startTime = (time)[0]
+            endTime = (time)[1]
+            eventDate = validator.validDate(eventDate, "Event Date")
+            console.log(eventDate)
         }
         catch (e) {
             return res.status(400).render('errors'), { error: e };

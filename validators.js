@@ -152,10 +152,12 @@ export const validTitle = (string, argName) => {
     return string;
 }
 export const validDate = (string, argName) => {
+    //from lab 6
     trimDate = string.trim()
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid date`; }
     if (trimDate.length === 0) { throw `Error: ${argName} has length 0. Empty date`; }
+    console.log()
     if (trimDate[2] !== "/" || trimDate[5] !== "/") {
         throw "Error: Invalid date format.";
     }

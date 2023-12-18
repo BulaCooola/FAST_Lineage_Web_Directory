@@ -16,6 +16,7 @@ router.route('/')
   })
 
   .post(async (req, res) =>{
+    //From lab8
     if(!req.session.user){
       return res.redirect('/users/login');
     }
