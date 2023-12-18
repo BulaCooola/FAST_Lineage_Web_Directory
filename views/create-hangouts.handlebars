@@ -1,42 +1,42 @@
-<link rel="stylesheet" href="/public/css/main.css">
+<link rel="stylesheet" href="/public/css/hangouts.css">
 <main class="create-hangouts">
     <h1>Create a Line Hangout!</h1>
     <form action="/lines/myline/hangouts/create" method="POST" id="hangouts-form">
         <div class="input-container">
             <div class="input-group">
-                <label for="eventTitle">Event Title:</label>
+                <label for="eventTitleInput">Event Title:</label>
                 <input type="text" id="eventTitleInput" name="eventTitle" required>
             </div>
             <div class="input-group">
-                <label for="eventDescription">Event Description:</label>
+                <label for="eventDescriptionInput">Event Description:</label>
                 <input type="text" id="eventDescriptionInput" name="eventDescription" required>
             </div>
             <div class="input-group">
-                <label for="eventAddress">Event Address:</label>
+                <label for="eventAddressInput">Event Address:</label>
                 <input type="text" id="eventAddressInput" name="eventAddress" required>
             </div>
             <div class="input-group">
-                <label for="eventCity">Event City:</label>
+                <label for="eventCityInput">Event City:</label>
                 <input type="text" id="eventCityInput" name="eventCity" required>
             </div>
             <div class="input-group">
-                <label for="eventState">Event State:</label>
+                <label for="eventStateInput">Event State:</label>
                 <input type="text" id="eventStateInput" name="eventState" required>
             </div>
             <div class="input-group">
-                <label for="eventZipcode">Event Zipcode:</label>
+                <label for="eventZipcodeInput">Event Zipcode:</label>
                 <input type="text" id="eventZipcodeInput" name="eventZipcode" required>
             </div>
             <div class="input-group">
-                <label for="startTime">Start Time:</label>
+                <label for="startTimeInput">Start Time:</label>
                 <input type="time" id="startTimeInput" name="startTime" required>
             </div>
             <div class="input-group">
-                <label for="endTime">End Time:</label>
+                <label for="endTimeInput">End Time:</label>
                 <input type="time" id="endTimeInput" name="endTime" required>
             </div>
             <div class="input-group">
-                <label for="eventDate">Event Date MM/DD/YYYY:</label>
+                <label for="eventDateInput">Event Date MM/DD/YYYY:</label>
                 <input type="text" id="eventDateInput" name="eventDate" required>
             </div>
             <button type="submit" id="submitButton" onclick="disableButton()">Create Hangout</button>
@@ -45,5 +45,4 @@
     </form>
     <a href="/lines/myline">Go back to line!</a>
     <script src="/public/js/button.js"></script>
-    <script src="/public/js/hangouts.js"></script>
 </main>
