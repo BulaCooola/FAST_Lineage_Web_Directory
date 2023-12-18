@@ -1,26 +1,20 @@
+<!--Form from lab 6-->
 <main class="image-gallery">
-<h1>Image Gallery</h1>
-<form action="/images/filteredImages" method="GET" id="imageFilterForm">
-    <label for="tagFilterInput">Search Pictures by Tag:</label>
-    <input type="text" id="tagFilterInput" name="tagFilter" list="lineOptions">
-    <datalist id="lineOptions">
-        {{#each lines}}
-            <option id="line-name" value="{{this.lineName}}"></option>
-        {{/each}}
-    </datalist>
-    <button type="submit">See Pictures</button>
-    {{!-- Clear filter button should REDIRECT back to image gallery with all --}}
-</form>
-<form action="/images" method="GET" id="imageFilterResetFrom">
-    <button type="button">Clear Filter</button>
-</form>
-<form action="/images" method="POST" id="imageUploadForm">
-    <label for="imageURLInput">Imgur Image URL <p>Accepts imgur picture links only!</p></label>
-    <input type="text" id="imageURLInput" name="imageURL"></input>
-    <button type="submit">Upload Image</button>
-</form>
-{{#each data}}
-    <img src="{{this}}">
-{{/each}}
+<link rel="stylesheet" href="/public/css/gallery.css">
+<h2>Image Gallery</h2>
+<div id="formDiv">
+    <form action="/images" method="POST" id="imageUploadForm">
+        <label for="imageURLInput">Imgur Image URL (Please use valid and existing imgur picture links!)</label>
+        <input type="text" id="imageURLInput" name="imageURL">
+        <button type="submit" id="submitBtn">Upload Image</button>
+    </form>
+</div>
+<div id="imagesDiv">
+    {{#each data}}
+    <!-- onError from https://stackoverflow.com/questions/7995080/html-if-image-is-not-found-->
+        <img src="{{this}}" onError="this.onerror=null; this.remove();" class="linePic" alt="linePicture">
+    {{/each}}
+</div>
 </main>
+<script src="/public/js/images.js"></script>
 {{!-- Render images from routes --}}

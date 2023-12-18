@@ -2,6 +2,8 @@ import express from 'express';
 import * as validator from '../validators.js';
 import lineData from '../data/lines.js';
 import userData from '../data/users.js';
+import { lines } from '../config/mongoCollections.js';
+import xss from 'xss';
 const router = express.Router();
 
 router.route('/')
@@ -52,48 +54,47 @@ router.route('/myline/biglittle')
         } else {
             const userInfo = await userData.getUserByEmail(req.session.user.email)
             const userLine = await lineData.getLineByName(userInfo.line)
-            res.render('biglittle', { user: userInfo, line: userLine })
+            res.render('biglittle', { pageTitle: "Big/Little Form", user: userInfo, line: userLine })
         }
     })
     .post(async (req, res) => {
         if (!req.session.user) {
             res.redirect('/users/login')
         } else {
-            let inputs = req.body
-            const userInfo = await userData.getUserByEmail(req.session.user.email)
-            const userLine = await lineData.getLineByName(userInfo.line)
-            if (!inputs.member) {
-                return res.status(400).render('errors', { error: "Fields missing" });
-            }
-            let newLittle = await userData.getUserByUserName(inputs.member)
-            if (newLittle.userName === userInfo.userName) {
-                return res.status(400).render('errors', { error: "Cannot assign yourself as your own big or little!" });
-            }
-            if (newLittle.big) {
-                return res.status(400).render('errors', { error: "This person has a big already!" });
-            }
-            if (newLittle.userName === userLine.lineHead.userName) {
-                return res.status(400).render('errors', { error: "Cannot assign a line head as your little!" });
-            }
-            if (userInfo.big) {
-                if ((newLittle === userInfo.big)) {
-                    return res.status(400).render('errors', { error: "Cannot assign your big as your little!" });
+            try {
+                let inputs = req.body
+                const userInfo = await userData.getUserByEmail(req.session.user.email)
+                const userLine = await lineData.getLineByName(userInfo.line)
+                if (!inputs.member) {
+                    throw "Fields missing";
                 }
-                if (userInfo.big.big) {
-                    if ((newLittle === userInfo.big.big)) {
-                        return res.status(400).render('errors', { error: "Cannot assign your grandbig as your little!" });
+                let newLittle = await userData.getUserByUserName(inputs.member)
+                if (newLittle.userName === userInfo.userName) {
+                    throw "Cannot assign yourself as your own big or little!";
+                }
+                if (newLittle.big) {
+                    throw "This person has a big already!";
+                }
+                if (newLittle.userName === userLine.lineHead.userName) {
+                    throw "Cannot assign a line head as your little!";
+                }
+                if (userInfo.big) {
+                    if ((newLittle === userInfo.big)) {
+                        throw "Cannot assign your big as your little!";
+                    }
+                    if (userInfo.big.big) {
+                        if ((newLittle === userInfo.big.big)) {
+                            throw "Cannot assign your grandbig as your little!";
+                        }
                     }
                 }
-            }
-            if (userInfo.littles.includes(newLittle) && (inputs.type === "little")) {
-                return res.status(400).render('errors', { error: "This member is already your little" });
-            }
-            try {
+                if (userInfo.littles.includes(newLittle) && (inputs.type === "little")) {
+                    throw "This member is already your little";
+                }
                 await userData.assignLittles(userInfo.userName, newLittle.userName)
-                console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
                 res.redirect('/lines/myline')
             } catch (e) {
-                return res.status(400).render('errors', { error: e });
+                return res.status(400).render('errors', { pageTitle: "Error", error: e });
             }
         }
     });
@@ -105,7 +106,6 @@ router.route('/myline/messages')
         } else {
             const userLine = req.session.user.line
             const line = await lineData.getLineByName(userLine);
-            console.log(line.messages)
             res.render('messageBoard', { pageTitle: 'Message Board', messages: line.messages, user: req.session.user })
         }
     })
@@ -119,38 +119,30 @@ router.route('/myline/messages')
             // let userName = req.session.user.userName;
             let line = req.session.user.line;
 
-            console.log('stage 1');
             try {
                 user = validator.validString(user, 'UserName');
                 message = validator.validString(message, 'Text');
                 line = validator.validString(line, 'Line');
             } catch (e) {
-                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
+                return res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
             }
 
-            console.log('stage 2');
 
             try {
                 const insertmessage = await lineData.createMessage(user, message, line);
-                console.log(insertmessage)
                 const updatedLine = await lineData.getLineByName(line);
-                console.log(updatedLine);
                 res.render('messageBoard', { pageTitle: 'Message Board', messages: updatedLine.messages, user: req.session.user });
 
             } catch (e) {
-                res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
+                return res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages.reverse(), user: req.session.user });
             }
 
-            console.log('stage 3')
 
         }
     })
 
 //route for firstName
 router.route('/searchuser')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = req.body.searchValue;
@@ -158,7 +150,8 @@ router.route('/searchuser')
             let names = await userData.getUserByFirstName(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -168,9 +161,6 @@ router.route('/searchuser')
 
 // route for major
 router.route('/searchMajor')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = req.body.searchValue;
@@ -178,7 +168,8 @@ router.route('/searchMajor')
             let names = await userData.getUserByMajor(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -188,9 +179,6 @@ router.route('/searchMajor')
 
 // route for gradYear
 router.route('/searchGradYear')
-    .get(async (req, res) => {
-        res.render('searchResults');
-    })
     .post(async (req, res) => {
         try {
             let searchValue = Number(req.body.searchValue);
@@ -198,7 +186,8 @@ router.route('/searchGradYear')
             let names = await userData.getUserByGradYear(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -214,12 +203,185 @@ router.get('/allusers', async (req, res) => {
             lastName: user.lastName,
             username: user.userName
         }));
-        res.json(filteredUsers);
+        res.status(200).json(filteredUsers);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).render('error', { title: "Error", error: e })
     }
 });
+
+router.get('/myline/allhangouts', async (req, res) => {
+    try {
+        const line = req.session.user.line
+        const allHangouts = await lineData.getAllHangouts(line);
+        res.status(200).json(allHangouts);
+    } catch (e) {
+        res.status(500).json({ error: e })
+    }
+})
+
+router.route('/myline/hangouts')
+    .get(async (req, res) => {
+        // VIEW ALL HANGOUT EVENTS
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            const line = req.session.user.line;
+            try {
+                const allHangouts = await lineData.getAllHangouts(line);
+                res.render('hangouts', { pageTitle: 'All Hangouts', hangout: allHangouts });
+            } catch (e) {
+                return res.status(500).render('errors', { error: e });
+            }
+        }
+    })
+    .post(async (req, res) => {
+        if (!req.session.user) {
+            res.redirect('/users/login')
+        } else {
+            const action = req.body.action; // Access the value of the clicked button
+            if (action === 'accept') {
+                // add user to the 
+                let { eventNameInput } = req.body;
+                try {
+                    eventNameInput = validator.validString(eventNameInput, 'Hangout Name');
+                } catch (e) {
+                    return res.status(400).render('errors', { error: e });
+                }
+
+                const line = req.session.user.line;
+                const firstName = req.session.user.firstName;
+                const lastName = req.session.user.lastName;
+                const email = req.session.user.email;
+
+                try {
+                    const addUser = await lineData.addAttendee(eventNameInput, line, firstName, lastName, email);
+                    return res.redirect('/lines/myline/hangouts');
+                } catch (e) {
+                    return res.status(400).render('errors', { error: e });
+                }
+            }
+            if (action === 'delete' || action === 'create') {
+                const line = await lineData.getLineByName(req.session.user.line)
+                const the_lineHead = line.lineHead.email;
+                if (req.session.user.email !== the_lineHead) {
+                    return res.status(403).render('errors', { error: 'Forbidden' })
+                } else {
+                    if (action === 'delete') {
+                        try {
+                            let { eventNameInput } = req.body;
+                            const deleteEvent = await lineData.removeHangout(eventNameInput, req.session.user.line)
+                            return res.redirect('/lines/myline/hangouts');
+                        } catch (e) {
+                            return res.status(400).render('errors', { error: e });
+                        }
+                    } else {
+                        res.redirect('/lines/myline/hangouts/create')
+                    }
+                }
+            }
+        }
+    });
+
+router.route('/myline/hangouts/create')
+    .get(async (req, res) => {
+        try {
+            const line = await lineData.getLineByName(req.session.user.line)
+            const the_lineHead = line.lineHead
+            if (req.session.user.firstName !== the_lineHead.firstName && req.session.user.lastName !== the_lineHead.lastName && req.session.user.email !== the_lineHead.email) {
+                return res.redirect('/lines/myline/hangouts')
+            } else {
+                return res.render('create-hangouts', { pageTitle: 'Create Hangout' })
+            }
+        } catch (e) {
+            return res.status(500).render('errors', { pageTitle: 'Errors', errors: e })
+        }
+    })
+    .post(async (req, res) => {
+        let { eventTitle, eventDescription, eventAddress, eventCity, eventState, eventZipcode, startTime, endTime, eventDate } = req.body
+        eventTitle = xss(eventTitle)
+        eventDescription = xss(eventDescription)
+        eventAddress = xss(eventAddress)
+        eventCity = xss(eventCity)
+        eventState = xss(eventState)
+        eventZipcode = xss(eventZipcode)
+        startTime = xss(startTime)
+        endTime = xss(endTime)
+        eventDate = xss(eventDate)
+        if (!eventTitle || !eventDescription || !eventAddress || !eventCity || !eventState || !eventZipcode || !startTime || !endTime || !eventDate) {
+            return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
+        }
+        try {
+            eventTitle = validator.validTitle(eventTitle, "Event Name")
+            eventDescription = validator.validBio(eventDescription, "Event Description")
+            eventAddress = validator.validAddress(eventAddress, "Event Address")
+            eventCity = validator.validCity(eventCity, "Event City")
+            eventState = validator.validState(eventState, "Event State")
+            eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
+            let time = validator.validTime(startTime, endTime)
+            // startTime = (time)[0][0] + ":" + (time)[0][1]
+            // endTime = (time)[1][0] + ":" + (time)[1][1]
+            eventDate = validator.validDate(eventDate, "Event Date")
+        }
+        catch (e) {
+            return res.status(400).render('errors', {error: e });
+        }
+
+        try {
+            let eventLocation = { streetAddress: eventAddress, city: eventCity, state: eventState, zip: eventZipcode }
+
+            const result = await lineData.createHangout(req.session.user.line, eventTitle, eventDescription, eventLocation, eventDate, startTime, endTime);
+            if (result) {
+
+                res.redirect('/lines/myline/hangouts');
+            } else {
+                // ! different status code
+                res.status(500).render('errors', { pageTitle: "Error", error: 'Internal Server Error' });
+            }
+        } catch (e) {
+            res.status(500).render('errors', { pageTitle: "Error", error: e });
+        }
+    })
+
+router.route('/myline/hangouts/:eventId/edit')
+    .get(async (req, res) => {
+        // ONLY LINE HEAD SHOULD HAVE ACCESS
+        // TODO GET EDIT EVENT FORMS
+        // * get lineHead
+        // * if (req.session.user !== lineHead) REJECT
+        // * else :
+        //      *   
+        //      * res.render('edit-hangouts', { pageTitle: })
+        // * check if event id exists, is a valid string
+        // * get event by id 
+        try {
+            // get the line to access the hangout field
+            const line = await lineData.getLineByName(req.session.user.line)
+            const the_lineHead = line.lineHead  // get the lineHead object to compare with user
+            if (req.session.user.firstName !== the_lineHead.firstName && req.session.user.lastName !== the_lineHead.lastName && req.session.user.email !== the_lineHead.email) {
+                return res.redirect('/lines/myline/hangouts')
+            } else {
+                const eventId = res.param.eventId   // obtain the eventId from the URL param
+
+                res.render('edit-hangouts', { pageTitle: 'Edit Hangout' })
+            }
+        } catch (e) {
+            return res.status(500).render('error', { error: e })
+        }
+    })
+    .put(async (req, res) => {
+        // TODO UPDATE EVENT
+        // * get the req.body
+        // * validate req
+        // * try catch the update
+    })
+    .delete(async (req, res) => {
+        // TODO DELETE EVENT
+        // * try catch validating if the eventId exists
+        // * try catch the remove
+    });
+
+router.route('/myline/hangouts/')
+
 
 export default router;
 

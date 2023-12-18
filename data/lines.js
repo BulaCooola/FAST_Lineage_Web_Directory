@@ -8,14 +8,14 @@ const exportedMethods = {
         return await linesCollection.find({}).toArray();
     },
     async getLineById(id) {
-        id = validation.validId(id);            //subject to change
+        id = validation.validId(id);
         const linesCollection = await lines();
         const line = await linesCollection.findOne({ _id: new ObjectId(id) });
         if (!line) throw 'Error: Line not found';
         return line;
     },
     async getLineByName(name) {
-        name = validation.validString(name);        //subject to change
+        name = validation.validString(name);
         const linesCollection = await lines();
         const line = await linesCollection.findOne({ lineName: name });
         if (!line) throw 'Error: Line not found';
@@ -36,7 +36,8 @@ const exportedMethods = {
             lineHead: null,
             members: [],
             pictures: [],
-            messages: []
+            messages: [],
+            hangouts: []
         }
         let insertLine = await linesCollection.insertOne(newLine);
         if (!insertLine.acknowledged || !insertLine.insertedId) {
@@ -95,8 +96,6 @@ const exportedMethods = {
         return `${deletionInfo.name} has been deleted.`;
     },
     async addMember(lineName, member) {
-        // lineName refers to the name of line
-        // member refers to the object of the user
         const linesCollection = await lines();
         const usersCollection = await users();
         const line = await linesCollection.findOne({ lineName: lineName });
@@ -147,8 +146,6 @@ const exportedMethods = {
     async createMessage(userName, msg, line) {
         const linesCollection = await lines();
 
-        console.log('data stage 1');
-
         try {
             userName = validation.validString(userName, 'UserName');
             msg = validation.validString(msg, 'Message');
@@ -160,7 +157,6 @@ const exportedMethods = {
             throw `${e}`
         }
 
-        console.log('data stage 2');
         try {
             // get the line4
             const getLine = await linesCollection.findOne({ lineName: line })
@@ -168,9 +164,6 @@ const exportedMethods = {
                 // 404
                 throw `Error: Line not found`;
             }
-            console.log('data stage 2.1');
-            console.log(getLine.messages.length)
-
 
             const newMessage = {
                 _id: getLine.messages.length,
@@ -178,8 +171,6 @@ const exportedMethods = {
                 userName: userName,
                 text: msg
             }
-
-            console.log('data stage 2.2');
 
             const result = await linesCollection.updateOne(
                 { lineName: line },
@@ -189,8 +180,6 @@ const exportedMethods = {
             if (result.matchedCount !== 1) {
                 throw `Error: Unable to add message to database.`;
             }
-
-            console.log('data stage 2.3');
 
         } catch (e) {
             throw `${e}`;
@@ -203,31 +192,172 @@ const exportedMethods = {
             const user = await userCollection.findOne({ userName: currentUserName });
 
             if (!user || !user.big) {
-                // If the current user does not have a big, or there is no big, exit the loop
                 break;
             }
 
             const big = await userCollection.findOne({ userName: user.big });
 
             if (!big) {
-                // If the big is not found, exit the loop
                 break;
             }
 
-            // Find the person whose little we need to add in their big's little array
             if (big.littles.some(l => l.userName === user.userName)) {
-                console.log("we found someone equal: " + user.userName);
-                // Add the little to the user's littles within the big's littles array
                 await userCollection.updateOne(
                     { _id: big._id, 'littles.userName': user.userName },
                     { $push: { 'littles.$.littles': little } }
                 );
             }
 
-
-            // Update the currentUserName for the next iteration
             little = user;
             currentUserName = big.userName;
+        }
+    },
+    // referenced lab 6
+    async getAllHangouts(line) {
+        // returns a list of hangouts from line
+        const linesCollection = await lines();
+        const lineEvent = await linesCollection.findOne({ lineName: line });
+        const hangouts = lineEvent.hangouts;
+        return hangouts
+    },
+    async getHangoutById(id, line) {
+        id = validation.validId(id);
+        const linesCollection = await lines()
+        const lineEvent = await linesCollection.findOne({ lineName: line });
+        const hangout = lineEvent.hangout.filter(id => hangout._id === id)
+        if (!hangout) throw 'Error: Event not found';
+        return hangout;
+    },
+    async removeHangout(eventName, line) {
+        try {
+            eventName = validation.validString(eventName, 'eventName');
+            line = validation.validString(line, 'line');
+        } catch (e) {
+            throw `${e}`;
+        }
+        const linesCollection = await lines()
+        const the_line = await linesCollection.findOne({ lineName: line });
+        const lineHangouts = the_line.hangouts;
+
+        const filterHangouts = lineHangouts.filter(obj => obj.eventName !== eventName);
+        const deleted = lineHangouts.filter(obj => obj.eventName == eventName);
+
+        const deletedObject = {
+            eventName: deleted.eventName,
+            deleted: null
+        };
+
+        const deletedHangout = await linesCollection.findOneAndUpdate(
+            { lineName: line },
+            { $set: { hangouts: filterHangouts } },
+            { returnDocument: 'after' }
+        )
+        if (!deletedHangout) { throw `Error could not find event ${eventName}`; }
+        deletedObject.deleted = true;
+        return deletedObject;
+    },
+    async createHangout(
+        line,
+        eventName,
+        description,
+        eventLocation,
+        eventDate,
+        startTime,
+        endTime
+    ) {
+        // validate parameters
+        try {
+            eventName = validation.validTitle(eventName, "Event Name")
+            description = validation.validBio(description, "Event Description")
+            eventLocation.streetAddress = validation.validAddress( eventLocation.streetAddress, "Event Address")
+            eventLocation.city = validation.validCity(eventLocation.city, "Event City")
+            eventLocation.state = validation.validState(eventLocation.state, "Event State")
+            eventLocation.zip = validation.validZipcode(eventLocation.zip, "Event Zipcode")
+            let time = validation.validTime(startTime, endTime)
+            eventDate = validation.validDate(eventDate, "Event Date")
+        }
+        catch (e) {
+            throw `${e}`
+        }
+
+        const newEvent = {
+            _id: new ObjectId(),
+            timestamp: new Date().toUTCString(),
+            eventName: eventName,
+            description: description,
+            eventLocation: eventLocation,
+            eventDate: eventDate,
+            startTime: startTime,
+            endTime: endTime,
+            attendees: [],
+            totalAttendees: 0
+        }
+
+        const lineCollection = await lines();
+        const insertHangout = await lineCollection.findOneAndUpdate(
+            { lineName: line },
+            {
+                $push: {
+                    hangouts: newEvent
+                }
+            }
+        )
+        if (!insertHangout) {
+            throw `Error: Could not add event`;
+        }
+        return insertHangout.hangouts;
+    },
+    async addAttendee(
+        eventName,
+        line,
+        firstName,
+        lastName,
+        email
+    ) {
+        // validate attendees
+        try {
+            eventName = validation.validString(eventName, 'event name');
+            line = validation.validString(line, 'line');
+            firstName = validation.validName(firstName, 'first name');
+            lastName = validation.validName(lastName, 'last name');
+            email = validation.validEmail(email, 'email');
+        } catch(e) {
+            throw `${e}`;
+        }
+
+        const newAttendeeId = new ObjectId();
+        const newAttendee = {
+            _id: newAttendeeId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        }
+
+        const lineCollection = await lines()
+        const eventNew = await lineCollection.findOne({ lineName: line })
+        if (eventNew) {
+            // find the hangout with the id
+            const getHangouts = eventNew.hangouts
+            const filterHangouts = getHangouts.filter(obj => obj.eventName === eventName);
+
+            // check if user is already there
+            const attendeesList = filterHangouts[0].attendees;
+            const findDuplicate = attendeesList.filter(obj => obj.email === email);
+            if (findDuplicate.length > 0) {
+                throw `Error: User already added to hangout`
+            }
+
+            let add = filterHangouts[0].attendees.push(newAttendee)
+            add = filterHangouts[0].totalAttendees += 1;
+
+            const updatedInfo = await lineCollection.findOneAndUpdate(
+                { lineName: line },
+                { $set: { hangouts: filterHangouts } },
+                { returnDocument: 'after' }
+            )
+            return updatedInfo
+        } else {
+            throw `Error: Could not update attendee successfully`
         }
     }
 

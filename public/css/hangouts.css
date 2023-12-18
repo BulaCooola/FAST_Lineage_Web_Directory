@@ -1,0 +1,55 @@
+h2{
+    text-align: center;
+}
+
+div{
+    text-align: center;
+    align-items: center;
+    justify-self: center;
+}
+
+p{
+    text-align: left;
+}
+
+#eventsList{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 100%;
+}
+
+#hangout-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
+#eventsDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    background-color: antiquewhite;
+    width: 80%;
+    height: max-content;
+}
+
+#eventItemDiv{
+    display: flex;
+    border: 3px solid black;
+    width:80%;
+    margin: 2%;
+    height:80%;
+    vertical-align: middle;
+}
+
+#eventTitle{
+    text-align: center;
+}
+
+#create{
+    align-self: center;
+}

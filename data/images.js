@@ -2,11 +2,6 @@ import { lines } from '../config/mongoCollections.js'
 import * as validators from '../validators.js'
 import lineData from "./lines.js"
 
-/*
-    TODO createImageGallery
-    * This will simply create a path to an image
-*/
-
 const exportedMethods = {
     async getAllImages() {
         try{
@@ -26,27 +21,12 @@ const exportedMethods = {
         }
     },
 
-    async getImagesByTag(lineName){
-        try{
-            lineName = validators.validString(lineName)
-            let imgArr = []
-            let line = await lineData.getLineByName(lineName)
-            console.log("line = " + line);
-            imgArr = imgArr.concat(line.pictures)
-            console.log("imgArr = " + imgArr)
-            return imgArr;
-        }
-        catch(e){
-            throw `${e}`
-        }
-    },
-
     async addImage(imageUrl, lineName){
         try{
             imageUrl = validators.validLink(imageUrl, "imageUrl")
-            console.log(imageUrl);
+            //console.log(imageUrl);
             lineName = validators.validString(lineName, "lineName")
-            console.log(lineName);
+            //console.log(lineName);
             const linesCollection = await lines();
             const findLine = await linesCollection.findOne({ lineName: lineName })
             const updatePictures = await linesCollection.updateOne(
@@ -64,9 +44,4 @@ const exportedMethods = {
     }
 }
 
-
 export default exportedMethods;
-
-// TODO getImage
-// TODO getAllImages
-// TODO deleteImage

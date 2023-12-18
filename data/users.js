@@ -18,7 +18,7 @@ const exportedMethods = {
         return user;
     },
     async getUserByEmail(email) {
-        email = validation.validEmail(email);        //subject to change
+        email = validation.validEmail(email).toLowerCase();        //subject to change
         const userCollection = await users();
         const user = await userCollection.findOne({ email: email });
         if (!user) throw 'Error: User not found';
@@ -67,7 +67,7 @@ const exportedMethods = {
 
         const userCollection = await users();
 
-        const findEmail = await userCollection.findOne({ email: email });
+        const findEmail = await userCollection.findOne({ email: email.toLowerCase() });
         if (findEmail) {
             throw `Error: email already exists, pick another.`;
         }
@@ -77,12 +77,7 @@ const exportedMethods = {
         if (password !== confirmPassword) {
             throw 'Error: Passwords must be the same';
         }
-
-        // const findLine = await linesData.getLineByName(line);
-        // if (!findLine) {
-        //     throw `Error: Line doesn't exists, please pick an existing line`
-        // }
-
+        
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = {
             userName: userName,
@@ -96,7 +91,7 @@ const exportedMethods = {
             gradYear: null,
             big: null,
             littles: [],
-            links: null,
+            links: {facebook: null, instagram: null, spotify: null},
             profilePicture: null
         }
 
@@ -115,6 +110,8 @@ const exportedMethods = {
         if (getUser === null) {
             throw `Either the email or password is invalid`;
         }
+
+        const userName = email.split("@")[0];
 
         let passMatch = await bcrypt.compare(password, getUser.password)
         if (!passMatch) {
@@ -137,15 +134,16 @@ const exportedMethods = {
     async updateProfile(user, email, password) {
         // user refers to an object describing the user
 
-        let { firstName, lastName, userName, major, gradYear, userBio, profilePicture } = user;
-        console.log(user);
+        let { firstName, lastName, major, gradYear, userBio, profilePicture, links } = user;
+
+        let userName
 
         try {
-            email = validation.validEmail(email, 'Email');
+            email = validation.validEmail(email, 'Email').toLowerCase();
+            userName = email.split("@")[0].toLowerCase();
             password = validation.validPassword(password);
             firstName = validation.validName(firstName, 'First Name Edit');
             lastName = validation.validName(lastName, 'Last Name Edit');
-            userName = validation.validUsername(userName);
             if (major === '') { major = null; }
             else major = validation.validString(major, 'Major Edit');
             if (gradYear === '') { gradYear = null; } //cant do negative years
@@ -154,6 +152,12 @@ const exportedMethods = {
             else userBio = validation.validBio(userBio, 'Bio Edit');
             if (profilePicture === '') { profilePicture = null; }
             else profilePicture = validation.validLink(profilePicture, 'profilePicture Edit');
+            if (links.facebook === '') { links.facebook = null; }
+            else links.facebook = validation.validSocialLink(links.facebook, 'facebook');
+            if (links.instagram === '') {links.instagram = null; }
+            else links.instagram = validation.validSocialLink(links.instagram, 'instagram');
+            if (links.spotify === '') { links.spotify = null; }
+            else links.spotify = validation.validSocialLink(links.spotify, 'spotify');
         } catch (e) {
             throw `${e}`;
         }
@@ -165,8 +169,10 @@ const exportedMethods = {
             major: major,
             gradYear: gradYear,
             userBio: userBio,
-            profilePicture: profilePicture
+            profilePicture: profilePicture,
+            links: links
         }
+
 
         const userCollection = await users()
         email = email.toLowerCase()
@@ -186,7 +192,6 @@ const exportedMethods = {
         const filteredData = Object.fromEntries(
             Object.entries(cleanedUser).filter(([key, value]) => value !== 0)
         );
-        console.log(filteredData);
 
         if (Object.keys(filteredData).length > 0) {
             const updateInfo = await userCollection.updateOne(

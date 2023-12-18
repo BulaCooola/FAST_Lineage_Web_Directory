@@ -1,0 +1,65 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.chat-container {
+    flex: 1; /* Allow the chat container to take up available space */
+    overflow-y: hidden; /* Hide the scroll bar from the chat container */
+    position: relative; /* Establish positioning context for absolute positioning of messageList */
+}
+
+#messageList {
+    overflow-y: auto; /* Make only the messageList scrollable */
+    max-height: 48vh; /* Set a maximum height for the messageList */
+}
+
+.form-wrapper {
+    padding: 10px;
+    width: 100%;
+    font-size: 20px; /* Adjust as needed */
+    background-color: #f0f0f0; /* Add your desired background color */
+    position: fixed;
+    bottom: 0;
+}
+
+.message {
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    max-width: 100%; /* Adjust based on your design */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input, button {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}

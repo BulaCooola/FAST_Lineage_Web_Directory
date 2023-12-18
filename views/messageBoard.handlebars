@@ -1,7 +1,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+<link rel="stylesheet" href="/public/css/messageboard.css">
 <main>
-    <h1>Message Board</h1>
+    <h2>Message Board</h2>
 
     {{#if error}}
     <p class="error">{{error}}</p>
@@ -9,18 +9,27 @@
 
     <div id="messageList">
         {{#each messages}}
-        <p><strong>{{userName}}:</strong> {{text}}</p>
+        <p class="message"><strong>{{userName}}:</strong> {{text}}</p>
         {{/each}}
     </div>
 
     <div class="form-wrapper">
         <form action="/lines/myline/messages" method="POST" id="messageForm">
-            <input type="text" id="user" name="user" placeholder="Your Name" value="{{user.userName}}" required
-                readonly hidden>
+            <input type="text" id="user" name="user" placeholder="Your Name" value="{{user.userName}}" required readonly
+                hidden>
             <input type="text" id="message" name="message" placeholder="Your Message" required>
             <button type="submit">Send Message</button>
         </form>
     </div>
 </main>
+
+<script>
+    function scrollToBottom() {
+        const container = document.getElementById('messageList');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    window.onload = scrollToBottom();
+</script>
 
 {{!-- temporary --}}

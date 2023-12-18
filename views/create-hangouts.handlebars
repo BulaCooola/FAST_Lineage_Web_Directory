@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="/public/css/hangouts.css">
+<main class="create-hangouts">
+    <h1>Create a Line Hangout!</h1>
+    <form action="/lines/myline/hangouts/create" method="POST" id="hangouts-form">
+        <div class="input-container">
+            <div class="input-group">
+                <label for="eventTitleInput">Event Title:</label>
+                <input type="text" id="eventTitleInput" name="eventTitle" required>
+            </div>
+            <div class="input-group">
+                <label for="eventDescriptionInput">Event Description:</label>
+                <input type="text" id="eventDescriptionInput" name="eventDescription" required>
+            </div>
+            <div class="input-group">
+                <label for="eventAddressInput">Event Address:</label>
+                <input type="text" id="eventAddressInput" name="eventAddress" required>
+            </div>
+            <div class="input-group">
+                <label for="eventCityInput">Event City:</label>
+                <input type="text" id="eventCityInput" name="eventCity" required>
+            </div>
+            <div class="input-group">
+                <label for="eventStateInput">Event State:</label>
+                <input type="text" id="eventStateInput" name="eventState" required>
+            </div>
+            <div class="input-group">
+                <label for="eventZipcodeInput">Event Zipcode:</label>
+                <input type="text" id="eventZipcodeInput" name="eventZipcode" required>
+            </div>
+            <div class="input-group">
+                <label for="startTimeInput">Start Time:</label>
+                <input type="time" id="startTimeInput" name="startTime" required>
+            </div>
+            <div class="input-group">
+                <label for="endTimeInput">End Time:</label>
+                <input type="time" id="endTimeInput" name="endTime" required>
+            </div>
+            <div class="input-group">
+                <label for="eventDateInput">Event Date MM/DD/YYYY:</label>
+                <input type="text" id="eventDateInput" name="eventDate" required>
+            </div>
+            <button type="submit" id="submitButton" onclick="disableButton()">Create Hangout</button>
+        </div>
+        <div id="myErrors"></div>
+    </form>
+    <a href="/lines/myline">Go back to line!</a>
+    <script src="/public/js/button.js"></script>
+</main>

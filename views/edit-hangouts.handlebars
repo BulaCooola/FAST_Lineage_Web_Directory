@@ -1,0 +1,30 @@
+<main class="edit-hangouts">
+    <h1>Edit {{this.eventTitle}}</h1>
+    <form action="/hangouts/create" method="POST" id="hangouts-form">
+        <div class="input-container">
+                <div class="input-group">
+                    <label for="eventDescription">Event Description:</label>
+                    <input type="text" id="eventDescriptionInput" name="eventDescription" required>
+                </div>
+                <div class="input-group">
+                    <label for="eventLocation">Event Location:</label>
+                    <input type="text" id="eventLocationInput" name="eventLocation" required>
+                </div>
+                <div class="input-group">
+                    <label for="startTime">Start Time:</label>
+                    <input type="text" id="startTimeInput" name="startTime" required>
+                </div>
+                <div class="input-group">
+                    <label for="endTime">End Time:</label>
+                    <input type="text" id="endTimeInput" name="endTime" required>
+                </div>
+                <div class="input-group">
+                    <label for="eventDate">Event Date:</label>
+                    <input type="text" id="eventDateInput" name="eventDate" required>
+                </div>
+                <button type="submit" id="submitButton" onclick="disableButton()">Finish Editing Hangout</button>
+        </div>
+    </form>
+    <a href="/myline">Go back to line!</a>
+    <script src="/public/js/button.js">validateForm('registration-form')</script>
+</main>

@@ -1,50 +1,35 @@
 import express from 'express';
 import imageData from '../data/images.js';
-import lineData from '../data/lines.js';
 const router = express.Router();
+import * as validator from '../validators.js';
 
 router.route('/')
   .get(async (req, res) => {
     try {
       // const allLines = await lineData.getAllLines();
-      // TODO: After handlebars are made, find the tag associated with 
       // *FROM LAB8* res.render('characterSearchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
       const allPics = await imageData.getAllImages()
-      const allLines = await lineData.getAllLines()
       res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics})
     } catch (e) {
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   })
 
   .post(async (req, res) =>{
+    //From lab8
     if(!req.session.user){
-      res.redirect('/users/login');
+      return res.redirect('/users/login');
     }
     try{
-      const userLine = req.session.user.line;
+      let userLine = req.session.user.line;
       let inputs = req.body.imageURL;
-      console.log(inputs)
+      userLine = validator.validString(userLine)
+      inputs = validator.validLink(inputs)
       const updateImage = await imageData.addImage(inputs, userLine);
-      console.log("--- Successfully added " + inputs + " as picture.");
-      res.redirect('/')
+      return res.redirect('/images')
     }
     catch(e){
-      return res.status(400).render('errors', { error: e });
-    }
-  });
-
-  router.route('/filteredImages')
-  .get(async (req, res) => {
-    try {
-      let inputs = req.body.tagFilter;
-      //console.log(req.body)
-      console.log("tagFilter = " + req.body.tagFilter)
-      const filteredPics = await imageData.getImagesByTag(inputs)
-      res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: filteredPics})
-    }
-    catch(e){
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   });
 // /images/:lineName

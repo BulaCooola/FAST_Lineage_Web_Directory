@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="/public/css/hangouts.css">
+<main class="hangouts">
+    <h2>Your Line's Hangouts!!!!</h2>
+    <form action="/lines/myline/hangouts" method="POST">
+        <button id="create" type="submit" name="action" value="create">Create Event</button>
+    </form>
+    {{#if hangout}}
+    <div id="eventsList">
+        <div class="hangout-item">
+            <div id="eventsDiv">
+                {{#each hangout}}
+                <div class="eventItemDiv">
+                    <div class="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">
+                        <h3>{{this.eventName}}</h3>
+                    </div>
+                    <div class="eventDetails">
+                        <p>Event Description: {{this.description}}</p>
+                        <p>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
+                            {{this.eventLocation.state}} {{this.eventLocation.zip}}</p>
+                        <p>Start Time: {{this.startTime}}</p>
+                        <p>End Time: {{this.endTime}}</p>
+                        <p>Event Date: {{this.eventDate}}</p>
+                        {{!-- <li>Attendees: {{this.attendees}}</li> --}}
+                        <p>Total Attendees: {{this.totalAttendees}}</p>
+                        <form action="/lines/myline/hangouts" method="POST">
+                            <input type="text" class="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
+                            <button class="accept" type="submit" name="action" value="accept">Accept</button>
+                            <button class="edit" type="submit" name="action" value="delete">Delete (lineHead only)</button>
+                        </form>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    {{#else}}
+    <p>No Hangouts found!</p>
+    {{/else}}
+
+    <a href="/lines/myline">Go back to line!</a>
+
+</main>
+<script src="/public/js/button.js"></script>

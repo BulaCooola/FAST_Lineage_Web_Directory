@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../../public/css/profile.css" />
+<link rel="stylesheet" href="../../public/css/profile.css">
 
 <main class="edit-profile">
 
@@ -20,55 +20,54 @@
             <label for="lastNameInput">Last Name:</label>
             <input type="text" id="lastNameInput" name="lastName" value="{{user.lastName}}" required>
 
-            <!-- Username -->
-            <label for="userNameInput">Username:</label>
-            <input type="text" id="userNameInput" name="userName" value="{{user.userName}}" required>
-
             <!-- Major and Grad Year -->
             <label for="majorInput">Major:</label>
-            <input type="text" id="majorInput" name="major" value="{{user.major}}" list="majorOptions">
-            <datalist id="majorOptions">
-                <option value="Accelerated Chemical Biology"></option>
-                <option value="Accelerated Law"></option>
-                <option value="Accounting and Analytics"></option>
-                <option value="Biology"></option>
-                <option value="Biomedical Engineering"></option>
-                <option value="Business and Technology"></option>
-                <option value="Business Undecided"></option>
-                <option value="Chemical Biology"></option>
-                <option value="Chemical Engineering"></option>
-                <option value="Chemistry"></option>
-                <option value="Civil Engineering"></option>
-                <option value="Computer Engineering"></option>
-                <option value="Computer Science"></option>
-                <option value="Cybersecurity"></option>
-                <option value="Data Visualization"></option>
-                <option value="Economics"></option>
-                <option value="Electrical Engineering"></option>
-                <option value="Engineering - Naval Engineering Concentration"></option>
-                <option value="Engineering - Optical Engineering Concentration"></option>
-                <option value="Engineering Management"></option>
-                <option value="Enviornmental Engineering"></option>
-                <option value="Finance"></option>
-                <option value="Humanities Undecided"></option>
-                <option value="Industrial & Systems Engineering"></option>
-                <option value="Information Systems"></option>
-                <option value="Literature"></option>
-                <option value="Management"></option>
-                <option value="Marketing Innovation & Analytics"></option>
-                <option value="Mathematics"></option>
-                <option value="Mechanical Engineering"></option>
-                <option value="Music and Technology"></option>
-                <option value="Philosophy"></option>
-                <option value="Physics"></option>
-                <option value="Quantitative Finance"></option>
-                <option value="Quantitative Social Sciences"></option>
-                <option value="Science Communication"></option>
-                <option value="Science, Technology & Society"></option>
-                <option value="Software Engineering"></option>
-                <option value="Technology Management"></option>
-                <option value="Visual Arts & Technology"></option>
-            </datalist>
+            <!--<input type="text" id="majorInput" name="major" value="{{user.major}}" list="majorOptions">-->
+            <select id="majorInput" name="major">
+                <option disabled selected value> -- select an option -- </option>
+                <option value="Accelerated Chemical Biology">Accelerated Chemical Biology</option>
+                <option value="Accelerated Law">Accelerated Law</option>
+                <option value="Accounting and Analytics">Accounting and Analytics</option>
+                <option value="Biology">Biology</option>
+                <option value="Biomedical Engineering">Biomedical Engineering</option>
+                <option value="Business and Technology">Business and Technology</option>
+                <option value="Business Undecided">Business Undecided</option>
+                <option value="Chemical Biology">Chemical Biology</option>
+                <option value="Chemical Engineering">Chemical Engineering</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Data Visualization">Data Visualization</option>
+                <option value="Economics">Economics</option>
+                <option value="Electrical Engineering">Electrical Engineering</option>
+                <option value="Engineering - Naval Engineering Concentration">Engineering - Naval Engineering
+                    Concentration</option>
+                <option value="Engineering - Optical Engineering Concentration">Engineering - Optical Engineering
+                    Concentration</option>
+                <option value="Engineering Management">Engineering Management</option>
+                <option value="Enviornmental Engineering">Enviornmental Engineering</option>
+                <option value="Finance">Finance</option>
+                <option value="Humanities Undecided">Humanities Undecided</option>
+                <option value="Industrial & Systems Engineering">Industrial & Systems Engineering</option>
+                <option value="Information Systems">Information Systems</option>
+                <option value="Literature">Literature</option>
+                <option value="Management">Management</option>
+                <option value="Marketing Innovation & Analytics">Marketing Innovation & Analytics</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Music and Technology">Music and Technology</option>
+                <option value="Philosophy">Philosophy</option>
+                <option value="Physics">Physics</option>
+                <option value="Quantitative Finance">Quantitative Finance</option>
+                <option value="Quantitative Social Sciences">Quantitative Social Sciences</option>
+                <option value="Science Communication">Science Communication</option>
+                <option value="Science, Technology & Society">Science, Technology & Society</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Technology Management">Technology Management</option>
+                <option value="Visual Arts & Technology">Visual Arts & Technology</option>
+            </select>
 
             <label for="gradYearInput">Graduation Year:</label>
             <input type="number" id="gradYearInput" name="gradYear" value="{{user.gradYear}}">
@@ -96,11 +95,26 @@
 
             <!-- Bio -->
             <label for="bioInput">Bio:</label>
-            <input type="text" id="bioInput" name="bio" rows="4" value="{{user.userBio}}">
+            <input type="text" id="bioInput" name="bio" value="{{user.userBio}}">
 
             <!-- Profile Picture -->
-            <label for="profilePictureInput">Profile Picture <p>Accepts imgur picture links only!</p></label>
+            <label for="profilePictureInput">Profile Picture:</label>
+            <label for="profilePictureInput">(Please use valid and existing imgur picture links!)</label>
             <input type="text" id="profilePictureInput" name="profilePicture" value="{{user.profilePicture}}">
+
+            <hr class="separator-line">
+
+            <!-- Facebook -->
+            <label for="facebook">Facebook link: </label>
+            <input type="text" id="facebook" name="facebook" value="{{user.links.facebook}}">
+
+            <!-- Instagram -->
+            <label for="instagram">Instagram link: </label>
+            <input type="text" id="instagram" name="instagram" value="{{user.links.instagram}}">
+
+            <!-- Spotify  -->
+            <label for="spotify">Spotify playlist/album/track: </label>
+            <input type="text" id="spotify" name="spotify" value="{{user.links.spotify}}">
 
             <hr class="separator-line">
 
@@ -110,6 +124,8 @@
             <label for="password">*Password: </label>
             <input type="password" id="password" name="password" required>
 
+            <br>
+
             <button type="submit" id="submitButton" onclick="disableButton()">Save Changes</button>
             <div id="loadingIndicator">
                 <div class="loader"></div>
@@ -117,8 +133,13 @@
             </div>
 
         </form>
-        <script src="../../public/js/button.js"></script>
-        <script src="../../public/js/edit-profile.js">validateForm('myForm')</script>
+        <script src="/public/js/button.js"></script>
+        <script src="/public/js/edit-profile.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                validateForm('myForm');
+            });
+        </script>
 
         <p><a href="/users/profile">Go Back!</a></p>
     </div>

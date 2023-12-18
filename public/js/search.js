@@ -16,9 +16,7 @@
         for (const x of response) {
             let li = document.createElement("li")
             let a = document.createElement("a")
-            //console.log(x);
             a.setAttribute("href", `users/profile/${x.username}`)
-            //console.log(x._links.self.href)
             let memberName = `${x.firstName} ${x.lastName}`
             let textNode = document.createTextNode(memberName)
             a.appendChild(textNode)
@@ -35,6 +33,7 @@
         $(showMembers).empty()
 
         if ($(searchValue).val().trim().length == 0) {
+            myErrors.innerHTML = ""
             $('#resultDiv').show()
             $('#myErrors').show()
             let errorDiv = document.createElement("div")
