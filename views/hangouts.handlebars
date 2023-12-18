@@ -2,7 +2,7 @@
 <main class="hangouts">
     <h2>Your Lines Hangouts!!!!</h2>
     {{#if hangout}}
-    <ul id="eventsList">
+    <div id="eventsList">
         <div class="hangout-item">
             <form action="/lines/myline/hangouts" method="POST">
                 <button id="create" type="submit" name="action" value="create">Create Event</button>
@@ -32,13 +32,13 @@
                 {{/each}}
             </div>
         </div>
-    </ul>
+    </div>
     {{/if}}
     {{#else}}
     <p>No Hangouts found!</p>
     {{/else}}
 
-    <a href="/myline">Go back to line!</a>
+    <a href="/lines/myline">Go back to line!</a>
 
 </main>
 <script src="../../public/js/button.js"></script>

@@ -28,11 +28,11 @@
             </div>
             <div class="input-group">
                 <label for="startTime">Start Time HH:MM AM or HH:MM PM:</label>
-                <input type="text" id="startTimeInput" name="startTime" required>
+                <input type="time" id="startTimeInput" name="startTime" required>
             </div>
             <div class="input-group">
                 <label for="endTime">End Time HH:MM AM or HH:MM PM:</label>
-                <input type="text" id="endTimeInput" name="endTime" required>
+                <input type="time" id="endTimeInput" name="endTime" required>
             </div>
             <div class="input-group">
                 <label for="eventDate">Event Date MM/DD/YYYY:</label>
@@ -42,6 +42,6 @@
         </div>
         <div id="myErrors"></div>
     </form>
-    <a href="/myline">Go back to line!</a>
+    <a href="/lines/myline">Go back to line!</a>
     <script src="../public/js/button.js">validateForm('registration-form')</script>
 </main>

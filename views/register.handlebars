@@ -31,7 +31,7 @@
                 <div class="input-group">
                     <label for="lineInput">Line:</label>
                     <select id="lineInput" name="line">
-                        <option disabled selected value> -- select an option -- </option>
+                        <option disabled selected value=""> -- select an option -- </option>
                         {{#each lines}}
                         <option value="{{this.lineName}}">{{this.lineName}} Line</option>
                         {{/each}}
@@ -53,7 +53,7 @@
 
         </form>
         <script src="../public/js/button.js"></script>
-        <script src="../public/js/register-login-form.js"></script>
+        <script src="../public/js/register.js"></script>
     </div>
     <hr class="separator-line">
     <p><a href="/users/login">Already have an account? Click here to log-in</a></p>
