@@ -1,31 +1,36 @@
+<link rel="stylesheet" href="../../public/css/hangouts.css">
 <main class="hangouts">
-    <h1>HANGOUTS!!!!!!!!!!!!!!!!!!</h1>
+    <h2>Your Lines Hangouts!!!!</h2>
     {{#if hangout}}
     <ul id="eventsList">
         <div class="hangout-item">
             <form action="/lines/myline/hangouts" method="POST">
                 <button id="create" type="submit" name="action" value="create">Create Event</button>
             </form>
-            {{#each hangout}}
-            <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">{{this.eventName}}</div>
-            <div id="eventDetails" class="eventDetails">
-                <ul>
-                    <li>Event Description: {{this.description}}</li>
-                    <li>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
-                        {{this.eventLocation.state}} {{this.eventLocation.zip}}</li>
-                    <li>Start Time: {{this.startTime}}</li>
-                    <li>End Time: {{this.endTime}}</li>
-                    <li>Event Date: {{this.eventDate}}</li>
-                    {{!-- <li>Attendees: {{this.attendees}}</li> --}}
-                    <li>Total Attendees: {{this.totalAttendees}}</li>
-                </ul>
-                <form action="/lines/myline/hangouts" method="POST">
-                    <input type="text" id="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
-                    <button id="accept" type="submit" name="action" value="accept">Accept</button>
-                    <button id="edit" type="submit" name="action" value="edit">Edit</button>
-                </form>
+            <div id="eventsDiv">
+                {{#each hangout}}
+                <div id="eventItemDiv">
+                    <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">
+                        <h3>{{this.eventName}}</h3>
+                        </div>
+                    <div id="eventDetails" class="eventDetails">
+                        <p>Event Description: {{this.description}}</p>
+                        <p>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
+                            {{this.eventLocation.state}} {{this.eventLocation.zip}}</p>
+                        <p>Start Time: {{this.startTime}}</p>
+                        <p>End Time: {{this.endTime}}</p>
+                        <p>Event Date: {{this.eventDate}}</p>
+                        {{!-- <li>Attendees: {{this.attendees}}</li> --}}
+                        <p>Total Attendees: {{this.totalAttendees}}</p>
+                        <form action="/lines/myline/hangouts" method="POST">
+                            <input type="text" id="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
+                            <button id="accept" type="submit" name="action" value="accept">Accept</button>
+                            <button id="edit" type="submit" name="action" value="edit">Edit</button>
+                        </form>
+                    </div>
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
     </ul>
     {{/if}}
