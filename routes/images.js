@@ -11,7 +11,6 @@ router.route('/')
       // TODO: After handlebars are made, find the tag associated with 
       // *FROM LAB8* res.render('characterSearchResults', { title: "Characters Found", searchCharacterByName: searchTerm, characters: names })
       const allPics = await imageData.getAllImages()
-      const allLines = await lineData.getAllLines()
       res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics})
     } catch (e) {
       return res.status(400).render('errors', { pageTitle: "Error", error: e });
