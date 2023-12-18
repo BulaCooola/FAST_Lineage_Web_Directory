@@ -173,7 +173,6 @@ const exportedMethods = {
             links: links
         }
 
-        //console.log(cleanedUser);
 
         const userCollection = await users()
         email = email.toLowerCase()
@@ -193,7 +192,6 @@ const exportedMethods = {
         const filteredData = Object.fromEntries(
             Object.entries(cleanedUser).filter(([key, value]) => value !== 0)
         );
-        // console.log("filteredData: " + filteredData);
 
         if (Object.keys(filteredData).length > 0) {
             const updateInfo = await userCollection.updateOne(

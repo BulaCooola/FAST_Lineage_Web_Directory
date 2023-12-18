@@ -202,7 +202,6 @@ const exportedMethods = {
             }
 
             if (big.littles.some(l => l.userName === user.userName)) {
-                console.log("we found someone equal: " + user.userName);
                 await userCollection.updateOne(
                     { _id: big._id, 'littles.userName': user.userName },
                     { $push: { 'littles.$.littles': little } }
@@ -267,7 +266,6 @@ const exportedMethods = {
         endTime
     ) {
         // validate parameters
-        // console.log(eventLocation);
         try {
             eventName = validation.validTitle(eventName, "Event Name")
             description = validation.validBio(description, "Event Description")

@@ -92,7 +92,6 @@ router.route('/myline/biglittle')
                     throw "This member is already your little";
                 }
                 await userData.assignLittles(userInfo.userName, newLittle.userName)
-                console.log("--- Successfully added " + newLittle.userName + " as " + req.session.user.userName + "'s little" + " ---");
                 res.redirect('/lines/myline')
             } catch (e) {
                 return res.status(400).render('errors', { pageTitle: "Error", error: e });
@@ -107,7 +106,6 @@ router.route('/myline/messages')
         } else {
             const userLine = req.session.user.line
             const line = await lineData.getLineByName(userLine);
-            //console.log(line.messages)
             res.render('messageBoard', { pageTitle: 'Message Board', messages: line.messages, user: req.session.user })
         }
     })
@@ -121,7 +119,6 @@ router.route('/myline/messages')
             // let userName = req.session.user.userName;
             let line = req.session.user.line;
 
-            console.log('stage 1');
             try {
                 user = validator.validString(user, 'UserName');
                 message = validator.validString(message, 'Text');
@@ -130,20 +127,16 @@ router.route('/myline/messages')
                 return res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages, user: req.session.user });
             }
 
-            console.log('stage 2');
 
             try {
                 const insertmessage = await lineData.createMessage(user, message, line);
-                console.log(insertmessage)
                 const updatedLine = await lineData.getLineByName(line);
-                console.log(updatedLine);
                 res.render('messageBoard', { pageTitle: 'Message Board', messages: updatedLine.messages, user: req.session.user });
 
             } catch (e) {
                 return res.status(400).render('messageBoard', { pageTitle: 'Message Board', error: e, messages: line.messages.reverse(), user: req.session.user });
             }
 
-            console.log('stage 3')
 
         }
     })
@@ -249,7 +242,6 @@ router.route('/myline/hangouts')
             if (action === 'accept') {
                 // add user to the 
                 let { eventNameInput } = req.body;
-                console.log(eventNameInput, 'eventname')
                 try {
                     eventNameInput = validator.validString(eventNameInput, 'Hangout Name');
                 } catch (e) {
@@ -263,7 +255,6 @@ router.route('/myline/hangouts')
 
                 try {
                     const addUser = await lineData.addAttendee(eventNameInput, line, firstName, lastName, email);
-                    console.log('added user', addUser)
                     return res.redirect('/lines/myline/hangouts');
                 } catch (e) {
                     return res.status(400).render('errors', { error: e });
@@ -307,7 +298,6 @@ router.route('/myline/hangouts/create')
     })
     .post(async (req, res) => {
         let { eventTitle, eventDescription, eventAddress, eventCity, eventState, eventZipcode, startTime, endTime, eventDate } = req.body
-        console.log(req.body)
         eventTitle = xss(eventTitle)
         eventDescription = xss(eventDescription)
         eventAddress = xss(eventAddress)
@@ -320,7 +310,6 @@ router.route('/myline/hangouts/create')
         if (!eventTitle || !eventDescription || !eventAddress || !eventCity || !eventState || !eventZipcode || !startTime || !endTime || !eventDate) {
             return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
         }
-        console.log('hello')
         try {
             eventTitle = validator.validTitle(eventTitle, "Event Name")
             eventDescription = validator.validBio(eventDescription, "Event Description")
@@ -336,18 +325,12 @@ router.route('/myline/hangouts/create')
         catch (e) {
             return res.status(400).render('errors', {error: e });
         }
-        console.log('hello2')
 
         try {
             let eventLocation = { streetAddress: eventAddress, city: eventCity, state: eventState, zip: eventZipcode }
-            // console.log(eventLocation)
-            // console.log(eventTitle)
-            console.log('hello3')
 
             const result = await lineData.createHangout(req.session.user.line, eventTitle, eventDescription, eventLocation, eventDate, startTime, endTime);
-            // console.log(result);
             if (result) {
-                console.log('hello4')
 
                 res.redirect('/lines/myline/hangouts');
             } else {
