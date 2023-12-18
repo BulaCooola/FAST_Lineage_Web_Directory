@@ -11,7 +11,7 @@ main {
 
 h2 {
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .chat-container {
@@ -22,7 +22,7 @@ h2 {
 
 #messageList {
     overflow-y: auto; /* Make only the messageList scrollable */
-    max-height: 47vh; /* Set a maximum height for the messageList */
+    max-height: 48vh; /* Set a maximum height for the messageList */
 }
 
 .form-wrapper {

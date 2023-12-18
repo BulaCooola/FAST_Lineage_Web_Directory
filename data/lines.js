@@ -8,14 +8,14 @@ const exportedMethods = {
         return await linesCollection.find({}).toArray();
     },
     async getLineById(id) {
-        id = validation.validId(id);            //subject to change
+        id = validation.validId(id);
         const linesCollection = await lines();
         const line = await linesCollection.findOne({ _id: new ObjectId(id) });
         if (!line) throw 'Error: Line not found';
         return line;
     },
     async getLineByName(name) {
-        name = validation.validString(name);        //subject to change
+        name = validation.validString(name);
         const linesCollection = await lines();
         const line = await linesCollection.findOne({ lineName: name });
         if (!line) throw 'Error: Line not found';
@@ -96,8 +96,6 @@ const exportedMethods = {
         return `${deletionInfo.name} has been deleted.`;
     },
     async addMember(lineName, member) {
-        // lineName refers to the name of line
-        // member refers to the object of the user
         const linesCollection = await lines();
         const usersCollection = await users();
         const line = await linesCollection.findOne({ lineName: lineName });
@@ -204,29 +202,23 @@ const exportedMethods = {
             const user = await userCollection.findOne({ userName: currentUserName });
 
             if (!user || !user.big) {
-                // If the current user does not have a big, or there is no big, exit the loop
                 break;
             }
 
             const big = await userCollection.findOne({ userName: user.big });
 
             if (!big) {
-                // If the big is not found, exit the loop
                 break;
             }
 
-            // Find the person whose little we need to add in their big's little array
             if (big.littles.some(l => l.userName === user.userName)) {
                 console.log("we found someone equal: " + user.userName);
-                // Add the little to the user's littles within the big's littles array
                 await userCollection.updateOne(
                     { _id: big._id, 'littles.userName': user.userName },
                     { $push: { 'littles.$.littles': little } }
                 );
             }
 
-
-            // Update the currentUserName for the next iteration
             little = user;
             currentUserName = big.userName;
         }
@@ -240,7 +232,7 @@ const exportedMethods = {
         return hangouts
     },
     async getHangoutById(id, line) {
-        id = validation.validId(id);            //subject to change
+        id = validation.validId(id);
         const linesCollection = await lines()
         const lineEvent = await linesCollection.findOne({ lineName: line });
         const hangout = lineEvent.hangout.filter(id => hangout._id === id)
@@ -271,8 +263,7 @@ const exportedMethods = {
         startTime,
         endTime
     ) {
-        // ! validate parameters
-
+        // validate parameters
         const newEvent = {
             _id: new ObjectId(),
             timestamp: new Date().toUTCString(),
@@ -310,8 +301,7 @@ const exportedMethods = {
         startTime,
         endTime
     ) {
-        // ! validate parameters
-
+        // validate parameters
         const updatedEvent = {
             _id: eventId,
             timestamp: new Date().toUTCString(),

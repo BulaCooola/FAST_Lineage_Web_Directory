@@ -101,6 +101,8 @@ const TeddyNuevaEspana = await user.registerUser('Teddy', 'NuevaEspana', 'tnueva
 const TNuevaEspana = await user.getUserByEmail('tnuevaespana@stevens.edu');
 const addTNuevaEspana = await line.addMember(TNuevaEspana.line, TNuevaEspana)
 console.log('tnuevaespana registered and added');
+const updateGrandHead = await line.addLineHead(TNuevaEspana, `Grand`);
+console.log(`tnuevaespana now head of Grand Line`);
 
 await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
