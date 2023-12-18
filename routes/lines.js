@@ -327,7 +327,6 @@ router.route('/myline/hangouts/create')
             startTime = (time)[0]
             endTime = (time)[1]
             eventDate = validator.validDate(eventDate, "Event Date")
-            console.log(eventDate)
         }
         catch (e) {
             return res.status(400).render('errors'), { error: e };
