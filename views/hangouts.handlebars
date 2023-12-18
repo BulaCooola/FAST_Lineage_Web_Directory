@@ -9,11 +9,11 @@
         <div class="hangout-item">
             <div id="eventsDiv">
                 {{#each hangout}}
-                <div id="eventItemDiv">
-                    <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">
+                <div class="eventItemDiv">
+                    <div class="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">
                         <h3>{{this.eventName}}</h3>
                     </div>
-                    <div id="eventDetails" class="eventDetails">
+                    <div class="eventDetails">
                         <p>Event Description: {{this.description}}</p>
                         <p>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
                             {{this.eventLocation.state}} {{this.eventLocation.zip}}</p>
@@ -23,9 +23,9 @@
                         {{!-- <li>Attendees: {{this.attendees}}</li> --}}
                         <p>Total Attendees: {{this.totalAttendees}}</p>
                         <form action="/lines/myline/hangouts" method="POST">
-                            <input type="text" id="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
-                            <button id="accept" type="submit" name="action" value="accept">Accept</button>
-                            <button id="edit" type="submit" name="action" value="delete">Delete (lineHead only)</button>
+                            <input type="text" class="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
+                            <button class="accept" type="submit" name="action" value="accept">Accept</button>
+                            <button class="edit" type="submit" name="action" value="delete">Delete (lineHead only)</button>
                         </form>
                     </div>
                 </div>
