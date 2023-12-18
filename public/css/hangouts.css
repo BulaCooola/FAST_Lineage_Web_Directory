@@ -1,9 +1,3 @@
-#hangout-item{
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-}
-
 h2{
     text-align: center;
 }
@@ -26,10 +20,18 @@ p{
     width: 100%;
 }
 
+#hangout-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}
+
 #eventsDiv{
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
     background-color: antiquewhite;
     width: 80%;
     height: max-content;
@@ -46,4 +48,8 @@ p{
 
 #eventTitle{
     text-align: center;
+}
+
+#create{
+    align-self: center;
 }
