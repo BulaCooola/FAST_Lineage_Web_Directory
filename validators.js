@@ -145,19 +145,20 @@ export const validSocialLink = (link, site) => {
 
     return link;
 }
+//referenced lab 6
 export const validTitle = (string, argName) => {
     string = string.trim()
     if (!string) { throw `Error: ${argName} must be supplied`; }
-    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid description`; }
-    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty description`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid title`; }
+    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty title`; }
     if (string.length > 25) { throw `Error: ${argName} has length over 25 characters. Too Long` }
     return string;
 }
 export const validDate = (string, argName) => {
     trimDate = string.trim()
     if (!string) { throw `Error: ${argName} must be supplied`; }
-    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid description`; }
-    if (trimDate.length === 0) { throw `Error: ${argName} has length 0. Empty description`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid date`; }
+    if (trimDate.length === 0) { throw `Error: ${argName} has length 0. Empty date`; }
     if (trimDate[2] !== "/" || trimDate[5] !== "/") {
         throw "Error: Invalid date format.";
     }
@@ -262,4 +263,49 @@ export const validTime = (startTime, endTime) => {
     if ((endMin - startMin) < 30) {
         throw "Error: Invalid time.";
     }
+}
+export const validAddress = (string, argName) => {
+    if (!string) { throw `Error: ${argName} must be supplied`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid address`; }
+    string = string.trim()
+    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty address`; }
+    if (string.length < 3) {
+        throw "eventLocation.streetAddress must have length greater than 2"
+    }
+    return string
+}
+export const validCity = (string, argName) => {
+    if (!string) { throw `Error: ${argName} must be supplied`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid city`; }
+    string = string.trim()
+    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty city`; }
+    if (string.length < 3) {
+        throw "eventLocation.city must have length greater than 2"
+    }
+    return string
+}
+export const validState = (string, argName) => {
+    if (!string) { throw `Error: ${argName} must be supplied`; }
+    if (typeof string !== 'string') { throw `Error: ${argName} is not a valid state`; }
+    string = string.trim()
+    if (string.length === 0) { throw `Error: ${argName} has length 0. Empty state`; }
+    let states = ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC',
+        'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS',
+        'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO',
+        'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP',
+        'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN',
+        'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY'];
+    if (states.includes(string) === false) {
+        throw "eventLocation.state isn't a state"
+    }
+    return string
+}
+export const zipCode = (number, argName) => {
+    if (number.toString().length == 0) { throw `Error: ${argName} must be supplied`; }
+    if (typeof number !== 'number') { throw `Error: ${argName} is not of type Number`; }
+    if (number < 0) { throw `Error: ${argName} should be a positive number`; }
+    if (number.zip.length != 5) {
+        throw "eventLocation.zip should have length 5"
+    }
+    return number
 }
