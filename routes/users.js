@@ -28,7 +28,6 @@ router.route('/login')
         }
         try {
             let checkExists = await usersData.loginUser(inputs.email, inputs.password);
-            console.log(checkExists)
             req.session.user = {
                 firstName: checkExists.firstName,
                 lastName: checkExists.lastName,
@@ -88,10 +87,8 @@ router.route('/register')
 
         try {
             const result = await usersData.registerUser(firstName, lastName, email, password, confirmPassword, line);
-            console.log(result);
             if (result.insertedUser) {
                 let checkExists = await usersData.loginUser(email, password);
-                console.log(checkExists)
                 req.session.user = {
                     firstName: checkExists.firstName,
                     lastName: checkExists.lastName,
@@ -102,7 +99,6 @@ router.route('/register')
                     littles: checkExists.littles
                 };
                 const addtoline = await linesData.addMember(line, checkExists)
-                console.log(addtoline)
                 res.redirect('/users/profile');
             } else {
                 // ! different status code
@@ -117,7 +113,6 @@ router.route('/register')
 // profile
 router.route('/profile')
     .get(async (req, res) => {
-        console.log(req.session.user)
         const userInfo = await usersData.getUserByEmail(req.session.user.email)
         let type
         let id

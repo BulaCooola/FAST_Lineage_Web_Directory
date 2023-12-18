@@ -146,8 +146,6 @@ const exportedMethods = {
     async createMessage(userName, msg, line) {
         const linesCollection = await lines();
 
-        console.log('data stage 1');
-
         try {
             userName = validation.validString(userName, 'UserName');
             msg = validation.validString(msg, 'Message');
@@ -159,7 +157,6 @@ const exportedMethods = {
             throw `${e}`
         }
 
-        console.log('data stage 2');
         try {
             // get the line4
             const getLine = await linesCollection.findOne({ lineName: line })
@@ -167,9 +164,6 @@ const exportedMethods = {
                 // 404
                 throw `Error: Line not found`;
             }
-            console.log('data stage 2.1');
-            console.log(getLine.messages.length)
-
 
             const newMessage = {
                 _id: getLine.messages.length,
@@ -177,8 +171,6 @@ const exportedMethods = {
                 userName: userName,
                 text: msg
             }
-
-            console.log('data stage 2.2');
 
             const result = await linesCollection.updateOne(
                 { lineName: line },
@@ -188,8 +180,6 @@ const exportedMethods = {
             if (result.matchedCount !== 1) {
                 throw `Error: Unable to add message to database.`;
             }
-
-            console.log('data stage 2.3');
 
         } catch (e) {
             throw `${e}`;
@@ -277,6 +267,22 @@ const exportedMethods = {
         endTime
     ) {
         // validate parameters
+        try {
+            eventTitle = validator.validTitle(eventTitle, "Event Name")
+            eventDescription = validator.validBio(eventDescription, "Event Description")
+            eventAddress = validator.validAddress(eventAddress, "Event Address")
+            eventCity = validator.validCity(eventCity, "Event City")
+            eventState = validator.validState(eventState, "Event State")
+            eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
+            let time = validator.validTime(startTime, endTime)
+            startTime = (time)[0][0] + ":" + (time)[0][1]
+            endTime = (time)[1][0] + ":" + (time)[1][1]
+            //eventDate = validator.validDate(eventDate, "Event Date")
+        }
+        catch (e) {
+            throw `${e}`
+        }
+
         const newEvent = {
             _id: new ObjectId(),
             timestamp: new Date().toUTCString(),
