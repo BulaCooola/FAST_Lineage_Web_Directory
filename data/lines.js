@@ -267,17 +267,16 @@ const exportedMethods = {
         endTime
     ) {
         // validate parameters
+        // console.log(eventLocation);
         try {
-            eventTitle = validator.validTitle(eventTitle, "Event Name")
-            eventDescription = validator.validBio(eventDescription, "Event Description")
-            eventAddress = validator.validAddress(eventAddress, "Event Address")
-            eventCity = validator.validCity(eventCity, "Event City")
-            eventState = validator.validState(eventState, "Event State")
-            eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
-            let time = validator.validTime(startTime, endTime)
-            startTime = (time)[0][0] + ":" + (time)[0][1]
-            endTime = (time)[1][0] + ":" + (time)[1][1]
-            //eventDate = validator.validDate(eventDate, "Event Date")
+            eventName = validation.validTitle(eventName, "Event Name")
+            description = validation.validBio(description, "Event Description")
+            eventAddress = validation.validAddress(eventAddress, "Event Address")
+            eventCity = validation.validCity(eventCity, "Event City")
+            eventState = validation.validState(eventState, "Event State")
+            eventZipcode = validation.validZipcode(eventZipcode, "Event Zipcode")
+            let time = validation.validTime(startTime, endTime)
+            eventDate = validation.validDate(eventDate, "Event Date")
         }
         catch (e) {
             throw `${e}`
