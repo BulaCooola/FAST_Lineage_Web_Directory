@@ -155,7 +155,8 @@ router.route('/searchuser')
             let names = await userData.getUserByFirstName(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -172,7 +173,8 @@ router.route('/searchMajor')
             let names = await userData.getUserByMajor(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -189,7 +191,8 @@ router.route('/searchGradYear')
             let names = await userData.getUserByGradYear(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
