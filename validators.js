@@ -192,7 +192,7 @@ export const validDate = (string, argName) => {
     const currDate = new Date();
     let currDay = currDate.getDate();
     let currMonth = currDate.getMonth() + 1;
-    console.log(currMonth);
+    //console.log(currMonth);
     let currYear = currDate.getFullYear();
 
     if (Number(date[2]) < currYear) {
