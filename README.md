@@ -11,8 +11,14 @@
 
 ## How To Use
 
+* ```npm i``` - download dependencies and node modules
+* ```node run seed``` - populate the databse
+* ```npm start``` - start the server
+* start up ```localhost:3000``` in browser
+* Login with username: ```spayba@stevens.edu``` password: ```Test@123``` to be a profile that is not a line head
+* Login with username: ```mphy@stevens.edu``` password: ```Test@123``` to be a profile that is a line head
 
-
+ 
 ## Proposal
 
 
