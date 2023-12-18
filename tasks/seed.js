@@ -107,8 +107,8 @@ console.log(`tnuevaespana now head of Grand Line`);
 await user.assignLittles("rsangalang", "dtran")
 await user.assignLittles("jalcalde", "kabe")
 
-await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: {facebook: '', instagram: '', spotify: ''}}, "jalcalde@stevens.edu", "Test@123")
-await user.updateProfile({ firstName: "Sean", lastName: "Payba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: {facebook: 'https://www.facebook.com/people/Sean-Payba/pfbid02fhsGU61FQUNMC9Etwnhs1SqSeKWpGNc325kzUbGk6HGQA21XgDACeriHRsXbMQGtl/', instagram: 'https://www.instagram.com/seanpayba/', spotify: 'https://open.spotify.com/track/6VBuuMGYskvpkK8V9zmJau'}}, "spayba@stevens.edu", "Test@123")
+await user.updateProfile({ firstName: "Jedd", lastName: "Alcalde", major: "Computer Science", gradYear: 2025, userBio: "help me", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: { facebook: '', instagram: '', spotify: '' } }, "jalcalde@stevens.edu", "Test@123")
+await user.updateProfile({ firstName: "Sean", lastName: "Payba", major: "Computer Science", gradYear: 2025, userBio: "oop", profilePicture: "https://i.imgur.com/52hkMDz.jpeg", links: { facebook: 'https://www.facebook.com/people/Sean-Payba/pfbid02fhsGU61FQUNMC9Etwnhs1SqSeKWpGNc325kzUbGk6HGQA21XgDACeriHRsXbMQGtl/', instagram: 'https://www.instagram.com/seanpayba/', spotify: 'https://open.spotify.com/track/6VBuuMGYskvpkK8V9zmJau' } }, "spayba@stevens.edu", "Test@123")
 
 await image.addImage("https://i.imgur.com/E1EUKpZ.jpg", "Pretty Pretty Princesses")
 console.log("Pretty Pretty Princessses Image Added")
@@ -123,10 +123,10 @@ console.log("Dankest Image Added")
 await image.addImage("https://i.imgur.com/L2eaJGs.png", "Mya's Infinite Line Friends")
 console.log("Mya's Infinite Line Friends Image Added")
 
-await line.createHangout(`Mya's Infinite Line Friends`, 'First Hangout', 'A hangout at the beginning yay', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/17/2024', '17:00 PM', '21:00 PM')
+await line.createHangout(`Mya's Infinite Line Friends`, 'First Hangout', 'A hangout at the beginning yay', { streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030' }, '1/17/2024', '17:00', '21:00')
 console.log("Event for Mya's Infinite Line Friends Added")
 
-await line.createHangout(`Mya's Infinite Line Friends`, 'Second Hangout', 'A hangout a little later', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/20/2024', '17:00 PM', '21:00 PM')
+await line.createHangout(`Mya's Infinite Line Friends`, 'Second Hangout', 'A hangout a little later', { streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030' }, '1/20/2024', '17:00', '21:00')
 console.log("Event for Mya's Infinite Line Friends Added")
 
 console.log('Done Seeding')
