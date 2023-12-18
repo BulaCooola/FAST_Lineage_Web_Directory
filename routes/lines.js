@@ -2,6 +2,8 @@ import express from 'express';
 import * as validator from '../validators.js';
 import lineData from '../data/lines.js';
 import userData from '../data/users.js';
+import { lines } from '../config/mongoCollections.js';
+import xss from 'xss';
 const router = express.Router();
 
 router.route('/')
@@ -105,7 +107,7 @@ router.route('/myline/messages')
         } else {
             const userLine = req.session.user.line
             const line = await lineData.getLineByName(userLine);
-            console.log(line.messages)
+            //console.log(line.messages)
             res.render('messageBoard', { pageTitle: 'Message Board', messages: line.messages, user: req.session.user })
         }
     })
@@ -301,14 +303,48 @@ router.route('/myline/hangouts/create')
         }
     })
     .post(async (req, res) => {
-        // TODO ADD EVENT
-        // * get the req.body
-        // * validate it
-        try {
-            // create event with fields from req.body
+        let { eventTitle, eventDescription, eventAddress, eventCity, eventState, eventZipcode, startTime, endTime, eventDate } = req.body
+        eventTitle = xss(eventTitle)
+        eventDescription = xss(eventDescription)
+        eventAddress = xss(eventAddress)
+        eventCity = xss(eventCity)
+        eventState = xss(eventState)
+        eventZipcode = xss(eventZipcode)
+        startTime = xss(startTime)
+        endTime = xss(endTime)
+        eventDate = xss(eventDate)
+        if (!eventTitle || !eventDescription || !eventAddress || !eventCity || !eventState || !eventZipcode || !startTime || !endTime || !eventDate) {
+            return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
         }
-        catch {
-            //errors 
+        try {
+            eventTitle = validator.validTitle(eventTitle, "Event Name")
+            eventDescription = validator.validBio(eventDescription, "Event Description")
+            eventAddress = validator.validAddress(eventAddress, "Event Address")
+            eventCity = validator.validCity(eventCity, "Event City")
+            eventState = validator.validState(eventState, "Event State")
+            eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
+            // let time = validator.validTime(startTime, endTime)
+            // startTime = (time)[0]
+            // endTime = (time)[1]
+            //eventDate = validator.validDate(eventDate, "Event Date")
+        }
+        catch (e) {
+            return res.status(400).render('errors'), { error: e };
+        }
+        try {
+            let eventLocation = { streetAddress: eventAddress, city: eventCity, state: eventState, zip: eventZipcode }
+            // console.log(eventLocation)
+            // console.log(eventTitle)
+            const result = await lineData.createHangout(req.session.user.line, eventTitle, eventDescription, eventLocation, eventDate, startTime, endTime);
+            // console.log(result);
+            if (result) {
+                res.redirect('/lines/myline/hangouts');
+            } else {
+                // ! different status code
+                res.status(500).render('errors', { pageTitle: "Error", error: 'Internal Server Error' });
+            }
+        } catch (e) {
+            res.status(500).render('errors', { pageTitle: "Error", error: e });
         }
     })
 

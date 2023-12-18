@@ -302,7 +302,6 @@ const exportedMethods = {
         if (!insertHangout) {
             throw `Error: Could not add event`;
         }
-
         return insertHangout.hangouts;
     },
     async addAttendee(
