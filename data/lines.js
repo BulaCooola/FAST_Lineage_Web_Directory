@@ -232,23 +232,24 @@ const exportedMethods = {
         }
     },
     // referenced lab 6
-    async getAllEvents(line) {
+    async getAllHangouts(line) {
         // returns a list of hangouts from line
-        const linesCollection = await line();
-        line = await linesCollection.find({}).toArray();
-        const hangouts = line.hangouts;
+        const linesCollection = await lines();
+        const lineEvent = await linesCollection.findOne({ lineName: line });
+        const hangouts = lineEvent.hangouts;
         return hangouts
     },
-    async getEventById(id, line) {
+    async getHangoutById(id, line) {
         id = validation.validId(id);            //subject to change
-        const linesCollection = await line()
-        const lineEvent = await linesCollection.findOne({ lineName: line, 'hangouts._id': { _id: id } });
-        if (!lineEvent) throw 'Error: Event not found';
-        return lineEvent;
+        const linesCollection = await lines()
+        const lineEvent = await linesCollection.findOne({ lineName: line });
+        const hangout = lineEvent.hangout.filter(id => hangout._id === id)
+        if (!hangout) throw 'Error: Event not found';
+        return hangout;
     },
     async removeHangout(id, line) {
         id = validation.validId(id)
-        const getEvent = await this.getEventById(id, line)
+        const getEvent = await this.getHangoutById(id, line)
         const deletedObject = {
             eventName: getEvent.eventName,
             deleted: null
@@ -294,11 +295,11 @@ const exportedMethods = {
                 }
             }
         )
-        if (!insertHangout.acknowledged || !insertHangout.insertedId) {
+        if (!insertHangout) {
             throw `Error: Could not add event`;
         }
 
-        return await getEventById(newEvent._id.toString());
+        return insertHangout.hangouts;
     },
     async updateHangout(
         eventId,

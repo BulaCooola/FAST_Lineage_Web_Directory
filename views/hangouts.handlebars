@@ -4,19 +4,23 @@
     <ul id="eventsList">
         <div class="hangout-item">
             {{#each hangout}}
-            <div id="eventTitle" onclick="toggleAnswer({{hangout.eventTitle}})"></div>
-            <div id="eventDetails">
+            <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">{{this.eventName}}</div>
+            <div id="eventDetails" class="eventDetails">
                 <button id="create" type="submit" value="create" hidden>Create Event</button>
                 <ul>
-                    <li>Event Description: {{hangout.eventDescription}}</li>
-                    <li>Event Location: {{hangout.eventLocation}}</li>
-                    <li>Start Time: {{hangout.startTime}}</li>
-                    <li>End Time: {{hangout.endTime}}</li>
-                    <li>Event Date: {{hangout.eventDate}}</li>
+                    <li>Event Description: {{this.description}}</li>
+                    <li>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
+                        {{this.eventLocation.state}} {{this.eventLocation.zip}}</li>
+                    <li>Start Time: {{this.startTime}}</li>
+                    <li>End Time: {{this.endTime}}</li>
+                    <li>Event Date: {{this.eventDate}}</li>
+                    <li>Attendees: {{this.attendees}}</li>
                 </ul>
-                <button id="accept" type="submit" value="accept">Accept</button>
-                <button id="decline" type="submit" value="decline">Decline</button>
-                <button id="edit" type="submit" value="edit" hidden>Edit</button>
+                <form action="/lines/myline/hangouts" method="POST">
+                    <button id="accept" type="submit" name="action" value="accept">Accept</button>
+                    <button id="decline" type="submit" name="action" value="decline">Decline</button>
+                    <button id="edit" type="submit" name="action" value="edit" hidden>Edit</button>
+                </form>
             </div>
             {{/each}}
         </div>
@@ -25,7 +29,8 @@
     {{#else}}
     <p>No Hangouts found!</p>
     {{/else}}
-    
+
     <a href="/myline">Go back to line!</a>
 
 </main>
+<script src="../../public/js/button.js"></script>

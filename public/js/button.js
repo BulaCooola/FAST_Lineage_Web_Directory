@@ -22,3 +22,8 @@ function toggleList(id) {
         hiddenList.style.display = "none";
     }
 }
+
+function toggleAnswer(eventId) {
+    const eventDetails = document.querySelector(`.eventDetails[data-id="${eventId}"]`);
+    eventDetails.toggle('show');
+  }

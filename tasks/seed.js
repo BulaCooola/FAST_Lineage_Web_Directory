@@ -121,5 +121,7 @@ console.log("Dankest Image Added")
 await image.addImage("https://i.imgur.com/L2eaJGs.png", "Mya's Infinite Line Friends")
 console.log("Mya's Infinite Line Friends Image Added")
 
+await line.createHangout(`Mya's Infinite Line Friends`, 'First Hangout', 'A hangout at the beginning yay', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/17/2024', '5:00 PM', '9:00 PM')
+
 console.log('Done Seeding')
 await closeConnection();
