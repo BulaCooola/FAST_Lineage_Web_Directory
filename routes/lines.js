@@ -329,7 +329,7 @@ router.route('/myline/hangouts/create')
             let time = validator.validTime(startTime, endTime)
             startTime = (time)[0][0] + ":" + (time)[0][1]
             endTime = (time)[1][0] + ":" + (time)[1][1]
-            //eventDate = validator.validDate(eventDate, "Event Date")
+            eventDate = validator.validDate(eventDate, "Event Date")
         }
         catch (e) {
             return res.status(400).render('errors'), { error: e };

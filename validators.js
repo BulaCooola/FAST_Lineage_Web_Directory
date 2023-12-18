@@ -153,11 +153,11 @@ export const validTitle = (string, argName) => {
 }
 export const validDate = (string, argName) => {
     //from lab 6
-    trimDate = string.trim()
+    let trimDate = string.trim()
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid date`; }
     if (trimDate.length === 0) { throw `Error: ${argName} has length 0. Empty date`; }
-    console.log()
+    //error checking dates
     if (trimDate[2] !== "/" || trimDate[5] !== "/") {
         throw "Error: Invalid date format.";
     }
@@ -192,8 +192,6 @@ export const validDate = (string, argName) => {
     let currDay = currDate.getDate();
     let currMonth = currDate.getMonth() + 1;
     let currYear = currDate.getFullYear();
-    let currHour = currDate.getHours();
-    let currMinute = currDate.getMinutes();
 
     if (Number(date[2]) < currYear) {
         throw "Error: Year is not valid.";
@@ -206,15 +204,11 @@ export const validDate = (string, argName) => {
             if (Number(date[0]) > currDay) {
                 throw "Error: Day is not valid.";
             }
-            else if (Number(date[0]) === currDay) {
-                if (startTime[0] < currHour || (startTime[0] === currHour && startTime[1] <= currMinute)) {
-                    throw "Error: Time is not valid.";
-                }
-            }
         }
     }
     return trimDate
 }
+//referenced lab 6
 export const validTime = (startTime, endTime) => {
     startTime = startTime.split(":");
     endTime = endTime.split(":");
@@ -245,6 +239,7 @@ export const validTime = (startTime, endTime) => {
     const finalTime = [startTime, endTime]
     return (finalTime)
 }
+//referenced lab 6
 export const validAddress = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid address`; }
@@ -255,6 +250,7 @@ export const validAddress = (string, argName) => {
     }
     return string
 }
+//referenced lab 6
 export const validCity = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid city`; }
@@ -265,6 +261,7 @@ export const validCity = (string, argName) => {
     }
     return string
 }
+//referenced lab 6
 export const validState = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
     if (typeof string !== 'string') { throw `Error: ${argName} is not a valid state`; }
@@ -281,6 +278,7 @@ export const validState = (string, argName) => {
     }
     return string
 }
+//referenced lab 6
 export const validZipcode = (string, argName) => {
     if (string.length == 0) { throw `Error: ${argName} must be supplied`; }
     if (string.length != 5) {
