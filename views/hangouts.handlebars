@@ -1,11 +1,11 @@
 <main class="hangouts">
     <h1>HANGOUTS!!!!!!!!!!!!!!!!!!</h1>
+    <form action="/lines/myline/hangouts" method="POST">
+        <button id="create" type="submit" name="action" value="create">Create Event</button>
+    </form>
     {{#if hangout}}
     <ul id="eventsList">
         <div class="hangout-item">
-            <form action="/lines/myline/hangouts" method="POST">
-                <button id="create" type="submit" name="action" value="create">Create Event</button>
-            </form>
             {{#each hangout}}
             <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">{{this.eventName}}</div>
             <div id="eventDetails" class="eventDetails">
@@ -22,7 +22,7 @@
                 <form action="/lines/myline/hangouts" method="POST">
                     <input type="text" id="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
                     <button id="accept" type="submit" name="action" value="accept">Accept</button>
-                    <button id="edit" type="submit" name="action" value="edit">Edit</button>
+                    <button id="edit" type="submit" name="action" value="delete">Delete (LineHead only)</button>
                 </form>
             </div>
             {{/each}}
@@ -33,7 +33,7 @@
     <p>No Hangouts found!</p>
     {{/else}}
 
-    <a href="/myline">Go back to line!</a>
+    <a href="/lines/myline">Go back to line!</a>
 
 </main>
 <script src="../../public/js/button.js"></script>

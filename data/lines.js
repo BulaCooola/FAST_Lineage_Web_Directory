@@ -239,18 +239,31 @@ const exportedMethods = {
         if (!hangout) throw 'Error: Event not found';
         return hangout;
     },
-    async removeHangout(id, line) {
-        id = validation.validId(id)
-        const getEvent = await this.getHangoutById(id, line)
+    async removeHangout(eventName, line) {
+        eventName = validation.validString(eventName, 'eventName')
+        const linesCollection = await lines()
+        const the_line = await linesCollection.findOne({ lineName: line });
+        console.log(the_line)
+        const lineHangouts = the_line.hangouts;
+        console.log(lineHangouts)
+
+        const filterHangouts = lineHangouts.filter(obj => obj.eventName !== eventName);
+        const deleted = lineHangouts.filter(obj => obj.eventName == eventName);
+
         const deletedObject = {
-            eventName: getEvent.eventName,
+            eventName: deleted.eventName,
             deleted: null
         }
-        const linesCollection = await lines();
-        const deletedHangout = await linesCollection.findOneAndDelete({
-            lineName: line, 'hangouts._id': new ObjectId(id)
-        })
-        if (!deletedHangout) { throw `Error could not find event with id ${eventId}`; }
+
+        console.log(filterHangouts)
+
+        const deletedHangout = await linesCollection.findOneAndUpdate(
+            { lineName: line },
+            { $set: { hangouts: filterHangouts } },
+            { returnDocument: 'after' }
+        )
+        console.log('1')
+        if (!deletedHangout) { throw `Error could not find event ${eventName}`; }
         deletedObject.deleted = true;
         return deletedObject;
     },
@@ -292,41 +305,8 @@ const exportedMethods = {
 
         return insertHangout.hangouts;
     },
-    async updateHangout(
-        eventId,
-        eventName,
-        description,
-        eventLocation,
-        eventDate,
-        startTime,
-        endTime
-    ) {
-        // validate parameters
-        const updatedEvent = {
-            _id: eventId,
-            timestamp: new Date().toUTCString(),
-            eventName: eventName,
-            description: description,
-            eventLocation: eventLocation,
-            eventDate: eventDate,
-            startTime: startTime,
-            endTime: endTime,
-        }
-
-        const linesCollection = await lines();
-        const updatedHangout = await linesCollection.findOneAndUpdate(
-            { lineName: line, 'hangouts._id': new ObjectId(updatedEvent._id) },
-            { $set: { 'hangouts.&': updatedEvent } },
-            { returnDocument: 'after' }
-        );
-        if (!updatedHangout) {
-            throw `Error: Could not update event successfully`;
-        }
-        updatedHangout._id = new ObjectId();
-        return updatedHangout;
-    },
     async addAttendee(
-        eventId,
+        eventName,
         line,
         firstName,
         lastName,
@@ -343,51 +323,31 @@ const exportedMethods = {
         }
 
         const lineCollection = await lines()
-        const eventNew = await lineCollection.findOne({ lineName: line, 'hangout._id': new ObjectId(eventId) })
+        const eventNew = await lineCollection.findOne({ lineName: line })
         if (eventNew) {
-            eventNew.hangouts.attendees.push(newAttendee)
-            eventNew.hangouts.totalNumberOfAttendees += 1;
+            // find the hangout with the id
+            const getHangouts = eventNew.hangouts
+            const filterHangouts = getHangouts.filter(obj => obj.eventName === eventName);
+
+            // check if user is already there
+            const attendeesList = filterHangouts[0].attendees;
+            const findDuplicate = attendeesList.filter(obj => obj.email === email);
+            if (findDuplicate.length > 0) {
+                throw `Error: User already added to hangout`
+            }
+
+            let add = filterHangouts[0].attendees.push(newAttendee)
+            add = filterHangouts[0].totalAttendees += 1;
+
             const updatedInfo = await lineCollection.findOneAndUpdate(
-                { lineName: line, 'hangout._id': new ObjectId(eventId) },
-                { $set: eventNew },
+                { lineName: line },
+                { $set: { hangouts: filterHangouts } },
                 { returnDocument: 'after' }
             )
-            updatedInfo._id = new ObjectId(eventId);
             return updatedInfo
         } else {
             throw `Error: Could not update attendee successfully`
         }
-    },
-    async getAllAttendees(line, eventId) {
-        eventId = validation.validId(eventId);
-
-        const linesCollection = await lines();
-        const lineHangout = await linesCollection.findOne({ lineName: line, 'hangout._id': new ObjectId(eventId) });
-        if (lineHangout) {
-            return lineHangout.hangouts.attendees;
-        } else {
-            throw `Error: Hangout not found`
-        }
-    },
-    async deleteAttendee(firstName, lastName, eventId, line) {
-        firstName = validation.validString(firstName);
-        lastName = validation.validString(lastName);
-        eventId = validation.validId(eventid);
-
-        const linesCollection = await lines();
-        const filter = { lineName: line }
-        const update = { $pull: { 'hangouts.attendees.firstName': firstName } };
-        const updatedHangout = await linesCollection.findOneAndUpdate(
-            filter,
-            update,
-            { returnDocument: 'after' }
-        )
-        if (!updatedHangout) {
-            throw `Error: attendee could not be deleted`;
-        } else {
-            return updatedHangout
-        }
-
     }
 
 };

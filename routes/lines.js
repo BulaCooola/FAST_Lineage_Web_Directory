@@ -214,11 +214,9 @@ router.get('/allusers', async (req, res) => {
 router.get('/myline/allhangouts', async (req, res) => {
     try {
         const line = req.session.user.line
-        console.log(line);
         const allHangouts = await lineData.getAllHangouts(line);
         res.status(200).json(allHangouts);
     } catch (e) {
-        console.log(e);
         res.status(500).json({ error: e })
     }
 })
@@ -229,12 +227,12 @@ router.route('/myline/hangouts')
         if (!req.session.user) {
             res.redirect('/users/login')
         } else {
+            const line = req.session.user.line;
             try {
-                const line = req.session.user.line;
                 const allHangouts = await lineData.getAllHangouts(line);
                 res.render('hangouts', { pageTitle: 'All Hangouts', hangout: allHangouts });
             } catch (e) {
-                res.status(500).render('errors', { error: e });
+                return res.status(500).render('errors', { error: e });
             }
         }
     })
@@ -243,6 +241,48 @@ router.route('/myline/hangouts')
             res.redirect('/users/login')
         } else {
             const action = req.body.action; // Access the value of the clicked button
+            if (action === 'accept') {
+                // add user to the 
+                let { eventNameInput } = req.body;
+                console.log(eventNameInput, 'eventname')
+                try {
+                    eventNameInput = validator.validString(eventNameInput, 'Hangout Name');
+                } catch (e) {
+                    return res.status(400).render('errors', { error: e });
+                }
+
+                const line = req.session.user.line;
+                const firstName = req.session.user.firstName;
+                const lastName = req.session.user.lastName;
+                const email = req.session.user.email;
+
+                try {
+                    const addUser = await lineData.addAttendee(eventNameInput, line, firstName, lastName, email);
+                    console.log('added user', addUser)
+                    return res.redirect('/lines/myline/hangouts');
+                } catch (e) {
+                    return res.status(400).render('errors', { error: e });
+                }
+            }
+            if (action === 'delete' || action === 'create') {
+                const line = await lineData.getLineByName(req.session.user.line)
+                const the_lineHead = line.lineHead.email;
+                if (req.session.user.email !== the_lineHead) {
+                    return res.status(403).render('errors', { error: 'Forbidden' })
+                } else {
+                    if (action === 'delete') {
+                        try {
+                            let { eventNameInput } = req.body;
+                            const deleteEvent = await lineData.removeHangout(eventNameInput, req.session.user.line)
+                            return res.redirect('/lines/myline/hangouts');
+                        } catch (e) {
+                            return res.status(400).render('errors', { error: e });
+                        }
+                    } else {
+                        res.redirect('/lines/myline/hangouts/create')
+                    }
+                }
+            }
         }
     });
 
@@ -257,7 +297,7 @@ router.route('/myline/hangouts/create')
                 res.render('create-hangouts', { pageTitle: 'Create Hangout' })
             }
         } catch (e) {
-            return res.status(500).render('error', { error: e })
+            return res.status(500).render('errors', { error: e })
         }
     })
     .post(async (req, res) => {
