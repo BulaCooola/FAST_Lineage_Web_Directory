@@ -173,7 +173,7 @@ const exportedMethods = {
             links: links
         }
 
-        console.log(cleanedUser);
+        //console.log(cleanedUser);
 
         const userCollection = await users()
         email = email.toLowerCase()
