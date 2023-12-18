@@ -19,7 +19,9 @@
                 <form action="/lines/myline/hangouts" method="POST">
                     <button id="accept" type="submit" name="action" value="accept">Accept</button>
                     <button id="decline" type="submit" name="action" value="decline">Decline</button>
-                    <button id="edit" type="submit" name="action" value="edit" hidden>Edit</button>
+                    {{#if linehead}}
+                    <button id="edit" type="submit" name="action" value="edit">Edit</button>
+                    {{/if}}
                 </form>
             </div>
             {{/each}}
