@@ -277,6 +277,22 @@ const exportedMethods = {
         endTime
     ) {
         // validate parameters
+        try {
+            eventTitle = validator.validTitle(eventTitle, "Event Name")
+            eventDescription = validator.validBio(eventDescription, "Event Description")
+            eventAddress = validator.validAddress(eventAddress, "Event Address")
+            eventCity = validator.validCity(eventCity, "Event City")
+            eventState = validator.validState(eventState, "Event State")
+            eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
+            let time = validator.validTime(startTime, endTime)
+            startTime = (time)[0][0] + ":" + (time)[0][1]
+            endTime = (time)[1][0] + ":" + (time)[1][1]
+            //eventDate = validator.validDate(eventDate, "Event Date")
+        }
+        catch (e) {
+            throw `${e}`
+        }
+
         const newEvent = {
             _id: new ObjectId(),
             timestamp: new Date().toUTCString(),
