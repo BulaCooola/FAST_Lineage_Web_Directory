@@ -24,9 +24,9 @@ const exportedMethods = {
     async addImage(imageUrl, lineName){
         try{
             imageUrl = validators.validLink(imageUrl, "imageUrl")
-            console.log(imageUrl);
+            //console.log(imageUrl);
             lineName = validators.validString(lineName, "lineName")
-            console.log(lineName);
+            //console.log(lineName);
             const linesCollection = await lines();
             const findLine = await linesCollection.findOne({ lineName: lineName })
             const updatePictures = await linesCollection.updateOne(
