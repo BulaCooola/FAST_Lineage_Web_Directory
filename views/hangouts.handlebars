@@ -6,7 +6,9 @@
             {{#each hangout}}
             <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">{{this.eventName}}</div>
             <div id="eventDetails" class="eventDetails">
-                <button id="create" type="submit" value="create" hidden>Create Event</button>
+                <form action="/lines/myline/hangouts" method="POST">
+                    <button id="create" type="submit" name="action" value="create">Create Event</button>
+                </form>
                 <ul>
                     <li>Event Description: {{this.description}}</li>
                     <li>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
