@@ -69,7 +69,6 @@ router.route('/register')
             return res.status(400).render('errors', { pageTitle: "Error", error: 'All fields are required.' });
         }
 
-        console.log('--- Checked All Fields ---');
         try {
             firstName = validator.validName(firstName, 'First Name');
             lastName = validator.validName(lastName, 'Last Name');
@@ -81,12 +80,9 @@ router.route('/register')
             return res.status(400).render('errors'), { error: `${e}` };
         }
 
-        console.log('--- Validating each field ---');
         if (password !== confirmPassword) {
             return res.status(400).render('errors', { pageTitle: "Error", error: 'Passwords do not match.' });
         }
-
-        console.log('--- Confirming password ---');
 
         const userName = email.split("@")[0];
 
@@ -239,7 +235,7 @@ router.route('/edit-profile')
             gradYear: gradYear,
             userBio: bio,
             profilePicture: profilePicture,
-            links: {facebook: facebook, instagram: instagram, spotify: spotify}
+            links: { facebook: facebook, instagram: instagram, spotify: spotify }
         }
         try {
             const updateInfo = await usersData.updateProfile(updateBody, email, password);
