@@ -299,10 +299,10 @@ router.route('/myline/hangouts/create')
             if (req.session.user.firstName !== the_lineHead.firstName && req.session.user.lastName !== the_lineHead.lastName && req.session.user.email !== the_lineHead.email) {
                 return res.redirect('/lines/myline/hangouts')
             } else {
-                res.render('create-hangouts', { pageTitle: 'Create Hangout' })
+                return res.render('create-hangouts', { pageTitle: 'Create Hangout' })
             }
         } catch (e) {
-            return res.status(500).render('errors', { error: e })
+            return res.status(500).render('errors', { pageTitle: 'Errors', errors: e })
         }
     })
     .post(async (req, res) => {

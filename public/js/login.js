@@ -19,8 +19,8 @@ function validateLoginForm() {
         return false;
     }
 
-    if (!isValidPassword(password)) {
-        alert('Invalid password format.');
+    if (!(password)) {
+        alert('Type in password.');
         return false;
     }
 
@@ -31,9 +31,4 @@ function validateLoginForm() {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-function isValidPassword(password) {
-    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[A-Z]).{8,}$/;
-    return passwordRegex.test(password);
 }

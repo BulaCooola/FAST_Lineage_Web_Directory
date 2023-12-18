@@ -54,11 +54,10 @@ function validateForm(formId) {
         };
 
         // regex from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-        password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (!(password_regex.test(password))) {
-            alert('Invalid password (password is not strong)');
+        if (!(password)) {
+            alert('Type in password.');
             return false;
-        }
+        }    
 
         const validString = (string, argName) => {
             string = string.trim()

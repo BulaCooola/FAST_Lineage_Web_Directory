@@ -1,8 +1,8 @@
-<link rel="stylesheet" href="../../public/css/profile.css">
+<link rel="stylesheet" href="/public/css/profile.css">
 {{#if user.profilePicture}}
 <img src={{user.profilePicture}}  onError="this.onerror=null;this.src='../../public/images/no_profile_image.png'" style="width:200px; height: 200px;border-radius: 50%;" alt="{{user.userName}} profile picture">
 {{else}}
-<img src="../../public/images/no_profile_image.png" style="width:200px; height: 200px;border-radius: 50%;" alt="profilePicture">
+<img src="/public/images/no_profile_image.png" style="width:200px; height: 200px;border-radius: 50%;" alt="profilePicture">
 {{/if}}
 
 
