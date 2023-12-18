@@ -14,7 +14,7 @@ router.route('/')
       const allLines = await lineData.getAllLines()
       res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics})
     } catch (e) {
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   })
 
@@ -31,7 +31,7 @@ router.route('/')
       res.redirect('/images')
     }
     catch(e){
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   });
 // /images/:lineName
