@@ -136,9 +136,6 @@ export const validSocialLink = (link, site) => {
         throw 'Error: Invalid social media site';
     }
 
-    console.log(link);
-    console.log(site);
-
     if (!validLink.test(link)) {
         throw "Invalid link for " + site;
     }
