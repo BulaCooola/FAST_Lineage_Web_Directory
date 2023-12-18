@@ -211,6 +211,9 @@ router.route('/edit-profile')
             }
             if (gradYear.trim() !== '') {
                 gradYear = validator.validNumber(parseInt(gradYear), 'gradYear Edit');
+                if (parseInt(gradYear) < 0) {
+                    throw "Grad year cannot be negative";
+                }
             }
             if (bio.trim() !== '') {
                 bio = validator.validBio(bio, 'Bio Edit')
