@@ -12,9 +12,15 @@
 ## How To Use
 
 
+* To Populate Database : Run "npm run seed" in the terminal
+
+* To Run Website on local host : Run "npm start" in the terminal
+
+* To Upload Images on Profile Pic or Image Gallery : Go to Imgur and upload links that valid and existing links that start with "https://i.imgur.com/".
 
 ## Proposal
 
+* Access the Google Doc [Here](https://docs.google.com/document/d/1XjJX7veJFVdAtpXbzXQuqg6BbQXmE1O7wO3vYfXx2MU/edit?usp=sharing)
 
 ### Description
 
@@ -70,3 +76,7 @@
 #### Event Manager
 
 * Changing location, time, and attendees will pop up as a text in the chat box to announce to the entire line.
+
+### DB
+
+* Access the Google Doc [Here](https://docs.google.com/document/d/1hxMe7IiDebACYPmKU7-BUKVjIwf-THA3fZwe6OTYEfI/edit?usp=sharing)
