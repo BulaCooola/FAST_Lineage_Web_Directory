@@ -23,4 +23,13 @@
     </div>
 </main>
 
+<script>
+    function scrollToBottom() {
+        const container = document.getElementById('messageList');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    window.onload = scrollToBottom();
+</script>
+
 {{!-- temporary --}}

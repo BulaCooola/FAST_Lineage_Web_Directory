@@ -77,12 +77,7 @@ const exportedMethods = {
         if (password !== confirmPassword) {
             throw 'Error: Passwords must be the same';
         }
-
-        // const findLine = await linesData.getLineByName(line);
-        // if (!findLine) {
-        //     throw `Error: Line doesn't exists, please pick an existing line`
-        // }
-
+        
         const hashedPassword = await bcrypt.hash(password, 16);
         let newUser = {
             userName: userName,

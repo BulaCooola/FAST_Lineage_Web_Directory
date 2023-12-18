@@ -2,11 +2,6 @@ import { lines } from '../config/mongoCollections.js'
 import * as validators from '../validators.js'
 import lineData from "./lines.js"
 
-/*
-    TODO createImageGallery
-    * This will simply create a path to an image
-*/
-
 const exportedMethods = {
     async getAllImages() {
         try{
@@ -49,9 +44,4 @@ const exportedMethods = {
     }
 }
 
-
 export default exportedMethods;
-
-// TODO getImage
-// TODO getAllImages
-// TODO deleteImage
