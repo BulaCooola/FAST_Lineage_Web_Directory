@@ -240,12 +240,15 @@ const exportedMethods = {
         return hangout;
     },
     async removeHangout(eventName, line) {
-        eventName = validation.validString(eventName, 'eventName')
+        try {
+            eventName = validation.validString(eventName, 'eventName');
+            line = validation.validString(line, 'line');
+        } catch (e) {
+            throw `${e}`;
+        }
         const linesCollection = await lines()
         const the_line = await linesCollection.findOne({ lineName: line });
-        console.log(the_line)
         const lineHangouts = the_line.hangouts;
-        console.log(lineHangouts)
 
         const filterHangouts = lineHangouts.filter(obj => obj.eventName !== eventName);
         const deleted = lineHangouts.filter(obj => obj.eventName == eventName);
@@ -253,16 +256,13 @@ const exportedMethods = {
         const deletedObject = {
             eventName: deleted.eventName,
             deleted: null
-        }
-
-        console.log(filterHangouts)
+        };
 
         const deletedHangout = await linesCollection.findOneAndUpdate(
             { lineName: line },
             { $set: { hangouts: filterHangouts } },
             { returnDocument: 'after' }
         )
-        console.log('1')
         if (!deletedHangout) { throw `Error could not find event ${eventName}`; }
         deletedObject.deleted = true;
         return deletedObject;
@@ -313,6 +313,15 @@ const exportedMethods = {
         email
     ) {
         // validate attendees
+        try {
+            eventName = validation.validString(eventName, 'event name');
+            line = validation.validString(line, 'line');
+            firstName = validation.validName(firstName, 'first name');
+            lastName = validation.validName(lastName, 'last name');
+            email = validation.validEmail(email, 'email');
+        } catch(e) {
+            throw `${e}`;
+        }
 
         const newAttendeeId = new ObjectId();
         const newAttendee = {
