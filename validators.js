@@ -214,6 +214,7 @@ export const validDate = (string, argName) => {
             }
         }
     }
+    return trimDate
 }
 export const validTime = (startTime, endTime) => {
     if (!startTime) { throw `Error: startTime must be supplied`; }
@@ -263,6 +264,7 @@ export const validTime = (startTime, endTime) => {
     if ((endMin - startMin) < 30) {
         throw "Error: Invalid time.";
     }
+    return (startValid, endValid)
 }
 export const validAddress = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
