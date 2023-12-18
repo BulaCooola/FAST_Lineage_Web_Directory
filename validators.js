@@ -205,7 +205,7 @@ export const validDate = (string, argName) => {
                 throw "Error: Day is not valid.";
             }
             else if (Number(date[0]) === currDay) {
-                if (startValid[0] < currHour || (startValid[0] === currHour && startValid[1] <= currMinute)) {
+                if (startTime[0] < currHour || (startTime[0] === currHour && startTime[1] <= currMinute)) {
                     throw "Error: Time is not valid.";
                 }
             }
@@ -218,50 +218,51 @@ export const validTime = (startTime, endTime) => {
     if (!endTime) { throw `Error: endTime must be supplied`; }
     if (typeof startTime !== 'string') { throw `Error: startTime is not a valid string`; }
     if (typeof endTime !== 'string') { throw `Error: endTime is not a valid string`; }
-    startValid = startTime.trim()
-    endValid = endTime.trim()
-    if (startValid.length === 0) { throw `Error: startTime has length 0. Empty time`; }
-    if (endValid.length === 0) { throw `Error: endValid has length 0. Empty time`; }
-    const timeRegex = /^(?:1[0-2]|[1-9]):[0-5][0-9] ([AP][M])$/;
-    if ((timeRegex.test(trimStart) === false) || (timeRegex.test(trimEnd) === false)) {
+    startTime = startTime.trim()
+    endTime = endTime.trim()
+    if (startTime.length === 0) { throw `Error: startTime has length 0. Empty time`; }
+    if (endTime.length === 0) { throw `Error: endTime has length 0. Empty time`; }
+    const timeRegex = /^(?:1[0-2]|0?[1-9]):[0-5][0-9] ([AP][M])$/;
+    if ((timeRegex.test(startTime) === false) || (timeRegex.test(endTime) === false)) {
         throw "Error: Time is invalid.";
     }
-    let startValid = trimStart.split(":");
-    let endValid = trimEnd.split(":");
-    let tempStart = (startValid[1].slice(0, 2));
-    let tempStartAmPm = (startValid[1].slice(3));
-    let tempEnd = (endValid[1].slice(0, 2));
-    let tempEndAmPm = (endValid[1].slice(3));
-    startValid[1] = tempStart;
-    startValid[2] = tempStartAmPm;
-    endValid[1] = tempEnd;
-    endValid[2] = tempEndAmPm;
-
+    startTime = startTime.split(":");
+    endTime = endTime.split(":");
+    let tempStart = (startTime[1].slice(0, 2));
+    let tempStartAmPm = (startTime[1].slice(3));
+    let tempEnd = (endTime[1].slice(0, 2));
+    let tempEndAmPm = (endTime[1].slice(3));
+    startTime[1] = tempStart;
+    startTime[2] = tempStartAmPm;
+    endTime[1] = tempEnd;
+    endTime[2] = tempEndAmPm;
     //checking if start time is before end time
-    if ((startValid[2] === endValid[2] && endValid[0] < startValid[0])) {
-        if (startValid[0] === endValid[0] && endValid[1] < startValid[1]) {
+    if ((startTime[2] === endTime[2] && endTime[0] < startTime[0])) {
+        if (startTime[0] === endTime[0] && endTime[1] < startTime[1]) {
             throw "Error: Invalid time.";
         }
         throw "Error: Invalid time.";
     }
 
     //converting to 24 hour time
-    if (startValid[2] === "PM") {
-        startValid[0] = Number(startValid[0]) + 12;
+    if (startTime[2] === "PM") {
+        startTime[0] = Number(startTime[0]) + 12;
     }
 
-    if (endValid[2] === "PM") {
-        endValid[0] = Number(endValid[0]) + 12;
+    if (endTime[2] === "PM") {
+        endTime[0] = Number(endTime[0]) + 12;
     }
-
     //check end time is at least 30 minutes later
-    const startMin = Number(startValid[0]) * 60 + Number(startValid[1]);
-    const endMin = Number(endValid[0]) * 60 + Number(endValid[1]);
+    const startMin = Number(startTime[0]) * 60 + Number(startTime[1]);
+    const endMin = Number(endTime[0]) * 60 + Number(endTime[1]);
 
     if ((endMin - startMin) < 30) {
         throw "Error: Invalid time.";
     }
-    return (startValid, endValid)
+    startTime[0] = startTime[0].toString()
+    endTime[0] = endTime[0].toString()
+    const finalTime = [startTime, endTime]
+    return (finalTime)
 }
 export const validAddress = (string, argName) => {
     if (!string) { throw `Error: ${argName} must be supplied`; }
@@ -299,12 +300,10 @@ export const validState = (string, argName) => {
     }
     return string
 }
-export const validZipcode = (number, argName) => {
-    if (number.toString().length == 0) { throw `Error: ${argName} must be supplied`; }
-    if (typeof number !== 'number') { throw `Error: ${argName} is not of type Number`; }
-    if (number < 0) { throw `Error: ${argName} should be a positive number`; }
-    if (number.zip.length != 5) {
+export const validZipcode = (string, argName) => {
+    if (string.length == 0) { throw `Error: ${argName} must be supplied`; }
+    if (string.length != 5) {
         throw "eventLocation.zip should have length 5"
     }
-    return number
+    return string
 }

@@ -123,10 +123,10 @@ console.log("Dankest Image Added")
 await image.addImage("https://i.imgur.com/L2eaJGs.png", "Mya's Infinite Line Friends")
 console.log("Mya's Infinite Line Friends Image Added")
 
-await line.createHangout(`Mya's Infinite Line Friends`, 'First Hangout', 'A hangout at the beginning yay', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/17/2024', '5:00 PM', '9:00 PM')
+await line.createHangout(`Mya's Infinite Line Friends`, 'First Hangout', 'A hangout at the beginning yay', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/17/2024', '17:00 PM', '21:00 PM')
 console.log("Event for Mya's Infinite Line Friends Added")
 
-await line.createHangout(`Mya's Infinite Line Friends`, 'Second Hangout', 'A hangout a little later', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/20/2024', '5:00 PM', '9:00 PM')
+await line.createHangout(`Mya's Infinite Line Friends`, 'Second Hangout', 'A hangout a little later', {streetAddress: '1 Castle Point Terrace', city: 'Hoboken', state: 'NJ', zip: '07030'}, '1/20/2024', '17:00 PM', '21:00 PM')
 console.log("Event for Mya's Infinite Line Friends Added")
 
 console.log('Done Seeding')
