@@ -299,7 +299,7 @@ export const validState = (string, argName) => {
     }
     return string
 }
-export const zipCode = (number, argName) => {
+export const validZipcode = (number, argName) => {
     if (number.toString().length == 0) { throw `Error: ${argName} must be supplied`; }
     if (typeof number !== 'number') { throw `Error: ${argName} is not of type Number`; }
     if (number < 0) { throw `Error: ${argName} should be a positive number`; }
