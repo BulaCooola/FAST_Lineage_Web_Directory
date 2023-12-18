@@ -157,7 +157,8 @@ router.route('/searchuser')
             let names = await userData.getUserByFirstName(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -174,7 +175,8 @@ router.route('/searchMajor')
             let names = await userData.getUserByMajor(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -191,7 +193,8 @@ router.route('/searchGradYear')
             let names = await userData.getUserByGradYear(searchValue);
             const filteredNames = names.map(user => ({
                 firstName: user.firstName,
-                lastName: user.lastName
+                lastName: user.lastName,
+                username: user.userName
             }));
             res.json(filteredNames)
         } catch (e) {
@@ -324,9 +327,9 @@ router.route('/myline/hangouts/create')
             eventState = validator.validState(eventState, "Event State")
             eventZipcode = validator.validZipcode(eventZipcode, "Event Zipcode")
             let time = validator.validTime(startTime, endTime)
-            startTime = (time)[0]
-            endTime = (time)[1]
-            eventDate = validator.validDate(eventDate, "Event Date")
+            startTime = (time)[0][0] + ":" + (time)[0][1]
+            endTime = (time)[1][0] + ":" + (time)[1][1]
+            //eventDate = validator.validDate(eventDate, "Event Date")
         }
         catch (e) {
             return res.status(400).render('errors'), { error: e };

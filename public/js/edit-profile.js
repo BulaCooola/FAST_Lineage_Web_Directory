@@ -41,7 +41,7 @@ function validateForm(formId) {
             return false;
         }
         
-        if (!/^[a-zA-Z]+$/.test(lastNameInput) || lastNameInput.length < 2 || lastNameInput.length > 25) {
+        if (!/^[a-zA-Z\s]+$/.test(lastNameInput) || lastNameInput.length < 2 || lastNameInput.length > 25) {
             alert('Invalid last name');
             return false;
         }
@@ -115,7 +115,7 @@ function validateForm(formId) {
 
             return link;
         }
-        console.log(typeof gradYear)
+        
         try {
             if (major !== '')
             validString(major, 'Major');

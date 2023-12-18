@@ -52,7 +52,7 @@ function validateRegisterForm() {
 }
 
 function isValidName(name) {
-    return /^[a-zA-Z]+$/.test(name) && name.length >= 1 && name.length <= 25;
+    return /^[a-zA-Z\s]+$/.test(name) && name.length >= 1 && name.length <= 25;
 }
 
 function isValidEmail(email) {

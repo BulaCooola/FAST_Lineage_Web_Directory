@@ -216,18 +216,6 @@ export const validDate = (string, argName) => {
     return trimDate
 }
 export const validTime = (startTime, endTime) => {
-    if (!startTime) { throw `Error: startTime must be supplied`; }
-    if (!endTime) { throw `Error: endTime must be supplied`; }
-    if (typeof startTime !== 'string') { throw `Error: startTime is not a valid string`; }
-    if (typeof endTime !== 'string') { throw `Error: endTime is not a valid string`; }
-    startTime = startTime.trim()
-    endTime = endTime.trim()
-    if (startTime.length === 0) { throw `Error: startTime has length 0. Empty time`; }
-    if (endTime.length === 0) { throw `Error: endTime has length 0. Empty time`; }
-    const timeRegex = /^(?:1[0-2]|0?[1-9]):[0-5][0-9] ([AP][M])$/;
-    if ((timeRegex.test(startTime) === false) || (timeRegex.test(endTime) === false)) {
-        throw "Error: Time is invalid.";
-    }
     startTime = startTime.split(":");
     endTime = endTime.split(":");
     let tempStart = (startTime[1].slice(0, 2));
@@ -244,15 +232,6 @@ export const validTime = (startTime, endTime) => {
             throw "Error: Invalid time.";
         }
         throw "Error: Invalid time.";
-    }
-
-    //converting to 24 hour time
-    if (startTime[2] === "PM") {
-        startTime[0] = Number(startTime[0]) + 12;
-    }
-
-    if (endTime[2] === "PM") {
-        endTime[0] = Number(endTime[0]) + 12;
     }
     //check end time is at least 30 minutes later
     const startMin = Number(startTime[0]) * 60 + Number(startTime[1]);
