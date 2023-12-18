@@ -1,6 +1,6 @@
 <main class="create-hangouts">
     <h1>Create a Line Hangout!</h1>
-    <form action="/hangouts/create" method="POST" id="hangouts-form">
+    <form action="/lines/myline/hangouts/create" method="POST" id="hangouts-form">
         <div class="input-container">
             <div class="input-group">
                 <label for="eventTitle">Event Title:</label>
@@ -11,19 +11,31 @@
                 <input type="text" id="eventDescriptionInput" name="eventDescription" required>
             </div>
             <div class="input-group">
-                <label for="eventLocation">Event Location:</label>
-                <input type="text" id="eventLocationInput" name="eventLocation" required>
+                <label for="eventAddress">Event Address:</label>
+                <input type="text" id="eventAddressInput" name="eventAddress" required>
             </div>
             <div class="input-group">
-                <label for="startTime">Start Time:</label>
+                <label for="eventCity">Event City:</label>
+                <input type="text" id="eventCityInput" name="eventCity" required>
+            </div>
+            <div class="input-group">
+                <label for="eventState">Event State:</label>
+                <input type="text" id="eventStateInput" name="eventState" required>
+            </div>
+            <div class="input-group">
+                <label for="eventZipcode">Event Zipcode:</label>
+                <input type="text" id="eventZipcodeInput" name="eventZipcode" required>
+            </div>
+            <div class="input-group">
+                <label for="startTime">Start Time HH:MM AM or HH:MM PM:</label>
                 <input type="text" id="startTimeInput" name="startTime" required>
             </div>
             <div class="input-group">
-                <label for="endTime">End Time:</label>
+                <label for="endTime">End Time HH:MM AM or HH:MM PM:</label>
                 <input type="text" id="endTimeInput" name="endTime" required>
             </div>
             <div class="input-group">
-                <label for="eventDate">Event Date:</label>
+                <label for="eventDate">Event Date MM/DD/YYYY:</label>
                 <input type="text" id="eventDateInput" name="eventDate" required>
             </div>
             <button type="submit" id="submitButton" onclick="disableButton()">Create Hangout</button>
