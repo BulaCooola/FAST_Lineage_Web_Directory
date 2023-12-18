@@ -78,8 +78,7 @@ router.route('/register')
             confirmPassword = validator.validPassword(confirmPassword);
             line = validator.validString(line, 'line');
         } catch (e) {
-            console.error(e);
-            res.status(400).render('errors'), { error: `${e}` };
+            return res.status(400).render('errors'), { error: `${e}` };
         }
 
         console.log('--- Validating each field ---');

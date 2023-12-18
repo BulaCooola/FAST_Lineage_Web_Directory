@@ -14,20 +14,17 @@ function validateForm(formId) {
 
             const firstNameInput = form.querySelector('#firstNameInput');
             const lastNameInput = form.querySelector('#lastNameInput');
-            const userNameInput = form.querySelector('#userNameInput');
-            const emailAddressInput = form.querySelector('#emailAddressInput');
-            const passwordInput = form.querySelector('#passwordInput');
-            const confirmPasswordInput = form.querySelector('#confirmPasswordInput');
-            const lineInput = form.querySelector('#lineInput');
+            const email = form.querySelector('#email');
+            const password = form.querySelector('#password');
 
-            const inputArr = [firstNameInput, lastNameInput, userNameInput, emailAddressInput, passwordInput, confirmPasswordInput, lineInput];
+            const inputArr = [firstNameInput, lastNameInput, email, password];
 
-            if (!firstNameInput || !lastNameInput || !userNameInput || !emailAddressInput || !passwordInput || !confirmPasswordInput || !lineInput) {
+            if (!firstNameInput || !lastNameInput || !email || !password) {
                 alert('All fields must be provided.');
                 return false;
             }
 
-            if (!inputArr.every(input => typeof input === 'string' && input.trim() !== '')) {
+            if (!inputArr.every(input => typeof input === 'string' || input.trim() !== '')) {
                 alert('All inputs must be strings and/or cannot be empty spaces');
                 return false;
             }
@@ -59,14 +56,14 @@ function validateForm(formId) {
 
             // regex from https://www.abstractapi.com/tools/email-regex-guide
             email_regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-            if (!(email_regex.test(emailAddressInput))) {
+            if (!(email_regex.test(email))) {
                 alert('Invalid email address');
                 return false;
             };
 
             // regex from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
             password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-            if (!(password_regex.test(passwordInput))) {
+            if (!(password_regex.test(password))) {
                 alert('Invalid password (password is not strong)');
                 return false;
             }

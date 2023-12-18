@@ -448,3 +448,9 @@ main.image-gallery {
 #results-wrapper {
     padding-bottom: 20px
 }
+
+#get-started {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}

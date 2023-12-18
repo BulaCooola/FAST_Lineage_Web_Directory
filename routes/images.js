@@ -2,6 +2,7 @@ import express from 'express';
 import imageData from '../data/images.js';
 import lineData from '../data/lines.js';
 const router = express.Router();
+import * as validator from '../validators.js';
 
 router.route('/')
   .get(async (req, res) => {
@@ -13,7 +14,7 @@ router.route('/')
       const allLines = await lineData.getAllLines()
       res.status(200).render('imagegallery', { pageTitle: "All Line Pictures", data: allPics})
     } catch (e) {
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   })
 
@@ -22,15 +23,15 @@ router.route('/')
       res.redirect('/users/login');
     }
     try{
-      const userLine = req.session.user.line;
+      let userLine = req.session.user.line;
       let inputs = req.body.imageURL;
-      console.log(inputs)
+      userLine = validator.validString(userLine)
+      inputs = validator.validLink(inputs)
       const updateImage = await imageData.addImage(inputs, userLine);
-      console.log("--- Successfully added " + inputs + " as picture.");
-      res.redirect('/')
+      res.redirect('/images')
     }
     catch(e){
-      return res.status(400).render('errors', { error: e });
+      return res.status(400).render('errors', { pageTitle: "Error", error: e });
     }
   });
 // /images/:lineName
