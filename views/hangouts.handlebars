@@ -3,10 +3,12 @@
     {{#if hangout}}
     <ul id="eventsList">
         <div class="hangout-item">
+            <form action="/lines/myline/hangouts" method="POST">
+                <button id="create" type="submit" name="action" value="create">Create Event</button>
+            </form>
             {{#each hangout}}
             <div id="eventTitle" onclick="toggleAnswer(`{{this._id}}`)">{{this.eventName}}</div>
             <div id="eventDetails" class="eventDetails">
-                <button id="create" type="submit" value="create" hidden>Create Event</button>
                 <ul>
                     <li>Event Description: {{this.description}}</li>
                     <li>Event Location: {{this.eventLocation.streetAddress}}, {{this.eventLocation.city}},
@@ -14,14 +16,13 @@
                     <li>Start Time: {{this.startTime}}</li>
                     <li>End Time: {{this.endTime}}</li>
                     <li>Event Date: {{this.eventDate}}</li>
-                    <li>Attendees: {{this.attendees}}</li>
+                    {{!-- <li>Attendees: {{this.attendees}}</li> --}}
+                    <li>Total Attendees: {{this.totalAttendees}}</li>
                 </ul>
                 <form action="/lines/myline/hangouts" method="POST">
+                    <input type="text" id="eventName" name="eventNameInput" value="{{this.eventName}}" hidden>
                     <button id="accept" type="submit" name="action" value="accept">Accept</button>
-                    <button id="decline" type="submit" name="action" value="decline">Decline</button>
-                    {{#if linehead}}
                     <button id="edit" type="submit" name="action" value="edit">Edit</button>
-                    {{/if}}
                 </form>
             </div>
             {{/each}}

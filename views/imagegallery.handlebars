@@ -1,16 +1,17 @@
 <main class="image-gallery">
-<link rel="stylesheet" href="../../public/css/gallery.css" />
+<link rel="stylesheet" href="../../public/css/gallery.css">
 <h2>Image Gallery</h2>
 <div id="formDiv">
     <form action="/images" method="POST" id="imageUploadForm">
-        <label for="imageURLInput">Imgur Image URL (Accepts imgur picture links only!)</label>
-        <input type="text" id="imageURLInput" name="imageURL"></input>
+        <label for="imageURLInput">Imgur Image URL (Please use valid and existing imgur picture links!)</label>
+        <input type="text" id="imageURLInput" name="imageURL"><input>
         <button type="submit" id="submitBtn">Upload Image</button>
     </form>
 </div>
 <div id="imagesDiv">
     {{#each data}}
-        <img src="{{this}}" class="linePic" alt="linePicture">
+    <!-- onError from https://stackoverflow.com/questions/7995080/html-if-image-is-not-found-->
+        <img src="{{this}}" onError="this.onerror=null; this.remove();" class="linePic" alt="linePicture">
     {{/each}}
 </div>
 </main>
