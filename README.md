@@ -9,6 +9,8 @@
 * Sean Payba : [spayba](https://github.com/spayba)
 * Isabel Sutedjo : [mis-isabel](https://github.com/mis-isabel)
 
+## Demo Walkthrough Video: https://youtu.be/_P3UvWce9qE
+
 ## How To Use
 
 * ```npm i``` - download dependencies and node modules
